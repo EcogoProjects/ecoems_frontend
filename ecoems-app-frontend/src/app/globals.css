@@ -4,12 +4,25 @@
   --background: #ffffff;
   --foreground: #472E18;
   --base-color: #EEE4C1;
-  --base-soft-color: #FFF9E4
+  --base-hard-color: #CDAD75;
+  --base-soft-color: #FFF9E4;
+  --base-dark-color: #472E18;
+  --soft-text-color: #A7A7A7;
 }
 
 @theme inline{
+  /* Base Colors */
   --color-base: var(--base-color);
+  --color-base-hard: var(--base-hard-color);
   --color-base-soft: var(--base-soft-color);
+  --color-base-dark: var(--base-dark-color);
+
+  /* Text Colors */
+  --color-text-bottom-soft: var(--soft-text-color);
+
+  /* Others */
+  --radius-box-standard: 18px;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --text-standard: 15px;
