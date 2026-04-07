@@ -5,6 +5,7 @@
   --foreground: #472E18;
   --base-color: #EEE4C1;
   --base-hard-color: #CDAD75;
+  --base-hard-alt-color: #D9AF72;
   --base-soft-color: #FFF9E4;
   --base-dark-color: #472E18;
   --soft-text-color: #A7A7A7;
@@ -14,6 +15,7 @@
   /* Base Colors */
   --color-base: var(--base-color);
   --color-base-hard: var(--base-hard-color);
+  --color-base-hard-alt: var(--base-hard-alt-color);
   --color-base-soft: var(--base-soft-color);
   --color-base-dark: var(--base-dark-color);
 
