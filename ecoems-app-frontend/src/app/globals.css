@@ -11,7 +11,13 @@
   --soft-text-color: #A7A7A7;
 }
 
-@theme inline{
+@theme inline {
+  /* Fuentes */
+  --font-outfit: var(--font-outfit); /* Enlaza la variable de Next.js */
+  
+  /* Si quieres que sea la fuente por defecto de todo el sitio: */
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
   /* Base Colors */
   --color-base: var(--base-color);
   --color-base-hard: var(--base-hard-color);
@@ -24,9 +30,6 @@
 
   /* Others */
   --radius-box-standard: 18px;
-
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
   --text-standard: 15px;
 }
 
@@ -40,5 +43,6 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Aplicamos la fuente aquí para que afecte a todo el documento */
+  font-family: var(--font-outfit), sans-serif;
 }

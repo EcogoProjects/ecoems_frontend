@@ -3,12 +3,12 @@ import { FaGoogle,FaFacebook } from "react-icons/fa";
 function SigIn() {
     return ( 
         <div className="flex sm:flex-col min-h-screen justify-center items-center p-4 
-         lg:items-end
-        lg:bg-[url('/backgrounds/login-bg-long.png')] lg:bg-cover lg:bg-center 
-        lg:pr-15 xl:pr-21">
+         md:items-end
+        md:bg-[url('/backgrounds/login-bg-long.png')] md:bg-cover md:bg-center 
+        md:pr-10 lg:pr-15 xl:pr-21">
             <form action="" className="flex flex-col gap-7.5 items-center justify-center">
                 <div className="bg-base rounded-box-standard p-10 text-standard  max-w-[344px] w-full 
-                lg:bg-transparent lg:bg-transparent
+                md:bg-transparent
                 xl:max-w-[500px] xl:w-[500px]
                 [&_label]:font-semibold [&_label]:pl-3 
                 [&_input]:bg-base-soft [&_input]:rounded-[10px] [&_input]:p-2.5 [&_input]:w-full
@@ -58,7 +58,7 @@ function SigIn() {
                 <div className="flex gap-0.5">
                    <p className="text-text-bottom-soft lg:text-base-dark">
                         ¿Aún no te has registrado? 
-                    <Link href="/signup" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
+                    <Link href="/app/signup" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
                         Regístrate
                     </Link>
                 </p> 

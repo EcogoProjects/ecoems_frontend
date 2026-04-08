@@ -4,7 +4,8 @@ import Link from "next/link";
 
 function NavBarMovile() {
     return (  
-        <div className="bg-base-dark flex items-center text-white min-w-screen justify-around pt-2.5 pb-2.5  absolute bottom-0">
+        <div className="bg-base-dark flex items-center text-white min-w-screen justify-around pt-2.5 pb-2.5  fixed bottom-0 
+        md:hidden">
             <Link href="/analytics">
                 <ChartBarBigColumns height="50px" width="50px" pack="filled"/>
             </Link>
