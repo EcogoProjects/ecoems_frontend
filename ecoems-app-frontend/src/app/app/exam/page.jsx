@@ -1,6 +1,11 @@
-import NavBarMovile from "@/components/NavBar";
+import NavBarDesktop from "@/components/NavBarDesktop";
+import NavBarMovile from "@/components/NavBarMovile";
+import { GrCaretNext,GrCaretPrevious } from "react-icons/gr";
+import Timer from "@/components/Timer";
 import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
+import { reading_example } from "@/utils/questions_examples";
+import { CaretLeft, CaretLeftCircle, CaretRight, CaretRightCircle } from "@boxicons/react";
 function ExamPage() {
     // Datos de ejemplo para pregunta
     const exam_type = 'Examen Rápido';
@@ -21,21 +26,35 @@ function ExamPage() {
     const answer_d = 'La Constitución de Cádiz, el pago del salario mínimo y el sistema de raya';
     const image_url = 'https://fastly.picsum.photos/id/128/3823/2549.jpg?hmac=VbPyA2vESva2YdoXqll9REBcbQIskgv_c-D60C1s0xc';
     const hint = 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic blanditiis temporibus rerum a soluta. Laudantium, quis voluptatum, at earum deleniti eius distinctio reiciendis, tenetur officia vitae id sed nihil minima.';
-
+    const reading = reading_example;
     return ( 
         <div className=" flex flex-col  min-h-screen justify-center items-center gap-5
         ">
+            <NavBarDesktop/>
+            {/*Contador */}
+            <Timer 
+            minutes={10}
+            seconds={30}
+            />
             {/*Contenedor superior */}
             <div className="flex bg-base-dark p-2 pl-4 pr-4 rounded-full min-w-4/5 text-white
             justify-between items-center gap-4">
                 <h2 className="text-[16px]  font-bold tracking-wider">{exam_type}</h2>
-                <div className="flex items-center justify-center gap-3 bg-base-hard p-2 rounded-full
-                pl-5 pr-7 hover:cursor-pointer hover:opacity-70">
-                    <span>
-                        <FaSearch size={20}/>
-                    </span>
-                    <p className=" tracking-wider font-semibold">Pista</p>
+                <div className="flex gap-3">
+                    <div className="flex items-center justify-center gap-3 bg-base-hard p-2 rounded-full
+                    pl-5 pr-7 hover:cursor-pointer hover:opacity-70">
+                        <span>
+                            <FaSearch size={20}/>
+                        </span>
+                        <p className=" tracking-wider font-semibold">Pista</p>
+                    </div>
+                    <div className="hidden md:flex items-center text-base">
+                        <CaretLeftCircle width={40} height={40} pack="filled" className=" hover:cursor-pointer hover:opacity-70"/>
+                        <CaretRightCircle width={40} height={40} pack="filled" className=" hover:cursor-pointer hover:opacity-70"/>
+                        
+                    </div>
                 </div>
+                
             </div>
             {/*Contenedor con bloques de examen */}
             <div className="flex flex-col gap-5 items-center
@@ -48,6 +67,8 @@ function ExamPage() {
                     <div className="w-full text-right font-bold opacity-70 tracking-widest">
                         <p>{subject}</p>
                     </div>
+                    {/*Contendor de lectura adicional*/}
+                    <p className="p-3 rounded-[18px] mb-2 font-semibold">{reading}</p>
                     {/* Contenedor con número de pregunta y texto de pregunta */}
                     <div className="flex items-center gap-4">
                         <div className="bg-base-dark text-white text-2xl w-[40px] h-[40px] text-center rounded-full p-1.5 shrink-0">
@@ -56,54 +77,54 @@ function ExamPage() {
                         <p>{question_text}</p>
                     </div>
                     {/* Contenedor con opciones de respuesta */}
-                    <div className="pl-2.5 mt-5">
-                        <div className="flex gap-2">
-                        <input 
-                        type="radio"
-                        name='option'
-                        value={1}
-                        className="peer appearance-none w-5 h-5 ring-4 ring-inset ring-base-dark rounded-full bg-white shrink-0
-                        checked:ring-7"
-                        />  
-                        <p>a) {answer_a}</p>
+                    <div className="pl-2.5 mt-5 flex flex-col gap-2.5">
+                        <div className="flex gap-2 items-center">
+                            <input 
+                            type="radio"
+                            name='option'
+                            value={1}
+                            className="peer appearance-none w-5 h-5 ring-4 ring-inset ring-base-dark rounded-full bg-white shrink-0
+                            checked:ring-7"
+                            />  
+                            <p>a) {answer_a}</p>
                         </div>
-                        <div className="flex gap-2">
-                        <input 
-                        type="radio"
-                        name='option'
-                        value={2}
-                        className="peer appearance-none w-5 h-5 ring-4 ring-inset ring-base-dark rounded-full bg-white shrink-0
-                        checked:ring-7"
-                        />  
-                        <p>{answer_b}</p>
+                            <div className="flex gap-2 items-center">
+                            <input 
+                            type="radio"
+                            name='option'
+                            value={2}
+                            className="peer appearance-none w-5 h-5 ring-4 ring-inset ring-base-dark rounded-full bg-white shrink-0
+                            checked:ring-7"
+                            />  
+                            <p>{answer_b}</p>
                         </div>
-                        <div className="flex gap-2">
-                        <input 
-                        type="radio"
-                        name='option'
-                        value={3}
-                        className="peer appearance-none w-5 h-5 ring-4 ring-inset ring-base-dark rounded-full bg-white shrink-0
-                        checked:ring-7"
-                        />  
-                        <p>{answer_c}</p>
+                        <div className="flex gap-2 items-center">
+                            <input 
+                            type="radio"
+                            name='option'
+                            value={3}
+                            className="peer appearance-none w-5 h-5 ring-4 ring-inset ring-base-dark rounded-full bg-white shrink-0
+                            checked:ring-7"
+                            />  
+                            <p>{answer_c}</p>
                         </div>
-                        <div className="flex gap-2">
-                        <input 
-                        type="radio"
-                        name='option'
-                        value={4}
-                        className="peer appearance-none w-5 h-5 ring-4 ring-inset ring-base-dark rounded-full bg-white shrink-0
-                        checked:ring-7"
-                        />  
-                        <p>{answer_d}</p>
+                        <div className="flex gap-2 items-center">
+                            <input 
+                            type="radio"
+                            name='option'
+                            value={4}
+                            className="peer appearance-none w-5 h-5 ring-4 ring-inset ring-base-dark rounded-full bg-white shrink-0
+                            checked:ring-7"
+                            />  
+                            <p>{answer_d}</p>
                         </div>
                     </div>
                 </div>
-                {/*Contenedor izquierdo*/}
-                <div className=" w-4/5 flex flex-col gap-5
+                {/*Contenedor derecho*/}
+                <div className=" w-4/5 flex flex-col gap-5 h-full
                 md:col-span-1 md:w-full md:grid-rows-2">
                     {/*Contenedor con recursos de pregunta*/}
-                    <div className="bg-base-hard rounded-[18px] p-3  flex flex-col justify-center">
+                    <div className="bg-base-hard rounded-[18px] p-3  flex flex-col justify-center items-top">
                         <div className="relative w-full aspect-video rounded-[18px] bg-white overflow-hidden"> 
                             <Image 
                             src={image_url} 

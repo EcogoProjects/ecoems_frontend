@@ -1,11 +1,13 @@
-import NavBarMovile from "@/components/NavBar";
+import NavBarMovile from "@/components/NavBarMovile";
 import { MdShutterSpeed } from "react-icons/md";
 import { RiCalendarScheduleFill } from "react-icons/ri";
 import { FaUnlockAlt, FaBookReader } from "react-icons/fa";
+import NavBarDesktop from "@/components/NavBarDesktop";
 
 function HomePage() {
     return ( 
     <div className="flex flex-col min-h-screen justify-center items-center">
+        <NavBarDesktop/>
         <div className=" flex flex-col rounded-box-standard bg-base-hard p-10 pl-3.5 pr-3.5 gap-5">
             <h2 className="font-extrabold tracking-wide text-xl text-center mb-1.5">Realizar Examén</h2>
             <div className="text-white grid grid-cols-2 gap-2 tracking-wide
