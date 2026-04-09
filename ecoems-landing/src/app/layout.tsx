@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Providers from './providers'
 import FaviconSwitcher from '@/components/shared/FaviconSwitcher'
+import GoogleAnalytics from '@/components/shared/GoogleAnalytics'
 
 export const metadata: Metadata = {
   title: 'ECOGO',
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <body>
+        <GoogleAnalytics />
         <FaviconSwitcher />
         <Providers>{children}</Providers>
       </body>
