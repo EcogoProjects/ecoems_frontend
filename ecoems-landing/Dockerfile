@@ -1,40 +1,37 @@
-# Stage 1: Build stage
-FROM node:20-alpine AS build-stage
-
+# Stage 1: Install dependencies
+FROM node:20-alpine AS deps
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
 COPY bun.lock ./
+RUN npm ci
 
-# Install dependencies (using npm for compatibility in Docker)
-RUN npm install
-
-# Copy the rest of the application
+# Stage 2: Build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Build the application
 RUN npm run build
 
-# Stage 2: Production stage
-FROM nginx:stable-alpine AS production-stage
-
-# Copy the build output to Nginx
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-
-# Copy a basic nginx config to handle SPA routing if necessary
-# RUN echo 'server { listen 80; location / { root /usr/share/nginx/html; index index.html; try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
-
-# Optional: Development stage (used in docker-compose)
-FROM node:20-alpine AS development-stage
+# Stage 3: Production runner
+FROM node:20-alpine AS runner
 WORKDIR /app
-COPY package*.json ./
-COPY bun.lock ./
-RUN npm install
-COPY . .
-EXPOSE 8080
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+ENV NODE_ENV=production
+
+# Non-root user for security
+RUN addgroup --system --gid 1001 nodejs \
+ && adduser --system --uid 1001 nextjs
+
+# Copy only what Next.js standalone needs
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+CMD ["node", "server.js"]
