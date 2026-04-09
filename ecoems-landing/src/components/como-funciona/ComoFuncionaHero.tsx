@@ -14,7 +14,7 @@ const ComoFuncionaHero = () => {
 
       <svg
         className="absolute bottom-0 left-0 w-full"
-        viewBox="0 0 1440 220"
+        viewBox="0 0 1440 100"
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{ animation: 'breathe 6s ease-in-out 1s infinite', transformOrigin: 'bottom center' }}
@@ -25,7 +25,7 @@ const ComoFuncionaHero = () => {
         />
       </svg>
 
-      <div className="absolute hidden xl:block" style={{ bottom: '140px', left: '5%', zIndex: 20, animation: 'float 4s ease-in-out infinite' }}>
+      <div className="absolute hidden [@media(min-width:1507px)]:block" style={{ bottom: '140px', left: '5%', zIndex: 20, animation: 'float 4s ease-in-out infinite' }}>
         <Image
           src={raccoonStudy}
           alt="Mapache estudiando"
@@ -34,7 +34,7 @@ const ComoFuncionaHero = () => {
         />
       </div>
 
-      <div className="absolute hidden xl:block" style={{ bottom: '140px', right: '5%', zIndex: 20, animation: 'float 4s ease-in-out 1s infinite' }}>
+      <div className="absolute hidden [@media(min-width:1507px)]:block" style={{ bottom: '140px', right: '5%', zIndex: 20, animation: 'float 4s ease-in-out 1s infinite' }}>
         <Image
           src={raccoonBackpack}
           alt="Mapache con mochila"
@@ -64,7 +64,7 @@ const ComoFuncionaHero = () => {
           <button
             onClick={() => setModalOpen(true)}
             className="px-8 py-3 rounded-full font-bold text-sm transition-all duration-200 hover:scale-105 hover:shadow-xl active:scale-95 shadow-lg"
-            style={{ backgroundColor: '#472E18', color: '#FFF9E4' }}
+            style={{ backgroundColor: '#FFF9E4', color: '#472E18' }}
           >
             Cupos limitados para acceso anticipado          </button>
         </div>

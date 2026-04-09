@@ -27,7 +27,7 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setModalOpen(true)}
-            className="px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity"
+            className="[@media(min-width:379px)]:flex hidden px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity"
             style={{ backgroundColor: '#472E18', color: '#EAD9C3' }}
           >
             Próximamente
@@ -62,6 +62,13 @@ const Navbar = () => {
           <Link href="/blog" onClick={() => setMenuOpen(false)} className="hover:opacity-70 transition-opacity">
             Blog
           </Link>
+          <button
+            onClick={() => { setMenuOpen(false); setModalOpen(true) }}
+            className="[@media(min-width:379px)]:hidden w-full px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity text-center"
+            style={{ backgroundColor: '#472E18', color: '#EAD9C3' }}
+          >
+            Próximamente
+          </button>
         </div>
       )}
 

@@ -64,11 +64,18 @@ const BlogPost = ({ post }: Props) => {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-8 md:pt-10">
-        <div className="w-full h-56 md:h-72 rounded-2xl bg-muted relative overflow-hidden">
-          {post.coverImage && (
-            <Image src={post.coverImage} alt={post.title} fill className="object-cover rounded-2xl" />
-          )}
-        </div>
+        {post.coverImage && (
+          <div className="w-full rounded-2xl overflow-hidden bg-muted">
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="w-full h-auto rounded-2xl"
+            />
+          </div>
+        )}
       </div>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6 text-[15px] md:text-[16px] leading-relaxed">

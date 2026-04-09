@@ -9,22 +9,24 @@ const LatestNews = () => {
   return (
     <section className="max-w-6xl mx-auto px-6 pb-16">
       <AnimateOnScroll animation="fade-up">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-8">
-          <div className="space-y-1">
+        <div className="flex flex-col [@media(min-width:922px)]:flex-row [@media(min-width:922px)]:items-end [@media(min-width:922px)]:justify-between gap-3 mb-8">
+          <div className="space-y-1 text-center [@media(min-width:922px)]:text-left">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground">
               Últimas Noticias
             </h2>
-            <p className="text-sm text-muted-foreground md:whitespace-nowrap">
+            <p className="text-sm text-muted-foreground [@media(min-width:922px)]:whitespace-nowrap">
               Noticias, consejos de estudio y seguimiento de todo lo que necesitas saber sobre tu examen ECOEMS.
             </p>
           </div>
-          <Link
-            href="/blog"
-            className="flex-shrink-0 self-start md:self-auto px-6 py-3 rounded-full font-semibold text-sm text-background hover:opacity-90 transition-opacity shadow-md"
-            style={{ backgroundColor: '#3D2B1F' }}
-          >
-            Ir al Blog →
-          </Link>
+          <div className="flex justify-center [@media(min-width:922px)]:justify-end">
+            <Link
+              href="/blog"
+              className="flex-shrink-0 px-6 py-3 rounded-full font-semibold text-sm text-background hover:opacity-90 transition-opacity shadow-md"
+              style={{ backgroundColor: '#3D2B1F' }}
+            >
+              Ir al Blog →
+            </Link>
+          </div>
         </div>
       </AnimateOnScroll>
 

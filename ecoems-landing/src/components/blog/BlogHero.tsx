@@ -2,18 +2,10 @@ const BlogHero = () => {
   return (
     <section className="w-full relative overflow-hidden" style={{ backgroundColor: '#472E18', minHeight: '280px' }}>
 
-      <svg
+      <div
         className="absolute bottom-0 left-0 w-full"
-        viewBox="0 0 1440 180"
-        preserveAspectRatio="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ animation: 'breathe 6s ease-in-out 1s infinite', transformOrigin: 'bottom center' }}
-      >
-        <path
-          d="M0,180 L0,90 Q240,20 480,90 Q680,150 900,70 Q1100,10 1300,60 L1440,40 L1440,180 Z"
-          fill="hsl(var(--background))"
-        />
-      </svg>
+        style={{ backgroundColor: 'hsl(var(--background))', height: '30px' }}
+      />
 
       <div className="max-w-6xl mx-auto px-6 relative z-10 flex flex-col items-center text-center gap-4 md:gap-5 pt-12 md:pt-14 pb-20 md:pb-32">
         <span
