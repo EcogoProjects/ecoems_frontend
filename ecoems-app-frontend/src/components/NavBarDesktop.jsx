@@ -17,6 +17,9 @@ function NavBarDesktop() {
             </Link>
             <div className="flex gap-2.5">
                 <ul className="flex gap-3 items-center">
+                    <Link href="/app/program">
+                        <li>Temario</li>
+                    </Link>
                     <Link href="/app/analytics">
                         <li>Dashboard</li>
                     </Link>
