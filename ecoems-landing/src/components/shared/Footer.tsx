@@ -29,9 +29,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-sm uppercase tracking-wider text-secondary-foreground/80">Legal</h4>
             <ul className="space-y-2 text-sm text-secondary-foreground/60">
-              {/* <li><a href="#" className="hover:text-secondary-foreground transition-colors">Términos de Uso</a></li> */}
               <li><Link href="/privacidad" className="hover:text-secondary-foreground transition-colors">Aviso de Privacidad</Link></li>
-              {/* <li><a href="mailto:privacidad@ecogo.mx" className="hover:text-secondary-foreground transition-colors">Contacto</a></li> */}
             </ul>
           </div>
         </div>

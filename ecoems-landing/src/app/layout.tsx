@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: 'ECOGO | Guía para el ECOEMS 2026',
     template: '%s | ECOGO',
   },
-  description: 'Tu guía inteligente para dominar el ECOEMS 2026 y el proceso Mi Derecho Mi Lugar. Estudia mejor, elige tu prepa con estrategia.',
+  description: 'ECOGO es la app para prepararte para el ECOEMS 2026 y Mi Derecho Mi Lugar. Estudia con ejercicios tipo examen, sigue tu progreso y asegura tu lugar en la preparatoria que quieres.',
   keywords: [
     'ECOEMS', 'Mi Derecho Mi Lugar', 'COMIPEMS 2026',
     'bachillerato México', 'asignación preparatoria', 'educación media superior',
@@ -25,23 +25,23 @@ export const metadata: Metadata = {
     url: 'https://ecogo.mx',
     siteName: 'ECOGO',
     title: 'ECOGO | Guía para el ECOEMS 2026',
-    description: 'Tu guía inteligente para dominar el ECOEMS 2026 y el proceso Mi Derecho Mi Lugar.',
+    description: 'ECOGO es la app para estudiar y dominar el ECOEMS 2026. Practica con ejercicios tipo examen y asegura tu lugar en la preparatoria que quieres.',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'ECOGO - Asegura tu lugar con ECOGO' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ECOGO | Guía para el ECOEMS 2026',
-    description: 'Tu guía inteligente para dominar el ECOEMS 2026 y el proceso Mi Derecho Mi Lugar.',
+    description: 'ECOGO es la app para estudiar y dominar el ECOEMS 2026. Practica con ejercicios tipo examen y asegura tu lugar en la preparatoria que quieres.',
     images: ['/og-image.png'],
-  },
-  icons: {
-    icon: '/ecogo_logo.png',
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
+      <head>
+        <link rel="icon" href="/ecogo_logo.png" />
+      </head>
       <body>
         <GoogleAnalytics />
         <FaviconSwitcher />

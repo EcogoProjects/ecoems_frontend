@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'ECOEMS 2026 | Guía completa de asignación a bachillerato en México',
-  description: 'Todo sobre ECOEMS y Mi Derecho Mi Lugar: cómo funciona el nuevo sistema de asignación a preparatoria 2026, fechas, instituciones y requisitos. Información clara para aspirantes.',
+  description: 'Aprende todo sobre el ECOEMS y Mi Derecho Mi Lugar 2026: cómo funciona la asignación a preparatoria, fechas clave, instituciones participantes y cómo usar ECOGO para prepararte.',
   alternates: { canonical: 'https://ecogo.mx/inicio' },
   openGraph: {
     title: 'ECOEMS 2026 | Guía de bachillerato en México',
-    description: 'Información sobre el nuevo sistema de asignación a preparatoria: ECOEMS y Mi Derecho Mi Lugar.',
+    description: 'Información completa sobre el ECOEMS y Mi Derecho Mi Lugar 2026: fechas, instituciones y cómo prepararte con ECOGO.',
     url: 'https://ecogo.mx/inicio',
   },
 }
