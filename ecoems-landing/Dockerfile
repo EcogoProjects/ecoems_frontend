@@ -1,29 +1,37 @@
-# Stage 1: Build
-FROM oven/bun:1-alpine AS builder
+# Stage 1: Install dependencies
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY package*.json ./
+COPY bun.lock ./
+RUN npm ci
 
+# Stage 2: Build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+# Stage 3: Production runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+ENV NODE_ENV=production
 
-COPY . .
-RUN bun run build
+# Non-root user for security
+RUN addgroup --system --gid 1001 nodejs \
+ && adduser --system --uid 1001 nextjs
 
-# Stage 2: Serve
-FROM nginx:alpine
+# Copy only what Next.js standalone needs
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+USER nextjs
 
-# Handle client-side routing (react-router-dom)
-RUN printf 'server {\n\
-    listen 80;\n\
-    root /usr/share/nginx/html;\n\
-    index index.html;\n\
-    location / {\n\
-    try_files $uri $uri/ /index.html;\n\
-    }\n\
-    }\n' > /etc/nginx/conf.d/default.conf
+EXPOSE 3000
 
-EXPOSE 80
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server.js"]
