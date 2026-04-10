@@ -137,7 +137,7 @@ export default function NotFound() {
           }}
         >
           <Link
-            href="/inicio"
+            href="/"
             className="inline-block px-9 py-3.5 rounded-full font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95 animate-pulse-soft"
             style={{ backgroundColor: "#472E18", color: "#e0d2b8" }}
           >

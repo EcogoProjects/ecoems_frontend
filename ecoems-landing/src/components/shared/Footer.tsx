@@ -20,7 +20,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-sm uppercase tracking-wider text-secondary-foreground/80">Navegación</h4>
             <ul className="space-y-2 text-sm text-secondary-foreground/60">
-              <li><Link href="/inicio" className="hover:text-secondary-foreground transition-colors">Inicio</Link></li>
+              <li><Link href="/" className="hover:text-secondary-foreground transition-colors">Inicio</Link></li>
               <li><Link href="/como-funciona" className="hover:text-secondary-foreground transition-colors">¿Cómo Funciona?</Link></li>
               <li><Link href="/blog" className="hover:text-secondary-foreground transition-colors">Blog</Link></li>
             </ul>

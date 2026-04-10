@@ -136,7 +136,7 @@ const BlogPost = ({ post }: Props) => {
             </p>
           </div>
           <Link
-            href="/inicio"
+            href="/"
             className="flex-shrink-0 px-7 py-3 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105 hover:opacity-90 shadow-md"
             style={{ backgroundColor: '#CDAD75', color: '#472E18' }}
           >
