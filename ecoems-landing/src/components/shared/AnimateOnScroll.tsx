@@ -32,7 +32,7 @@ const AnimateOnScroll = ({
         if (entry.isIntersecting) {
           el.style.opacity = ''
           el.style.animation = 'none'
-          void el.offsetHeight // forces reflow to restart animation
+          void el.offsetHeight
           el.style.animation = `${animation} 0.65s ease-out ${delay}ms both`
         } else {
           el.style.animation = 'none'

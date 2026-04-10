@@ -13,13 +13,13 @@ const Navbar = () => {
   return (
     <nav className="relative max-w-6xl mx-auto px-6 py-4">
       <div className="flex items-center justify-between">
-        <Link href="/inicio" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <Image src={ecogoLogo} alt="ECOGO" width={32} height={32} className="rounded-full" />
           <span className="font-bold text-lg text-foreground">ECOGO</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6 text-sm font-medium text-foreground">
-          <Link href="/inicio" className="hover:opacity-70 transition-opacity">Inicio</Link>
+          <Link href="/" className="hover:opacity-70 transition-opacity">Inicio</Link>
           <Link href="/como-funciona" className="hover:opacity-70 transition-opacity">¿Cómo Funciona?</Link>
           <Link href="/blog" className="hover:opacity-70 transition-opacity">Blog</Link>
         </div>
@@ -53,7 +53,7 @@ const Navbar = () => {
 
       {menuOpen && (
         <div className="md:hidden absolute left-0 right-0 top-full z-50 bg-background border-t border-border shadow-lg px-6 py-4 flex flex-col gap-4 text-sm font-medium text-foreground">
-          <Link href="/inicio" onClick={() => setMenuOpen(false)} className="hover:opacity-70 transition-opacity">
+          <Link href="/" onClick={() => setMenuOpen(false)} className="hover:opacity-70 transition-opacity">
             Inicio
           </Link>
           <Link href="/como-funciona" onClick={() => setMenuOpen(false)} className="hover:opacity-70 transition-opacity">

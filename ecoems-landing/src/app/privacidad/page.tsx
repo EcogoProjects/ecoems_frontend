@@ -12,7 +12,6 @@ export default function PrivacidadPage() {
       <Navbar />
       <main>
 
-        {/* Hero */}
         <section className="w-full relative overflow-hidden" style={{ backgroundColor: '#472E18', minHeight: '240px' }}>
           <div
             className="absolute bottom-0 left-0 w-full"
@@ -37,7 +36,6 @@ export default function PrivacidadPage() {
           </div>
         </section>
 
-        {/* Content */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-10 text-[15px] md:text-[16px] leading-relaxed">
 
           <p className="text-foreground/80">
@@ -45,7 +43,6 @@ export default function PrivacidadPage() {
             <em>Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</em> y su Reglamento.
           </p>
 
-          {/* Section 1 */}
           <Section title="1. Datos personales que recopilamos">
             <SubSection title="1.1 Datos de registro e identificación">
               <BulletList items={[
@@ -79,7 +76,6 @@ export default function PrivacidadPage() {
             </SubSection>
           </Section>
 
-          {/* Section 2 */}
           <Section title="2. Finalidades del tratamiento">
             <SubSection title="2.1 Finalidades primarias (necesarias para el servicio)">
               <BulletList items={[
@@ -97,15 +93,9 @@ export default function PrivacidadPage() {
                 'Realización de encuestas de satisfacción y estudios de uso de la plataforma.',
                 'Análisis estadísticos agregados y anónimos para mejorar el servicio.',
               ]} />
-              {/* <Callout>
-                Si no desea que sus datos sean tratados para las finalidades secundarias, puede manifestarlo enviando un
-                correo a <strong>privacidad@ecogo.mx</strong> indicando "Oposición a finalidades secundarias". Su negativa
-                no afectará el acceso al servicio.
-              </Callout> */}
             </SubSection>
           </Section>
 
-          {/* Section 3 */}
           <Section title="3. Transferencia de datos a terceros">
             <p className="text-foreground/80">
               Para la operación de la plataforma, sus datos pueden ser compartidos con terceros sub-encargados, quienes
@@ -114,16 +104,12 @@ export default function PrivacidadPage() {
             </p>
           </Section>
 
-          {/* Section 4 */}
           <Section title="4. Derechos ARCO">
             <p className="text-foreground/80">
               Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos
               personales (Derechos ARCO), así como a revocar su consentimiento y limitar el uso o divulgación de sus datos.
             </p>
             <SubSection title="4.1 ¿Cómo ejercer sus derechos ARCO?">
-              {/* <p className="text-foreground/80 mb-4">
-                Puede enviar su solicitud al correo <strong>privacidad@ecogo.mx</strong> con los siguientes elementos:
-              </p> */}
               <BulletList items={[
                 'Nombre completo y correo electrónico registrado en ECOGO.',
                 'Descripción clara del derecho que desea ejercer y los datos a los que se refiere.',
@@ -140,7 +126,6 @@ export default function PrivacidadPage() {
             </SubSection>
           </Section>
 
-          {/* Section 5 */}
           <Section title="5. Consentimiento">
             <p className="text-foreground/80">
               Al registrarse en ECOGO y marcar la casilla de aceptación correspondiente, usted otorga su{' '}
@@ -158,7 +143,6 @@ export default function PrivacidadPage() {
             </Callout>
           </Section>
 
-          {/* Section 6 */}
           <Section title="6. Seguridad de los datos">
             <p className="text-foreground/80 mb-4">
               ECOGO implementa medidas técnicas, administrativas y físicas para proteger sus datos personales contra
@@ -173,7 +157,6 @@ export default function PrivacidadPage() {
             ]} />
           </Section>
 
-          {/* Section 7 */}
           <Section title="7. Conservación de los datos">
             <p className="text-foreground/80">
               Sus datos personales serán conservados durante el tiempo que mantenga una cuenta activa en ECOGO y hasta por{' '}
@@ -182,7 +165,6 @@ export default function PrivacidadPage() {
             </p>
           </Section>
 
-          {/* Section 8 */}
           <Section title="8. Cambios a este Aviso de Privacidad">
             <p className="text-foreground/80">
               ECOGO se reserva el derecho de actualizar este Aviso de Privacidad en cualquier momento. Cualquier
@@ -192,7 +174,6 @@ export default function PrivacidadPage() {
             </p>
           </Section>
 
-          {/* Section 9 */}
           <Section title="9. Autoridad competente">
             <p className="text-foreground/80">
               Si considera que sus derechos han sido vulnerados, puede presentar una queja ante el{' '}
@@ -200,7 +181,6 @@ export default function PrivacidadPage() {
             </p>
           </Section>
 
-          {/* Footer note */}
           <div
             className="rounded-2xl px-6 py-5 text-sm border-t-2 text-center"
             style={{ borderTopColor: '#CDAD75', backgroundColor: '#FFF9E4', color: '#472E18' }}
@@ -214,8 +194,6 @@ export default function PrivacidadPage() {
     </div>
   )
 }
-
-/* ── Helpers ─────────────────────────────────────────── */
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (

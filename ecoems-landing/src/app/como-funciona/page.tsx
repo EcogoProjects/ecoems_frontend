@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Cómo funciona ECOGO | Prepárate para el ECOEMS 2026',
-  description: 'Descubre cómo ECOGO te ayuda a prepararte para el ECOEMS 2026 con estrategia, ejercicios tipo examen y seguimiento de tu progreso.',
+  description: 'Descubre cómo ECOGO te prepara para el ECOEMS 2026: practica con ejercicios tipo examen personalizados, rastrea tu avance y llega listo al proceso Mi Derecho Mi Lugar.',
   alternates: { canonical: 'https://ecogo.mx/como-funciona' },
   openGraph: {
     title: 'Cómo funciona ECOGO | ECOEMS 2026',
-    description: 'Descubre cómo ECOGO te ayuda a prepararte para el ECOEMS 2026 con estrategia y ejercicios tipo examen.',
+    description: 'Conoce las funciones de ECOGO: ejercicios tipo examen, seguimiento de progreso y estrategia para el ECOEMS 2026.',
     url: 'https://ecogo.mx/como-funciona',
   },
 }
