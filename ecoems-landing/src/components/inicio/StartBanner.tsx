@@ -1,4 +1,3 @@
-import Link from "next/link";
 import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
 
 const StartBanner = () => {
@@ -17,13 +16,15 @@ const StartBanner = () => {
               Deja de perder tiempo estudiando sin resultados.
             </p>
           </div>
-          <Link
-            href="/contacto"
+          <a
+            href="https://whatsapp.com/channel/0029VbCEr7M84OmAfxx9ar46"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex-shrink-0 px-7 py-3 rounded-full font-semibold text-sm hover:scale-105 hover:opacity-90 active:scale-95 transition-all duration-200 shadow-md"
             style={{ backgroundColor: "#CDAD75", color: "#472E18" }}
           >
             Contáctanos
-          </Link>
+          </a>
         </div>
       </AnimateOnScroll>
     </section>

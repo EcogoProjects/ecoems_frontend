@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
 
 const CTABanner = () => {
@@ -29,13 +28,15 @@ const CTABanner = () => {
               ¡Inicia tu camino al éxito ahora!
             </p>
           </div>
-          <Link
-            href="/contacto"
+          <a
+            href="https://whatsapp.com/channel/0029VbCEr7M84OmAfxx9ar46"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex-shrink-0 px-7 py-3 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-95 shadow-md"
             style={{ backgroundColor: "#472E18", color: "#FFF9E4" }}
           >
             Ponte en contacto
-          </Link>
+          </a>
         </div>
       </AnimateOnScroll>
     </section>
