@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import ecogoLogo from '@/assets/ecogo_logo.png'
 
 const Footer = () => {
@@ -19,18 +20,18 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-sm uppercase tracking-wider text-secondary-foreground/80">Navegación</h4>
             <ul className="space-y-2 text-sm text-secondary-foreground/60">
-              <li><a href="#" className="hover:text-secondary-foreground transition-colors">Inicio</a></li>
-              <li><a href="#" className="hover:text-secondary-foreground transition-colors">¿Cómo Funciona?</a></li>
-              <li><a href="#" className="hover:text-secondary-foreground transition-colors">Blog</a></li>
+              <li><Link href="/inicio" className="hover:text-secondary-foreground transition-colors">Inicio</Link></li>
+              <li><Link href="/como-funciona" className="hover:text-secondary-foreground transition-colors">¿Cómo Funciona?</Link></li>
+              <li><Link href="/blog" className="hover:text-secondary-foreground transition-colors">Blog</Link></li>
             </ul>
           </div>
 
           <div className="space-y-4">
             <h4 className="font-semibold text-sm uppercase tracking-wider text-secondary-foreground/80">Legal</h4>
             <ul className="space-y-2 text-sm text-secondary-foreground/60">
-              <li><a href="#" className="hover:text-secondary-foreground transition-colors">Términos de Uso</a></li>
-              <li><a href="#" className="hover:text-secondary-foreground transition-colors">Política de Privacidad</a></li>
-              <li><a href="#" className="hover:text-secondary-foreground transition-colors">Contacto</a></li>
+              {/* <li><a href="#" className="hover:text-secondary-foreground transition-colors">Términos de Uso</a></li> */}
+              <li><Link href="/privacidad" className="hover:text-secondary-foreground transition-colors">Aviso de Privacidad</Link></li>
+              {/* <li><a href="mailto:privacidad@ecogo.mx" className="hover:text-secondary-foreground transition-colors">Contacto</a></li> */}
             </ul>
           </div>
         </div>
