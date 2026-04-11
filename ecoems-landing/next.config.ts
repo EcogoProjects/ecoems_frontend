@@ -9,9 +9,8 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  // output: 'standalone',  ← elimina o comenta esta línea
   eslint: {
-    // shadcn/ui generated components trigger @typescript-eslint/no-empty-object-type
     ignoreDuringBuilds: true,
   },
   async headers() {
