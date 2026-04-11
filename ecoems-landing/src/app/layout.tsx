@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'ECOGO' }],
   robots: { index: true, follow: true },
   metadataBase: new URL('https://ecogo.mx'),
+  alternates:{
+      canonical: '/',
+  },
   openGraph: {
     type: 'website',
     locale: 'es_MX',
