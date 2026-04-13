@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #EEE7DD;
   --foreground: #472E18;
   --base-color: #EEE4C1;
   --base-hard-color: #CDAD75;
@@ -10,6 +10,10 @@
   --base-dark-color: #472E18;
   --base-extra-light-color: #EEE7DD;
   --soft-text-color: #A7A7A7;
+  --green-background-soft: #d0f8d4;
+  --green-box-text: #19571d;
+  --red-background-soft: #f8d0d0;
+  --red-box-text: #971111;
 }
 
 @theme inline {
@@ -26,25 +30,31 @@
   --color-base-soft: var(--base-soft-color);
   --color-base-extra-light: var(--base-extra-light-color);
   --color-base-dark: var(--base-dark-color);
+  --color-green-background-soft: var(--green-background-soft);
+  --color-red-background-soft: var(--red-background-soft);
+
 
   /* Text Colors */
   --color-text-bottom-soft: var(--soft-text-color);
+  --color-green-box-text: var(--green-box-text);
+  --color-red-box-text: var(--red-box-text);
 
   /* Others */
   --radius-box-standard: 18px;
   --text-standard: 15px;
 }
-
+/*
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #472E18;
-    --foreground: #ffffff;
+    --background: #EEE7DD;
+    --foreground: #472E18;
   }
 }
+*/
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  /*color: var(--foreground);*/
   /* Aplicamos la fuente aquí para que afecte a todo el documento */
   font-family: var(--font-outfit), sans-serif;
 }

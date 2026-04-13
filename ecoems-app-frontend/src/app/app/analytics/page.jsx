@@ -62,8 +62,7 @@ function AnalyticsPage() {
                             />
                         ))}
                     </div>
-                </div>
-            </div>
+                </div>            </div>
             <NavBarMovile/>
         </div>
      );

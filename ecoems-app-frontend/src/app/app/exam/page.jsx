@@ -27,8 +27,11 @@ function ExamPage() {
     const answer_b = 'El fomento de la minería, el cobro de impuestos al clero y la expulsión de los jesuitas';
     const answer_c = 'La abdicación de Fernando VII, la fundación de la Nueva España y el celibato';
     const answer_d = 'La Constitución de Cádiz, el pago del salario mínimo y el sistema de raya';
+    const correct_answer = 'b';
+    const answer_selected = 'c';
     const image_url = 'https://fastly.picsum.photos/id/128/3823/2549.jpg?hmac=VbPyA2vESva2YdoXqll9REBcbQIskgv_c-D60C1s0xc';
     const hint = 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic blanditiis temporibus rerum a soluta. Laudantium, quis voluptatum, at earum deleniti eius distinctio reiciendis, tenetur officia vitae id sed nihil minima.';
+    const explanation = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, doloremque. Doloribus, voluptate. Consequuntur, voluptate?';
     const reading = reading_example;
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,7 +40,8 @@ function ExamPage() {
 
     return ( 
         <>
-        <div className={`flex flex-col min-h-screen justify-center items-center gap-5 ${isModalOpen ? 'blur-sm' : ''}`}>
+        <div className={`flex flex-col min-h-screen justify-center items-center gap-5 ${isModalOpen ? 'blur-sm' : ''}
+        pb-22 pt-10 md:pt-20`}>
             <NavBarDesktop/>
             {/*Contador */}
             <Timer 
@@ -45,7 +49,7 @@ function ExamPage() {
             seconds={30}
             />
             {/*Contenedor superior */}
-            <div className="flex bg-base-dark p-2 pl-4 pr-4 rounded-full min-w-4/5 text-white justify-between items-center gap-4">
+            <div className="flex bg-base-dark p-2 pl-4 pr-4 rounded-full min-w-4/5 text-white justify-between items-center gap-4 shadow-lg">
                 <h2 className="text-[16px] font-bold tracking-wider">{exam_type}</h2>
                 <div className="flex gap-3">
                     <div className="flex items-center justify-center gap-3 bg-base-hard p-2 rounded-full pl-5 pr-7 hover:cursor-pointer hover:opacity-70">
@@ -65,7 +69,7 @@ function ExamPage() {
             {/*Contenedor con bloques de examen */}
             <div className="flex flex-col gap-5 items-center md:grid md:grid-cols-3 md:max-w-4/5 md:min-h-[500px]">
                 {/*Contenedor con pregunta y respuestas*/}
-                <div className="bg-base max-w-4/5 p-3 pt-4 rounded-[18px] md:col-span-2 md:w-full md:max-w-full md:h-full">
+                <div className="bg-base max-w-4/5 p-3 pt-4 rounded-[18px] md:col-span-2 md:w-full md:max-w-full md:h-full shadow-lg">
                     {/* Indicador de Materia*/}    
                     <div className="w-full text-right font-bold opacity-70 tracking-widest">
                         <p>{subject}</p>
@@ -90,7 +94,7 @@ function ExamPage() {
                 {/*Contenedor derecho*/}
                 <div className="w-4/5 flex flex-col gap-5 h-full md:col-span-1 md:w-full md:grid-rows-2">
                     {/*Contenedor con recursos de pregunta*/}
-                    <div className="bg-base-hard rounded-[18px] p-3  flex flex-col justify-center items-top">
+                    <div className="bg-base-hard rounded-[18px] p-3  flex flex-col justify-center items-top shadow-lg">
                         <div onClick={openModal} className="relative w-full aspect-video rounded-[18px] bg-white overflow-hidden cursor-pointer ring-2 ring-transparent hover:ring-base-hard-alt transition-all duration-200"> 
                             <Image 
                             src={image_url} 
@@ -101,9 +105,13 @@ function ExamPage() {
                             />
                         </div>
                     </div>
-                    <div className="bg-base-soft rounded-[18px] p-3">
+                    <div className="bg-base-soft rounded-[18px] p-3 shadow-lg">
                         <p className="opacity-55">Pista Utilizada</p>
                         <p className="opacity-55">{hint}</p>
+                    </div>
+                    <div className={`${answer_selected === correct_answer ? 'bg-green-background-soft text-green-box-text' : 'bg-red-background-soft text-red-box-text'} rounded-[18px] p-3 shadow-lg`}>
+                        <p className="opacity-55">Explicación</p>
+                        <p className="opacity-55">La respuesta correcta es {correct_answer}. {explanation}</p>
                     </div>
                 </div>
                 
