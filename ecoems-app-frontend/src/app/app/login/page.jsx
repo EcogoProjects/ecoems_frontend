@@ -44,10 +44,6 @@ function SigIn() {
                             <FaGoogle size={20}/>
                             <p>Continuar con Google</p>
                         </div>
-                        <div className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70">
-                            <FaFacebook size={20}/>
-                            <p>Continuar con Facebook</p>
-                        </div>
                     </div>
                     
                 </div> 

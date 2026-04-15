@@ -7,7 +7,7 @@ function NavBarMovile() {
     const image_url = "/assets/ecogo_avatar_04.png";
     return (  
         <div className="bg-base-dark flex items-center text-white min-w-screen justify-around pt-2.5 pb-2.5  fixed bottom-0 
-        md:hidden">
+        md:hidden z-50">
             <Link href="/app/analytics">
                 <ChartBarBigColumns height="50px" width="50px" pack="filled"/>
             </Link>

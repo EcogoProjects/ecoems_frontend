@@ -5,7 +5,7 @@ import NavBarDesktop from "@/components/NavBarDesktop";
 import NavBarMovile from "@/components/NavBarMovile";
 
 function AnalyticsPage() {
-    const value = 20;
+    const value = 80;
     const top_subjects_scores = [
         { subject: "Matemáticas", score: 85 },
         { subject: "Ciencias", score: 78 },
@@ -19,8 +19,9 @@ function AnalyticsPage() {
     return ( 
         <div className="flex flex-col min-h-screen justify-center items-center">
             <NavBarDesktop/>
-            <div className="bg-base p-4 rounded-[18px] pt-12 pb-12 max-w-9/10 sm:max-w-[400px] 
-            flex flex-col gap-5">
+            
+            <div className="bg-base p-4 rounded-[18px] pt-12 pb-12 max-w-[400px] 
+            flex flex-col gap-5 shadow-lg">
                 <div className="flex items-center justify-center gap-1 pl-6 pr-6">
                     <div className="w-1/2">
                         <CircleAvgIndicator size={120} value={value} /> 

@@ -1,4 +1,4 @@
-export default function CircleAvgIndicator({ value = 0, size = 160, strokeWidth = 30, label }) {
+export default function CircleAvgIndicator({ value = 0, size = 160, strokeWidth = 30, label, background='--base-dark-color' }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const dashOffset = circumference - (value / 100) * circumference;
@@ -14,7 +14,7 @@ export default function CircleAvgIndicator({ value = 0, size = 160, strokeWidth 
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="var(--base-dark-color)"
+          stroke={`var(${background})`}
           strokeWidth={strokeWidth}
           className="opacity-40"
         />
@@ -23,7 +23,7 @@ export default function CircleAvgIndicator({ value = 0, size = 160, strokeWidth 
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="var(--base-dark-color)"
+          stroke={`var(${background})`}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={dashOffset}
@@ -33,12 +33,12 @@ export default function CircleAvgIndicator({ value = 0, size = 160, strokeWidth 
       </svg>
 
       {/* Contenedor del texto: Centrado absoluto */}
-      <div className="flex flex-col items-center justify-center z-10 pointer-events-none">
+      <div className="flex flex-col items-center justify-center z-10 pointer-events-no w-[60px]">
         <span className="text-2xl font-black leading-none text-base-dark">
           {value}%
         </span>
         {label && (
-          <span className="text-sm mt-1 text-base-dark/70 text-center leading-tight">
+          <span className="text-sm mt-1 text-base-dark/70 text-center ">
             {label}
           </span>
         )}
