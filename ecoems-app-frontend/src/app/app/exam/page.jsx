@@ -90,6 +90,11 @@ function ExamPage() {
                         <ExamOption name="option" value={3} letter="c" text={answer_c} />
                         <ExamOption name="option" value={4} letter="d" text={answer_d} />
                     </div>
+                    <div className="flex justify-end  mt-3 md:mt-1">
+                        <button className="bg-base-dark text-white p-2 pl-4 pr-4 rounded-full hover:ring-2 hover:ring-white hover:opacity-60 cursor-pointer">
+                            Contestar
+                        </button>
+                    </div>
                 </div>
                 {/*Contenedor derecho*/}
                 <div className="w-4/5 flex flex-col gap-5 h-full md:col-span-1 md:w-full md:grid-rows-2">
