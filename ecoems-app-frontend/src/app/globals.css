@@ -15,6 +15,7 @@
   --red-background-soft: #f8d0d0;
   --red-box-text: #971111;
   --premium-box-color: #b8925a;
+  --premium-box-alt-color: #e6d071;
 }
 
 @theme inline {
@@ -34,6 +35,7 @@
   --color-green-background-soft: var(--green-background-soft);
   --color-red-background-soft: var(--red-background-soft);
   --color-premium-box: var(--premium-box-color);
+  --color-premium-alt-box: var(--premium-box-alt-color);
 
 
   /* Text Colors */

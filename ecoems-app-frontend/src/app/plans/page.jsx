@@ -38,7 +38,7 @@ function PlansPage() {
                 </div>
                 <div className="flex flex-col items-center gap-4 md:border-l-2 pt-2.5 md:pt-0 md:pl-4.5">
                     <h2 className="bg-premium-box text-white text-center text-2xl rounded-lg p-2 pl-4 pr-4 w-full">
-                        Plan Premium
+                        Plan Ecogo Pro
                         </h2>
                     <p>Plan básico para estudiantes</p>
                     <div className="flex items-end gap-1">

@@ -5,12 +5,14 @@ import AnnouncementBox from "@/components/Announcement_box";
 import CircleAvgIndicator from "@/components/analytics/CircleAvgIndicator";
 import TopicAccordion from "@/components/analytics/TopicAccordion";
 import { ecoems_program } from "@/utils/ecoems_program";
+import MarginTop from "@/components/MarginTop";
+import { MarginBottom } from "@boxicons/react";
 
 function HomePage() {
     const avg_value = 73;
     return ( 
     <div className="flex flex-col min-h-screen justify-center items-center gap-3.5">
-        <div className="mt-6 md:mt-16"></div>
+        <MarginTop/>
         <NavBarDesktop/>
         <AnnouncementBox
             title="¡Bienvenido!"
@@ -39,7 +41,7 @@ function HomePage() {
             </div>
         </div>
         <NavBarMovile/>
-        <div className="mb-16 md:mb-6"></div>
+        <MarginBottom/>
     </div>
     );
 }

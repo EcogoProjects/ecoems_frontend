@@ -1,6 +1,8 @@
 "use client"
 import CircleAvgIndicator from "@/components/analytics/CircleAvgIndicator";
 import SubjectScoreItem from "@/components/analytics/SubjectScoreItem";
+import MArginBottom from "@/components/MarginBottom";
+import MarginTop from "@/components/MarginTop";
 import NavBarDesktop from "@/components/NavBarDesktop";
 import NavBarMovile from "@/components/NavBarMovile";
 
@@ -18,8 +20,8 @@ function AnalyticsPage() {
     ];
     return ( 
         <div className="flex flex-col min-h-screen justify-center items-center">
+            <MarginTop/>
             <NavBarDesktop/>
-            
             <div className="bg-base p-4 rounded-[18px] pt-12 pb-12 max-w-[400px] 
             flex flex-col gap-5 shadow-lg">
                 <div className="flex items-center justify-center gap-1 pl-6 pr-6">
@@ -65,6 +67,7 @@ function AnalyticsPage() {
                     </div>
                 </div>            </div>
             <NavBarMovile/>
+            <MArginBottom/>
         </div>
      );
 }
