@@ -8,7 +8,7 @@ function ExamSelector() {
             <div className="shadow-lg bg-base-dark rounded-box-standard shadow-lg w-4/5 text-base
              flex justify-center md:hidden">
                 <div className=" flex flex-col  p-10 pl-3.5 pr-3.5 gap-5 max-w-[400px]">
-                    <h2 className="font-extrabold tracking-wide text-xl text-center">Realizar Examén</h2>
+                    <h2 className="font-extrabold tracking-wide text-xl text-center">Realizar Examen</h2>
                     <p className="opacity-60 text-center  mb-1.5">Elige el tipo de evaluación para comenzar</p>
                     {/*Contenedor con tipos de examén*/}
                     <div className="text-white grid grid-cols-2 gap-2 tracking-wide md:flex-row justify-center">
