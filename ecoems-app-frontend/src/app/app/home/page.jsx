@@ -6,7 +6,7 @@ import CircleAvgIndicator from "@/components/analytics/CircleAvgIndicator";
 import TopicAccordion from "@/components/analytics/TopicAccordion";
 import { ecoems_program } from "@/utils/ecoems_program";
 import MarginTop from "@/components/MarginTop";
-import { MarginBottom } from "@boxicons/react";
+import MarginBottom from "@/components/MarginBottom";
 
 function HomePage() {
     const avg_value = 73;

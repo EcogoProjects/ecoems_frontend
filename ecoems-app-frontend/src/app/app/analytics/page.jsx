@@ -1,7 +1,7 @@
 "use client"
 import CircleAvgIndicator from "@/components/analytics/CircleAvgIndicator";
 import SubjectScoreItem from "@/components/analytics/SubjectScoreItem";
-import MArginBottom from "@/components/MarginBottom";
+import MarginBottom from "@/components/MarginBottom";
 import MarginTop from "@/components/MarginTop";
 import NavBarDesktop from "@/components/NavBarDesktop";
 import NavBarMovile from "@/components/NavBarMovile";
@@ -67,7 +67,7 @@ function AnalyticsPage() {
                     </div>
                 </div>            </div>
             <NavBarMovile/>
-            <MArginBottom/>
+            <MarginBottom/>
         </div>
      );
 }

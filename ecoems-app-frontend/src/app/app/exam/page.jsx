@@ -4,6 +4,7 @@ import NavBarDesktop from "@/components/NavBarDesktop";
 import NavBarMovile from "@/components/NavBarMovile";
 import ImageModal from "@/components/ImageModal";
 import ExamOption from "@/components/exam/ExamOption";
+import ExamExplanation from "@/components/exam/ExamExplanation";
 import Timer from "@/components/Timer";
 import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
@@ -114,10 +115,13 @@ function ExamPage() {
                         <p className="opacity-55">Pista Utilizada</p>
                         <p className="opacity-55">{hint}</p>
                     </div>
-                    <div className={`${answer_selected === correct_answer ? 'bg-green-background-soft text-green-box-text' : 'bg-red-background-soft text-red-box-text'} rounded-[18px] p-3 shadow-lg`}>
-                        <p className="opacity-55">Explicación</p>
-                        <p className="opacity-55">La respuesta correcta es {correct_answer}. {explanation}</p>
-                    </div>
+                    {/*Contenedor de explicación */}
+                    <ExamExplanation
+                      correct_answer={correct_answer}
+                      answer_selected={answer_selected}
+                      explanation={explanation}
+                      blur={true} // Puedes cambiar esto según necesites
+                    />
                 </div>
                 
             </div>
