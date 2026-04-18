@@ -26,40 +26,48 @@ const CategoryBadge = ({ category }: { category: string }) => {
 }
 
 const BlogGrid = () => {
-  const featured = blogPosts.find(p => p.featured)!
-  const rest = blogPosts.filter(p => !p.featured)
+  const featured = blogPosts.find(p => p.featured) ?? blogPosts[0]
+  const rest = blogPosts.filter(p => p !== featured)
 
   return (
     <section className="max-w-6xl mx-auto px-6 pb-20 pt-4">
 
       <AnimateOnScroll animation="fade-up">
-        <Link
-          href={`/blog/${featured.slug}`}
-          className="group flex flex-col md:flex-row gap-0 rounded-2xl overflow-hidden border border-border/50 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 mb-10"
-        >
-          <div className="w-full md:w-1/2 h-56 md:h-72 bg-muted flex-shrink-0 relative overflow-hidden">
+        <div className="flex flex-col md:flex-row gap-0 rounded-2xl overflow-hidden border border-border/50 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 mb-10">
+          <Link href={`/blog/${featured.slug}`} className="w-full md:w-1/2 h-56 md:h-72 bg-muted flex-shrink-0 relative overflow-hidden block">
             {featured.coverImage && (
               <Image src={featured.coverImage} alt={featured.title} fill className="object-cover" quality={90} />
             )}
-          </div>
+          </Link>
           <div className="flex flex-col justify-center gap-3 p-7 bg-card flex-1">
             <div className="flex items-center gap-3">
               <CategoryBadge category={featured.category} />
               <span className="text-xs text-muted-foreground">{featured.date}</span>
             </div>
-            <h2 className="text-xl md:text-2xl font-extrabold text-foreground leading-snug group-hover:underline underline-offset-4 decoration-2">
-              {featured.title}
-            </h2>
+            <Link href={`/blog/${featured.slug}`} className="group">
+              <h2 className="text-xl md:text-2xl font-extrabold text-foreground leading-snug group-hover:underline underline-offset-4 decoration-2">
+                {featured.title}
+              </h2>
+            </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {featured.excerpt}
             </p>
-            <div className="flex items-center gap-2 pt-2 border-t border-border/40 mt-1">
+            <div className="flex items-center gap-3 pt-2 border-t border-border/40 mt-1">
               <span className="text-xs text-muted-foreground">{featured.author}</span>
               <span className="text-xs text-muted-foreground">·</span>
-              <span className="text-xs font-semibold" style={{ color: '#472E18' }}>Leer artículo →</span>
+              <Link href={`/blog/${featured.slug}`} className="text-xs font-semibold hover:underline" style={{ color: '#472E18' }}>Leer artículo →</Link>
+              <a
+                href="https://www.llave.gob.mx/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto text-xs font-semibold px-3 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap"
+                style={{ backgroundColor: '#472E18', color: '#EAD9C3' }}
+              >
+                Crear Llave MX →
+              </a>
             </div>
           </div>
-        </Link>
+        </div>
       </AnimateOnScroll>
 
       <AnimateOnScroll animation="fade-up">

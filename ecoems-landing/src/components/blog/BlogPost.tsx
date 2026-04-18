@@ -105,6 +105,21 @@ const BlogPost = ({ post }: Props) => {
               </ul>
             )
           }
+          if (block.type === 'button') {
+            return (
+              <div key={i}>
+                <a
+                  href={block.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105 hover:opacity-90 shadow-md"
+                  style={{ backgroundColor: '#472E18', color: '#EAD9C3' }}
+                >
+                  {block.label}
+                </a>
+              </div>
+            )
+          }
           if (block.type === 'callout') {
             return (
               <div
