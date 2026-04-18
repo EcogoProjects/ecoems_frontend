@@ -27,7 +27,7 @@ export const blogPosts: BlogPost[] = [
     author: "ECOGO",
     category: "ECOEMS",
     featured: true,
-    coverImage: "/blog/Blog4.jpg",
+    coverImage: "/blog/Blog6.jpeg",
     content: [
       {
         type: "paragraph",
@@ -264,7 +264,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Fechas clave, modalidades y errores que debes evitar en el proceso ECOEMS 2026.",
     date: "Abr 17, 2026",
-    coverImage: "/blog/Blog6.jpeg",
+    coverImage: "/blog/Blog4.jpg",
     author: "ECOGO",
     category: "ECOEMS",
     content: [
