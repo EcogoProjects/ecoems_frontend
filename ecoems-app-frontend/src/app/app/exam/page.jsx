@@ -113,12 +113,13 @@ function ExamPage() {
                             />
                         </div>
                     </div>
-                    
+
                     <div className="flex flex-col items-center justify-center opacity-70 border-2 p-4 border-dashed
                     rounded-box-standard border-base-dark ">
                         <p>¿Estás teniendo problemas para resolver esta pregunta? En cualquier momento puedes utilizar una pista.</p>
                         <Image
                             src="/assets/ecogo_hint.png"
+                            alt="ecogo hint"
                             width={200}
                             height={350}
                         />

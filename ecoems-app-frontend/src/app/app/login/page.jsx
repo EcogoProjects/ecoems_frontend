@@ -1,12 +1,63 @@
+'use client'
+
 import Link from "next/link";
-import { FaGoogle,FaFacebook } from "react-icons/fa";
-function SigIn() {
+import { FaGoogle, FaFacebook } from "react-icons/fa";
+import { useState } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+
+function SignIn() {
+    const router = useRouter();
+    const supabase = createClient();
+    
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    // 1. Lógica para Email y Contraseña
+    const handleEmailSignIn = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        const email = e.target.txt_email.value;
+        const password = e.target.txt_password.value;
+
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (signInError) {
+            setError("Correo o contraseña incorrectos.");
+            setLoading(false);
+        } else {
+            // Redirige al usuario a la página principal de Ecogo
+            router.push("/app/dashboard"); 
+        }
+    };
+
+    // 2. Lógica para Inicio de Sesión con Google
+    const handleGoogleSignIn = async () => {
+        setError(null);
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                // Esto redirige al usuario de vuelta a tu app después de validar en Google
+                redirectTo: `${window.location.origin}/app/dashboard`,
+            },
+        });
+
+        if (error) {
+            setError(error.message);
+        }
+    };
+
     return ( 
         <div className="flex sm:flex-col min-h-screen justify-center items-center p-4 
          md:items-end
         md:bg-[url('/backgrounds/login-bg-long.png')] md:bg-cover md:bg-center 
         md:pr-10 lg:pr-15 xl:pr-21">
-            <form action="" className="flex flex-col gap-7.5 items-center justify-center">
+            <form onSubmit={handleEmailSignIn} className="flex flex-col gap-7.5 items-center justify-center">
                 <div className="bg-base rounded-box-standard p-10 text-standard  max-w-[344px] w-full 
                 md:bg-transparent
                 xl:max-w-[500px] xl:w-[500px]
@@ -14,6 +65,10 @@ function SigIn() {
                 [&_input]:bg-base-soft [&_input]:rounded-[10px] [&_input]:p-2.5 [&_input]:w-full
                 ">
                     <h1 className="text-2xl font-semibold text-center mb-3">Inicia sesión</h1>
+                    
+                    {/* Mensaje de error */}
+                    {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+
                     <div className="flex flex-col gap-3">
                         <div>
                             <input
@@ -40,16 +95,23 @@ function SigIn() {
                     </div>
 
                     <div className="flex flex-col gap-3">
-                        <div className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70">
+                        {/* Agregamos el evento onClick aquí */}
+                        <div 
+                            onClick={handleGoogleSignIn}
+                            className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70 transition-opacity"
+                        >
                             <FaGoogle size={20}/>
                             <p>Continuar con Google</p>
                         </div>
                     </div>
                     
                 </div> 
-                <button className="bg-base-dark text-white text-lg font-semibold rounded-[23px] p-1.5 pl-4.5 pr-4.5 hover:cursor-pointer" 
-                type="submit">
-                    Iniciar sesión
+                <button 
+                    className="bg-base-dark text-white text-lg font-semibold rounded-[23px] p-1.5 pl-4.5 pr-4.5 hover:cursor-pointer disabled:opacity-50" 
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading ? "Iniciando..." : "Iniciar sesión"}
                 </button>
                 <div className="flex gap-0.5">
                    <p className="text-text-bottom-soft lg:text-base-dark">
@@ -64,4 +126,4 @@ function SigIn() {
     );
 }
 
-export default SigIn;
+export default SignIn;
