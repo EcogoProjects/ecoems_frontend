@@ -27,14 +27,20 @@ function ExamTypeButton({ type, title, icon, isDisabled = false,description }) {
                     {getIcon()}
                 </div>
             </div>
-            <div className="flex hidden md:flex gap-4 w-1/4 rounded-[15px] justify-start items-center p-2 pl-4
+            <div className="flex hidden md:flex lg:flex-row md:flex-col gap-4 w-full lg:w-1/4 rounded-[15px] md:justify-start lg:justify-start items-start md:items-start lg:items-center p-2 pl-4
             border-base-hard-alt cursor-pointer hover:opacity-70 bg-base-hard-alt/10 hover:ring-3 hover:ring-base-hard-alt">
-                <div className="p-1.5 bg-base-hard-alt w-fit h-fit rounded-[10px] text-base-dark">
-                    {getIcon()}
-                </div>
-                <div className="flex flex-col text-base">
-                    <h3 className="font-semibold">{title}</h3>
-                    <p className="opacity-60">{description}</p>
+                <h3 className="font-semibold md:w-full lg:hidden text-base">{title}</h3>
+                <div className="flex gap-4 w-full lg:w-auto">
+                    <div className="p-1.5 bg-base-hard-alt w-fit h-fit rounded-[10px] text-base-dark">
+                        {getIcon()}
+                    </div>
+                    <div className="flex flex-col text-base lg:hidden">
+                        <p className="opacity-60">{description}</p>
+                    </div>
+                    <div className="hidden lg:flex flex-col text-base">
+                        <h3 className="font-semibold">{title}</h3>
+                        <p className="opacity-60">{description}</p>
+                    </div>
                 </div>
             </div>
         </>

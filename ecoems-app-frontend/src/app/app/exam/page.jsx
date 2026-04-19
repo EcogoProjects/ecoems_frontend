@@ -8,6 +8,7 @@ import ExamExplanation from "@/components/exam/ExamExplanation";
 import Timer from "@/components/Timer";
 import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
+import { FaLightbulb } from "react-icons/fa6";
 import { reading_example } from "@/utils/questions_examples";
 import { CaretLeftCircle, CaretRightCircle } from "@boxicons/react";
 function ExamPage() {
@@ -55,7 +56,7 @@ function ExamPage() {
                 <div className="flex gap-3">
                     <div className="flex items-center justify-center gap-3 bg-base-hard p-2 rounded-full pl-5 pr-7 hover:cursor-pointer hover:opacity-70">
                         <span>
-                            <FaSearch size={20}/>
+                            <FaLightbulb size={20}/>
                         </span>
                         <p className="tracking-wider font-semibold">Pista</p>
                     </div>
@@ -100,6 +101,7 @@ function ExamPage() {
                 {/*Contenedor derecho*/}
                 <div className="w-4/5 flex flex-col gap-5 h-full md:col-span-1 md:w-full md:grid-rows-2">
                     {/*Contenedor con recursos de pregunta*/}
+    
                     <div className="bg-base-hard rounded-[18px] p-3  flex flex-col justify-center items-top shadow-lg">
                         <div onClick={openModal} className="relative w-full aspect-video rounded-[18px] bg-white overflow-hidden cursor-pointer ring-2 ring-transparent hover:ring-base-hard-alt transition-all duration-200"> 
                             <Image 
@@ -110,6 +112,16 @@ function ExamPage() {
                             className="object-cover"
                             />
                         </div>
+                    </div>
+                    
+                    <div className="flex flex-col items-center justify-center opacity-70 border-2 p-4 border-dashed
+                    rounded-box-standard border-base-dark ">
+                        <p>¿Estás teniendo problemas para resolver esta pregunta? En cualquier momento puedes utilizar una pista.</p>
+                        <Image
+                            src="/assets/ecogo_hint.png"
+                            width={200}
+                            height={350}
+                        />
                     </div>
                     <div className="bg-base-soft rounded-[18px] p-3 shadow-lg">
                         <p className="opacity-55">Pista Utilizada</p>

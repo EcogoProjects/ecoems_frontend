@@ -7,6 +7,7 @@ import { AiTwotoneIdcard } from "react-icons/ai";
 import AvatarSelector from "@/components/profilepage/AvatarSelector";
 import { useState } from "react";
 import Image from "next/image";
+import MarginBottom from "@/components/MarginBottom";
 
 function ProfilePage() {
     
@@ -69,7 +70,7 @@ function ProfilePage() {
             <NavBarDesktop/>
             <div className="flex flex-col w-4/5 md:w-3/5 gap-4 md:gap-6 items-center">
                 <div className="flex flex-col md:flex-row md:justify-between bg-base-hard shadow-lg p-4 rounded-box-standard  w-full">
-                    <div className="flex items-center gap-5 ">
+                    <div className="flex flex-col sm:flex-row items-center gap-5 ">
                         <div className="relative rounded-full overflow-hidden border-3 border-base-dark cursor-pointer group" onClick={() => setIsModalOpen(true)}>
                             <Image 
                             src={image_url} 
@@ -93,7 +94,8 @@ function ProfilePage() {
                                 }}>Editar</p>
                             </div>
                         ) : (
-                            <div className="flex flex-col items-start md:h-max-[100px] gap-3 md:gap-1.5 w-full [&_input]:md:p-0">
+                            <div className="flex flex-col items-start md:h-max-[100px] gap-3 md:gap-1.5 w-full [&_input]:md:p-0 [&_input]:bg-base
+                            [&_input]:border-0 [&_input]:rounded-lg">
                                 <div className="flex flex-col w-full">
                                     <label htmlFor="edit_username" className="font-semibold text-sm">Usuario:</label>
                                     <input 
@@ -117,7 +119,7 @@ function ProfilePage() {
                                 <div className="flex flex-col w-full">
                                     <label htmlFor="edit_phone" className="font-semibold text-sm">Teléfono:</label>
                                     <input 
-                                        type="text" 
+                                        type="tel" 
                                         id="edit_phone"
                                         value={tempPhone} 
                                         onChange={(e) => setTempPhone(e.target.value)}
@@ -248,6 +250,7 @@ function ProfilePage() {
                 </div>
             </div>
             {isModalOpen && <AvatarSelector avatars={avatars} onSelect={(avatar) => { setImage_url(avatar); setIsModalOpen(false); }} onClose={() => setIsModalOpen(false)} />}
+            <MarginBottom/>
             <NavBarMovile/>
         </div>
      );

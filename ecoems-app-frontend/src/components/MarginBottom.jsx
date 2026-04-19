@@ -1,6 +1,6 @@
 function MarginBottom() {
     return ( 
-        <div className="mb-16 md:mb-6"></div>
+        <div className="mb-22 md:mb-6"></div>
      );
 }
 

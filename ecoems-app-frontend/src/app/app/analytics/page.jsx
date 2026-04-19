@@ -27,11 +27,12 @@ function AnalyticsPage() {
                 {/*Contenedor izquierdo - Resumen general */}
                 <div className="bg-base p-4 rounded-box-standard pt-12 pb-12 
                 flex flex-col gap-5 shadow-lg md:col-span-1">
-                    <div className="flex items-center justify-center gap-1 pl-6 pr-6">
-                        <div className="w-1/2">
+                    <div className="flex items-center justify-center gap-1 pl-6 pr-6 md:flex-col md:items-center
+                    md:justify-center xl:flex-row">
+                        <div className="w-1/2 md:w-fit">
                             <CircleAvgIndicator size={120} value={value} /> 
                         </div>
-                    <p className="text-[16px] font-black w-1/2 text-center">
+                    <p className="text-[16px] font-black w-1/2 text-center md:w-full lg:w-fit">
                         Haz obtenido un promedio de aciertos igual a {value}%
                         </p>
                     </div>

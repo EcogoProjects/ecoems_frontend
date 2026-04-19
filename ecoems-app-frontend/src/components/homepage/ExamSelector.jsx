@@ -11,11 +11,11 @@ function ExamSelector() {
                     <h2 className="font-extrabold tracking-wide text-xl text-center">Realizar Examen</h2>
                     <p className="opacity-60 text-center  mb-1.5">Elige el tipo de evaluación para comenzar</p>
                     {/*Contenedor con tipos de examén*/}
-                    <div className="text-white grid grid-cols-2 gap-2 tracking-wide md:flex-row justify-center">
+                    <div className="text-white flex flex-col gap-2 tracking-wide md:flex-row justify-center w-full">
                         <ExamTypeButton type="rapido" title="Examen Rápido" icon="speed" />
                         <ExamTypeButton type="seguimiento" title="Examen de seguimiento" icon="calendar" />
                         <ExamTypeButton type="libre" title="Examen Libre" icon="unlock" />
-                        <div className="bg-base-dark rounded-[15px] p-1.5 font-semibold flex items-center justify-center opacity-70">
+                        <div className="bg-base-dark rounded-[15px] p-1.5 font-semibold flex items-center justify-center opacity-70 w-full">
                             <h3 className="text-center">Próximamente</h3>
                         </div>
                     </div>
