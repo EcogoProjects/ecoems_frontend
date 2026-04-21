@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
@@ -12,6 +13,7 @@ function SignIn() {
     
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     // 1. Lógica para Email y Contraseña
     const handleEmailSignIn = async (e) => {
@@ -78,14 +80,24 @@ function SignIn() {
                             required
                             ></input>
                         </div>
-                        <div>
-                            <input
-                            type="password"
-                            placeholder="Ingresa tu contraseña"
-                            id="txt_password"
-                            required
-                            ></input>
-                        </div> 
+                        <div className="relative">
+                             <input
+                            type={showPassword ? "text" : "password"}
+                             placeholder="Ingresa tu contraseña"
+                             id="txt_password"
+                             className="pr-14"
+                             required
+                             ></input>
+                            <button
+                                type="button"
+                                aria-label={showPassword ? "Ocultar contrasena" : "Mostrar contrasena"}
+                                aria-pressed={showPassword}
+                                onClick={() => setShowPassword((value) => !value)}
+                                className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-base text-base-dark/80 ring-1 ring-base-dark/10 transition-colors hover:cursor-pointer hover:text-base-dark"
+                            >
+                                {showPassword ? <IoEyeOffOutline size={18} /> : <IoEyeOutline size={18} />}
+                            </button>
+                         </div> 
                     </div>
                     {/*Línea de separacion*/}
                     <div className="flex items-center w-full">

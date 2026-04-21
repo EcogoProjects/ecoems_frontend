@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { createClient } from "@/utils/supabase/client"; // Asegúrate de tener este archivo creado
 import { useRouter } from "next/navigation";
 
@@ -12,6 +13,14 @@ function SignUp() {
     // Estados para controlar la UI
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+    const [passwordValue, setPasswordValue] = useState("");
+    const [showPasswordAlert, setShowPasswordAlert] = useState(false);
+
+    const isValidPassword = (password) => {
+        return password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password);
+    };
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -25,7 +34,13 @@ function SignUp() {
         const password = e.target.txt_password.value;
         const passwordConfirm = e.target.txt_password_confirm.value;
 
-        // Validación simple
+        if (!isValidPassword(password)) {
+            setShowPasswordAlert(true);
+            setError("La contraseña debe tener minimo 8 caracteres, una mayuscula y un numero");
+            setLoading(false);
+            return;
+        }
+
         if (password !== passwordConfirm) {
             setError("Las contraseñas no coinciden");
             setLoading(false);
@@ -54,7 +69,7 @@ function SignUp() {
         setLoading(false);
     };
 
-    return ( 
+    return (
         <div className="flex sm:flex-col min-h-screen justify-center items-center p-4 
         lg:items-end
         lg:bg-[url('/backgrounds/login-bg-long.png')] lg:bg-cover lg:bg-center 
@@ -68,7 +83,7 @@ function SignUp() {
                 [&_input]:bg-base-soft [&_input]:rounded-[10px] [&_input]:p-2.5 [&_input]:w-full
                 ">
                     <h1 className="text-2xl font-semibold text-center ">Regístrate</h1>
-                    
+
                     {/* Mostrar errores si existen */}
                     {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
 
@@ -102,27 +117,66 @@ function SignUp() {
                         </div>
                         <div>
                             <label htmlFor="txt_password">Contraseña:</label>
-                            <input
-                                type="password"
-                                placeholder="Ingresa tu contraseña"
-                                id="txt_password"
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="Ingresa tu contraseña"
+                                    id="txt_password"
+                                    minLength={8}
+                                    className="pr-14"
+                                    onChange={(e) => {
+                                        setPasswordValue(e.target.value);
+                                        setShowPasswordAlert(false);
+                                    }}
+                                    onBlur={(e) => setShowPasswordAlert(!isValidPassword(e.target.value))}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    aria-label={showPassword ? "Ocultar contrasena" : "Mostrar contrasena"}
+                                    aria-pressed={showPassword}
+                                    onClick={() => setShowPassword((value) => !value)}
+                                    className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-base text-base-dark/80 ring-1 ring-base-dark/10 transition-colors hover:cursor-pointer hover:text-base-dark"
+                                >
+                                    {showPassword ? <IoEyeOffOutline size={18} /> : <IoEyeOutline size={18} />}
+                                </button>
+                            </div>
+                            {showPasswordAlert ? (
+                                <p className="mt-2 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700">
+                                    Tu contraseña no cumple con los requisitos: minimo 8 caracteres, una mayuscula y un numero.
+                                </p>
+                            ) : (
+                                <p className="pl-3 pt-1 text-sm text-text-bottom-soft">
+                                    Minimo 8 caracteres, una mayuscula y un numero.
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label htmlFor="txt_password_confirm">Confirmar contraseña:</label>
-                            <input
-                                type="password"
-                                placeholder="Confirma tu contraseña"
-                                id="txt_password_confirm"
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPasswordConfirm ? "text" : "password"}
+                                    placeholder="Confirma tu contraseña"
+                                    id="txt_password_confirm"
+                                    className="pr-14"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    aria-label={showPasswordConfirm ? "Ocultar contrasena" : "Mostrar contrasena"}
+                                    aria-pressed={showPasswordConfirm}
+                                    onClick={() => setShowPasswordConfirm((value) => !value)}
+                                    className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-base text-base-dark/80 ring-1 ring-base-dark/10 transition-colors hover:cursor-pointer hover:text-base-dark"
+                                >
+                                    {showPasswordConfirm ? <IoEyeOffOutline size={18} /> : <IoEyeOutline size={18} />}
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div> 
+                </div>
 
-                <button 
-                    className="bg-base-dark text-white text-lg font-semibold rounded-[23px] p-1.5 pl-4.5 pr-4.5 hover:cursor-pointer disabled:opacity-50" 
+                <button
+                    className="bg-base-dark text-white text-lg font-semibold rounded-[23px] p-1.5 pl-4.5 pr-4.5 hover:cursor-pointer disabled:opacity-50"
                     type="submit"
                     disabled={loading}
                 >
@@ -130,12 +184,12 @@ function SignUp() {
                 </button>
 
                 <div className="flex gap-0.5">
-                   <p className="text-text-bottom-soft lg:text-base-dark">
-                        ¿Ya tienes una cuenta? 
+                    <p className="text-text-bottom-soft lg:text-base-dark">
+                        ¿Ya tienes una cuenta?
                         <Link href="/app/login" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
                             Inicia sesión
                         </Link>
-                    </p> 
+                    </p>
                 </div>
             </form>
         </div>
