@@ -2,7 +2,7 @@ import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
 
 const StartBanner = () => {
   return (
-    <section className="max-w-6xl mx-auto px-6 pb-10">
+    <section className="max-w-6xl  md:w-full mx-auto px-6 pb-10">
       <AnimateOnScroll animation="fade-up">
         <div
           className="rounded-[2rem] px-6 py-7 md:px-10 md:py-8 flex flex-col md:flex-row items-center justify-between gap-5 md:gap-6 text-center md:text-left"

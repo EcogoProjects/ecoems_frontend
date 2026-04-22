@@ -8,7 +8,7 @@ const recentPosts = blogPosts.slice(0, 3);
 
 const LatestNews = () => {
   return (
-    <section className="max-w-6xl mx-auto px-6 pb-16">
+    <section className="max-w-6xl md:w-full mx-auto px-6 pb-16">
       <AnimateOnScroll animation="fade-up">
         <div className="flex flex-col [@media(min-width:922px)]:flex-row [@media(min-width:922px)]:items-end [@media(min-width:922px)]:justify-between gap-3 mb-8">
           <div className="space-y-1 text-center [@media(min-width:922px)]:text-left">

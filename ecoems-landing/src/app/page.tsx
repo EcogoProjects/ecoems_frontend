@@ -23,7 +23,7 @@ export default function InicioPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main>
+      <main className='flex flex-col gap-4  '>
         <HeroSection />
         <DiagnosticBanner />
         <FeatureCards />
