@@ -62,6 +62,13 @@ const HeroSection = () => {
               La app que te ayuda a memorizar, entender y aprobar cualquier
               examen con métodos simples y efectivos.
             </p>
+            <p
+              className="text-secondary-foreground/75 text-sm md:text-base max-w-md leading-relaxed opacity-0 animate-fade-up mx-auto [@media(min-width:922px)]:mx-0"
+              style={{ animationDelay: "0.4s" }}
+            >
+              Pon a prueba tu conocimiento realizando un examen diagnostico
+              completamente gratis.
+            </p>
             <div
               className="opacity-0 animate-fade-up flex justify-center [@media(min-width:922px)]:justify-start"
               style={{ animationDelay: "0.5s" }}
@@ -71,7 +78,7 @@ const HeroSection = () => {
                 className="px-5 py-3 rounded-full font-semibold text-xs sm:text-sm transition-all duration-200 shadow-lg hover:scale-105 hover:shadow-xl active:scale-95 text-center"
                 style={{ backgroundColor: "#CDAD75", color: "#472E18" }}
               >
-                Estamos por lanzar — regístrate y asegura tu lugar.
+                Prueba ahora.
               </button>
             </div>
           </div>
