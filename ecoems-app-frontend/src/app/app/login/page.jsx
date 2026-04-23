@@ -4,18 +4,16 @@ import Link from "next/link";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { signInWithEmail, signInWithGoogle } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 function SignIn() {
     const router = useRouter();
-    const supabase = createClient();
-    
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
 
-    // 1. Lógica para Email y Contraseña
     const handleEmailSignIn = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -24,34 +22,20 @@ function SignIn() {
         const email = e.target.txt_email.value;
         const password = e.target.txt_password.value;
 
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        const { error: signInError } = await signInWithEmail(email, password);
 
         if (signInError) {
-            setError("Correo o contraseña incorrectos.");
+            setError(signInError);
             setLoading(false);
         } else {
-            // Redirige al usuario a la página principal de Ecogo
-            router.push("/app/dashboard"); 
+            router.push("/app/home");
         }
     };
 
-    // 2. Lógica para Inicio de Sesión con Google
     const handleGoogleSignIn = async () => {
         setError(null);
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                // Esto redirige al usuario de vuelta a tu app después de validar en Google
-                redirectTo: `${window.location.origin}/app/dashboard`,
-            },
-        });
-
-        if (error) {
-            setError(error.message);
-        }
+        const { error } = await signInWithGoogle(`${window.location.origin}/app/home`);
+        if (error) setError(error);
     };
 
     return ( 

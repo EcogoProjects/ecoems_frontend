@@ -3,12 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-import { createClient } from "@/utils/supabase/client"; // Asegúrate de tener este archivo creado
+import { signUp } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 function SignUp() {
     const router = useRouter();
-    const supabase = createClient();
 
     // Estados para controlar la UI
     const [loading, setLoading] = useState(false);
@@ -47,20 +46,10 @@ function SignUp() {
             return;
         }
 
-        // Registro en Supabase
-        const { data, error: authError } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                data: {
-                    name: name,
-                    last_name: lastname,
-                }
-            }
-        });
+        const { error: authError } = await signUp({ email, password, name, lastName: lastname });
 
         if (authError) {
-            setError(authError.message);
+            setError(authError);
         } else {
             alert("¡Revisa tu correo para confirmar tu cuenta!");
             router.push("/app/login");
