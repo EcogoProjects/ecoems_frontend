@@ -51,8 +51,7 @@ function SignUp() {
         if (authError) {
             setError(authError);
         } else {
-            alert("¡Revisa tu correo para confirmar tu cuenta!");
-            router.push("/app/login");
+            router.push("/app/email-confirmation");
         }
 
         setLoading(false);

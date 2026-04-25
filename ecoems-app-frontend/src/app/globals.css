@@ -18,12 +18,26 @@
   --premium-box-alt-color: #e6d071;
 }
 
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
 @theme inline {
   /* Fuentes */
   --font-outfit: var(--font-outfit); /* Enlaza la variable de Next.js */
-  
+
   /* Si quieres que sea la fuente por defecto de todo el sitio: */
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+  /* Animations */
+  --animate-floaty: floaty 6s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 1.8s ease-out infinite;
 
   /* Base Colors */
   --color-base: var(--base-color);
