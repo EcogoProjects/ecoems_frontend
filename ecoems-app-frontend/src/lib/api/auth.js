@@ -1,5 +1,4 @@
 import { createClient } from '@/utils/supabase/client'
-import { api } from './client'
 
 const supabase = createClient()
 
@@ -55,20 +54,18 @@ export async function signUp({ email, password, name, lastName }) {
       emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   })
-  if (error) return { data: null, error: error.message }
-
-  // Paso 2: si Supabase devolvió sesión (JWT disponible), crear perfil en el backend.
-  // El backend extrae el user_id del JWT — no se envía email ni id en el body.
-  if (data.session) {
-    const { error: backendError, status } = await api.post('/users/me', {
-      name,
-      last_name: lastName,
-    })
-
-    // 409 = perfil ya existe (reintento o cuenta duplicada) — no es un error fatal
-    if (backendError && status !== 409) {
-      return { data: null, error: backendError }
+  if (error) {
+    // Sin confirmación de email, Supabase sí devuelve este mensaje directamente
+    if (error.message === 'User already registered') {
+      return { data: null, error: 'Este email ya existe' }
     }
+    return { data: null, error: error.message }
+  }
+
+  // Con confirmación de email activada, Supabase no revela si el correo existe
+  // (previene enumeración) pero devuelve identities: [] cuando ya está registrado.
+  if (data.user?.identities?.length === 0) {
+    return { data: null, error: 'Este email ya existe' }
   }
 
   return { data: data.user, error: null }

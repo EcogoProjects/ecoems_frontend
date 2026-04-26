@@ -23,9 +23,12 @@ src/
 │   ├── globals.css            # Variables CSS del tema y base de Tailwind
 │   ├── page.jsx               # Landing page (vacía por ahora)
 │   ├── plans/page.jsx         # Comparación de planes freemium/premium
+│   ├── auth/
+│   │   └── callback/route.js  # Route Handler: intercambia code/token y crea perfil en backend
 │   └── app/                   # Rutas protegidas de la aplicación
 │       ├── login/page.jsx
 │       ├── signup/page.jsx
+│       ├── email-confirmation/page.jsx  # Pantalla post-registro (revisa tu correo)
 │       ├── home/page.jsx      # Dashboard con selector de examen
 │       ├── exam/page.jsx      # Examen activo con preguntas
 │       ├── analytics/page.jsx # Estadísticas y progreso del usuario
@@ -56,6 +59,7 @@ src/
 │   └── api/                   # Toda la capa de I/O con Supabase — SIEMPRE usar esto
 │       ├── index.js           # Re-exporta todo: import { fn } from '@/lib/api'
 │       ├── auth.js            # signInWithEmail, signInWithGoogle, signUp, signOut, getUser, getSession, onAuthStateChange
+│       ├── client.js          # Fetcher base (solo cliente — NO usar en Route Handlers de servidor)
 │       ├── profile.js         # getProfile, updateProfile, updateAvatar
 │       ├── exam.js            # getQuestions, saveExamResult, getExamHistory
 │       ├── analytics.js       # getUserStats, getSubjectStats, getTopSubjects, getWeakSubjects, getProgressHistory
@@ -85,6 +89,15 @@ Clases Tailwind personalizadas disponibles: `bg-base`, `bg-base-dark`, `bg-base-
 
 La fuente global es **Outfit** (Google Fonts via `next/font/google`), disponible como variable CSS `--font-outfit`.
 
+### Animaciones globales
+
+Definidas como `@keyframes` en `globals.css` y registradas como tokens en `@theme inline`:
+
+| Clase Tailwind | Efecto |
+|---|---|
+| `animate-floaty` | Float vertical suave (6s, usado en hero de email-confirmation) |
+| `animate-pulse-dot` | Pulso radial expandiéndose (1.8s, usado en badges de estado) |
+
 ## Capa API (`src/lib/api/`)
 
 **Regla:** todo acceso a datos pasa por `src/lib/api/`. Los componentes y páginas nunca llaman a `createClient()` directamente ni usan `fetch` suelto.
@@ -99,6 +112,8 @@ Patrón de retorno uniforme en todas las funciones:
 // Éxito:  { data: <resultado>, error: null }
 // Error:  { data: null, error: "mensaje legible" }
 ```
+
+**Importante:** `src/lib/api/client.js` usa `createBrowserClient` internamente — solo funciona en el cliente. En Route Handlers de servidor (como `/auth/callback`) hay que hacer `fetch` directamente con el token de la sesión.
 
 ### Arquitectura de dos capas
 
@@ -126,6 +141,7 @@ const { data, error } = await api.post('/api/v1/exam-results', payload)
 
 | Módulo | Método | Endpoint |
 |---|---|---|
+| **users** | POST | `/users/me` |
 | **profile** | GET | `/api/v1/profile` |
 | | PUT | `/api/v1/profile` |
 | | PATCH | `/api/v1/profile/avatar` |
@@ -145,12 +161,29 @@ Variables de entorno requeridas en `.env.local`:
 ```
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+NEXT_PUBLIC_API_URL=...
 ```
 
 - **Desde componentes**: usar funciones de `@/lib/api` (nunca `createClient()` directo)
 - **Server Components / middleware**: usar `createClient()` de `@/utils/supabase/server`
 - Métodos implementados: email/password y Google OAuth
 - Facebook OAuth está en la UI pero sin implementar
+
+### Flujo de registro completo
+
+1. Usuario llena el form → `signUp()` llama a `supabase.auth.signUp()` con `emailRedirectTo: /auth/callback`
+2. Supabase envía el correo de confirmación; `name` y `last_name` se guardan en `user_metadata`
+3. `signUp()` retorna sin llamar al backend — solo redirige a `/app/email-confirmation`
+4. Usuario hace clic en el link de su correo → llega a `/auth/callback`
+5. El callback intercambia el `code` (PKCE) o `token_hash` (OTP) por una sesión
+6. El callback llama a `POST /users/me` con el JWT y los datos de `user_metadata`
+7. `201` o `409` (perfil ya existía) → redirect a `/app/home`
+8. Cualquier otro error → redirect a `/app/signup?error=profile_creation_failed`
+
+**Detección de email duplicado en `signUp()`:**
+- Sin confirmación de email: Supabase retorna `error.message === 'User already registered'`
+- Con confirmación de email: Supabase finge éxito pero `data.user.identities` llega vacío (`[]`)
+- Ambos casos retornan un mensaje amigable en español
 
 ## Convenciones de código
 
@@ -160,6 +193,23 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 - Alias de importación `@/` apunta a `src/` (configurado en `jsconfig.json`)
 - Páginas interactivas usan `'use client'` al inicio del archivo
 - Todo el texto de UI está en **español**
+
+### Mensajes de error en formularios sin layout shift
+
+Para evitar que los mensajes de error muevan el layout del formulario al aparecer/desaparecer:
+- El elemento `<p>` de error **siempre está en el DOM** con altura fija (`h-11 overflow-hidden`)
+- Se alterna visibilidad con `opacity-0 select-none` / `opacity-100` — nunca con montaje/desmontaje condicional
+- Mismo patrón para hints inline (ej. requisitos de contraseña): un solo `<p>` con clases condicionales, no dos elementos alternos
+
+```jsx
+// Correcto — altura fija, siempre en DOM
+<p className={`h-11 overflow-hidden text-sm transition-opacity ${error ? 'opacity-100' : 'opacity-0 select-none'}`}>
+  {error ?? ' '}
+</p>
+
+// Incorrecto — causa layout shift
+{error && <p>{error}</p>}
+```
 
 ## Comandos de desarrollo
 
@@ -182,3 +232,4 @@ npm run lint     # Linting con ESLint
 - **Tailwind v4**: no existe `tailwind.config.js`; cualquier extensión del tema va en `globals.css` con `@theme inline`
 - **NavBars fijos**: usar `<MarginTop />` y `<MarginBottom />` en páginas protegidas para compensar el espacio de los navbars fijos
 - **Next.js 16**: tiene breaking changes respecto a versiones anteriores — consultar `node_modules/next/dist/docs/` antes de usar APIs de Next.js
+- **`api` client solo en cliente**: `src/lib/api/client.js` no funciona en Route Handlers de servidor; usar `fetch` directo con `session.access_token`

@@ -72,8 +72,9 @@ function SignUp() {
                 ">
                     <h1 className="text-2xl font-semibold text-center ">Regístrate</h1>
 
-                    {/* Mostrar errores si existen */}
-                    {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
+                    <p className={`text-red-500 text-sm text-center mt-2 min-h-[1.25rem] transition-opacity ${error ? 'opacity-100' : 'opacity-0 select-none'}`}>
+                        {error ?? ' '}
+                    </p>
 
                     <div className="flex flex-col gap-3 mt-4">
                         <div>
@@ -129,15 +130,13 @@ function SignUp() {
                                     {showPassword ? <IoEyeOffOutline size={18} /> : <IoEyeOutline size={18} />}
                                 </button>
                             </div>
-                            {showPasswordAlert ? (
-                                <p className="mt-2 rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700">
-                                    Tu contraseña no cumple con los requisitos: minimo 8 caracteres, una mayuscula y un numero.
-                                </p>
-                            ) : (
-                                <p className="pl-3 pt-1 text-sm text-text-bottom-soft">
-                                    Minimo 8 caracteres, una mayuscula y un numero.
-                                </p>
-                            )}
+                            <p className={`mt-2 rounded-lg px-3 py-2 text-sm transition-colors ${
+                                showPasswordAlert
+                                    ? 'bg-red-100 text-red-700'
+                                    : 'text-text-bottom-soft'
+                            }`}>
+                                Mínimo 8 caracteres, una mayúscula y un número.
+                            </p>
                         </div>
                         <div>
                             <label htmlFor="txt_password_confirm">Confirmar contraseña:</label>
@@ -171,14 +170,14 @@ function SignUp() {
                     {loading ? "Registrando..." : "Registrarse"}
                 </button>
 
-                <div className="flex gap-0.5">
+                {/* <div className="flex gap-0.5">
                     <p className="text-text-bottom-soft lg:text-base-dark">
                         ¿Ya tienes una cuenta?
                         <Link href="/app/login" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
                             Inicia sesión
                         </Link>
                     </p>
-                </div>
+                </div> */}
             </form>
         </div>
     );
