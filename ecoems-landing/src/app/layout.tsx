@@ -4,6 +4,7 @@ import Providers from './providers'
 import FaviconSwitcher from '@/components/shared/FaviconSwitcher'
 import GoogleAnalytics from '@/components/shared/GoogleAnalytics'
 import { Outfit } from "next/font/google";
+import 'katex/dist/katex.min.css';
 
 const outfit = Outfit({
   subsets: ['latin'],

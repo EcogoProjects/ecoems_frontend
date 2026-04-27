@@ -1,6 +1,7 @@
 "use client"
 
 import { FaBookOpen } from "react-icons/fa6";
+import LatexParagraph from "./LaTexRender";
 
 export default function ExamExplanation({
     correct_answer,
@@ -50,9 +51,9 @@ export default function ExamExplanation({
                 <p className="font-bold">
                     La respuesta correcta es la {correct_answer.toUpperCase()}.
                 </p>
-                <p className={`leading-relaxed ${blur ? 'blur-[4px] select-none opacity-60' : opacityClasses}`}>
-                    {explanation}
-                </p>
+                <span className={`leading-relaxed ${blur ? 'blur-[4px] select-none opacity-60' : opacityClasses}`}>
+                    <LatexParagraph content={explanation} />
+                </span>
             </div>
         </div>
     );

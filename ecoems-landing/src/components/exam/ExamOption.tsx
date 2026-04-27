@@ -1,3 +1,5 @@
+import LatexParagraph from "./LaTexRender";
+
 export default function ExamOption({ name, value, letter, text, checked, onChange, disabled }) {
     return (
         <label
@@ -16,7 +18,7 @@ export default function ExamOption({ name, value, letter, text, checked, onChang
                 className="mt-1 appearance-none w-5 h-5 ring-inset ring-2 ring-base-dark rounded-full bg-white checked:ring-6 cursor-pointer shrink-0 transition-all"
             />
             <span className="font-semibold">{letter})</span>
-            <span className="leading-tight">{text}</span>
+            <span className="leading-tight"><LatexParagraph content={text} /></span>
         </label>
     );
 }

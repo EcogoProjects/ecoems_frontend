@@ -31,12 +31,12 @@ function FinishedExamDashboard({ closeActionMessage, score }) {
 
             {/* BOTÓN DE ACCIÓN PARA CERRAR O CONTINUAR */}
             <div className="flex flex-col">
-                <Link
-                    href="/"
+                <a
+                    href="https://app.ecogo.mx/app/signup"
                     className="mt-4 bg-base-hard-alt text-base-dark font-bold py-2.5 px-8 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md inline-block"
                 >
                     Regístrate
-                </Link>
+                </a>
                 <Link
                     href="/"
                     className="mt-4 text-base-soft font-bold py-1 px-5 hover:scale-105 active:scale-95 transition-all inline-block"
