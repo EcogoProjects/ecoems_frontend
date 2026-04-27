@@ -1,9 +1,12 @@
 "use client"
 
+import { useRef } from "react";
 import Image from "next/image";
+import { useLatexScanner } from "@/utils/exam/useLatexScanner";
 import raccoon from "@/assets/Raccoon_question.png";
 import { FaLightbulb } from "react-icons/fa6";
 import ExamExplanation from "@/components/exam/ExamExplanation";
+import LatexParagraph from "./LaTexRender";
 
 export default function ResourcePanel({
     currentQ,
@@ -14,8 +17,16 @@ export default function ResourcePanel({
     answers,
     openModal
 }) {
+    // 1. Creamos la referencia para el contenedor principal
+    const panelRef = useRef<HTMLDivElement>(null);
+
+    // 2. Activamos el escáner y le pasamos el ID de la pregunta para que 
+    // se reinicie si el usuario cambia a la siguiente pregunta.
+    useLatexScanner(panelRef, currentQ.id);
+
     return (
-        <div className="w-full flex flex-col gap-5 h-full md:col-span-1">
+        // 3. Asignamos la referencia al div padre. Todo lo que aparezca aquí dentro será escaneado.
+        <div ref={panelRef} className="w-full flex flex-col gap-5 h-full md:col-span-1">
             {hasImage && (
                 <div className="bg-base-hard rounded-[22px] p-3 shadow-lg">
                     <div onClick={openModal} className="relative w-full aspect-video rounded-[18px] overflow-hidden cursor-pointer transition-all">
@@ -51,7 +62,9 @@ export default function ResourcePanel({
                         <FaLightbulb />
                         <p className="font-bold ">Pista sugerida</p>
                     </div>
-                    <p className="opacity-55">{currentQ.hint}</p>
+                    <div className="opacity-55 whitespace-pre-wrap">
+                        <LatexParagraph content={currentQ.hint} />
+                    </div>
                 </div>
             )}
 

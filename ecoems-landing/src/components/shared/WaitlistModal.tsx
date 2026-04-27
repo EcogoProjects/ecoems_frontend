@@ -48,7 +48,7 @@ export default function WaitlistModal({ onClose }: WaitlistModalProps) {
           </p>
         </div>
         <a
-          href={'https://docs.google.com/forms/d/e/1FAIpQLSdC4diVIxqDcv9iQV8yreMCJrZZXQSQB2WWUhCKwkNdG42McA/viewform'}
+          href="https://app.ecogo.mx/app/signup"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full rounded-full px-4 py-3 text-center text-sm font-semibold transition-opacity hover:opacity-90 shadow-md"
