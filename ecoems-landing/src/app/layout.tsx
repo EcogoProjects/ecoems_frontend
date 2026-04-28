@@ -4,6 +4,14 @@ import './globals.css'
 import Providers from './providers'
 import FaviconSwitcher from '@/components/shared/FaviconSwitcher'
 import GoogleAnalytics from '@/components/shared/GoogleAnalytics'
+import { Outfit } from "next/font/google";
+import 'katex/dist/katex.min.css';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit'
+});
 
 export const metadata: Metadata = {
   title: {
@@ -42,7 +50,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="es" className={`${outfit.variable} h-full antialiased`}>
       <head>
         <link rel="icon" href="/ecogo_logo.png" />
       </head>

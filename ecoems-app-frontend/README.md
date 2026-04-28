@@ -34,3 +34,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Rutas de la aplicación
+
+| Path | Descripción |
+|------|-------------|
+| `/` | Página raíz |
+| `/plans` | Comparativa de planes Freemium y Premium |
+| `/app/login` | Inicio de sesión |
+| `/app/signup` | Registro de nuevo usuario |
+| `/app/home` | Dashboard principal del usuario |
+| `/app/exam` | Examen activo con preguntas, temporizador y pistas |
+| `/app/analytics` | Estadísticas y analíticas del usuario |
+| `/app/profile` | Perfil del usuario (edición de datos y avatar) |
+| `/app/program` | Programa de estudio ECOEMS completo |

@@ -27,7 +27,7 @@ const features = [
 const FeatureCards = () => {
   return (
     <section
-      className="max-w-5xl mx-auto px-6 relative z-20 pb-8"
+      className="max-w-5xl  md:w-full mx-auto px-6 relative z-20 pb-8"
       style={{ marginTop: "30px" }}
     >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

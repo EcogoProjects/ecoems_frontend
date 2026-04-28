@@ -30,7 +30,7 @@ const Navbar = () => {
             className="[@media(min-width:379px)]:flex hidden px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity"
             style={{ backgroundColor: '#472E18', color: '#EAD9C3' }}
           >
-            Próximamente
+            Regístrate
           </button>
 
           <button

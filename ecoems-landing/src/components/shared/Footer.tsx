@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ecogoLogo from "@/assets/ecogo_logo.png";
+import { FaEnvelope } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -129,6 +130,16 @@ const Footer = () => {
                 </svg>
               </a>
             </div>
+            <h4 className="font-semibold text-sm uppercase tracking-wider text-secondary-foreground/80">
+              Medio de contacto
+            </h4>
+            <a
+              href="mailto:contacto.appecogo.mx@gmail.com"
+              className="flex items-center gap-1 text-sm  text-secondary-foreground/60
+              hover:text-secondary-foreground transition-colors">
+              <FaEnvelope size={18} />
+              contacto.appecogo.mx@gmail.com
+            </a>
           </div>
           <div className="space-y-4">
             <h4 className="font-semibold text-sm uppercase tracking-wider text-secondary-foreground/80">

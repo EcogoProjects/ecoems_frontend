@@ -1,17 +1,27 @@
 # ecoems-landing
 
-Public-facing landing site for ECOGO — the study app for the ECOEMS 2026 exam.
+Public-facing landing site for ECOGO — the study app for the ECOEMS 2026 exam
+
+## Modules
+
+Install the next modules:
+
+```bash
+npm install react-icons
+npm install @boxicons/react
+npm install react-markdown remark-math rehype-katex katex
+```
 
 ## Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 15 (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS v3 + `tailwindcss-animate` |
-| UI components | shadcn/ui (base: slate, CSS variables) |
-| Server state | TanStack Query |
-| Font | System sans-serif via Tailwind |
+| Layer         | Technology                               |
+| ------------- | ---------------------------------------- |
+| Framework     | Next.js 15 (App Router)                  |
+| Language      | TypeScript                               |
+| Styling       | Tailwind CSS v3 +`tailwindcss-animate` |
+| UI components | shadcn/ui (base: slate, CSS variables)   |
+| Server state  | TanStack Query                           |
+| Font          | System sans-serif via Tailwind           |
 
 ## Commands
 

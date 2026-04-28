@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 import Navbar from '@/components/shared/Navbar'
 import Footer from '@/components/shared/Footer'
 import HeroSection from '@/components/inicio/HeroSection'
+import DiagnosticBanner from '@/components/inicio/DiagnosticBanner'
 import FeatureCards from '@/components/inicio/FeatureCards'
 import LatestNews from '@/components/inicio/LatestNews'
 import StartBanner from '@/components/inicio/StartBanner'
@@ -22,8 +23,9 @@ export default function InicioPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main>
+      <main className='flex flex-col gap-4  '>
         <HeroSection />
+        <DiagnosticBanner />
         <FeatureCards />
         <LatestNews />
         <StartBanner />

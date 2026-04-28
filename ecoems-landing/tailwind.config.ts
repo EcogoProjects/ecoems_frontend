@@ -16,7 +16,18 @@ export default {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
+      fontSize: {
+        standard: '15px',
+      },
       colors: {
+        base: {
+          DEFAULT: '#EEE4C1',
+          hard: '#CDAD75',
+          'hard-alt': '#D9AF72',
+          soft: '#FFF9E4',
+          dark: '#472E18',
+        },
+        'text-bottom-soft': '#A7A7A7',
         hero: {
           DEFAULT: "hsl(var(--hero-bg))",
           accent: "hsl(var(--hero-accent))",
@@ -73,6 +84,7 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        'box-standard': '18px',
       },
       keyframes: {
         "accordion-down": {

@@ -9,7 +9,7 @@ const HeroSection = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <section className="max-w-6xl mx-auto px-6 pt-4">
+    <section className="max-w-6xl md:w-full mx-auto px-6 pt-4">
       <div
         className="rounded-[2rem] overflow-hidden relative min-h-[360px] md:min-h-[440px]"
         style={{ backgroundColor: "#472E18" }}
@@ -71,7 +71,7 @@ const HeroSection = () => {
                 className="px-5 py-3 rounded-full font-semibold text-xs sm:text-sm transition-all duration-200 shadow-lg hover:scale-105 hover:shadow-xl active:scale-95 text-center"
                 style={{ backgroundColor: "#CDAD75", color: "#472E18" }}
               >
-                Estamos por lanzar — regístrate y asegura tu lugar.
+                Regístrate
               </button>
             </div>
           </div>
