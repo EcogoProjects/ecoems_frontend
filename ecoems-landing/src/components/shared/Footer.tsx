@@ -135,8 +135,9 @@ const Footer = () => {
             </h4>
             <a
               href="mailto:contacto.appecogo.mx@gmail.com"
-              className="flex items-center gap-1 text-sm  text-secondary-foreground/60
-              hover:text-secondary-foreground transition-colors">
+              className="flex text-center justify-center items-center gap-1 text-sm  text-secondary-foreground/60
+              hover:text-secondary-foreground transition-colors"
+            >
               <FaEnvelope size={18} />
               contacto.appecogo.mx@gmail.com
             </a>
