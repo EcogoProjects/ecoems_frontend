@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import {Analytics} from '@vercel/analytics/next'
 import './globals.css'
 import Providers from './providers'
 import FaviconSwitcher from '@/components/shared/FaviconSwitcher'
@@ -27,6 +28,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'ECOGO' }],
   robots: { index: true, follow: true },
   metadataBase: new URL('https://ecogo.mx'),
+  alternates:{
+      canonical: '/',
+  },
   openGraph: {
     type: 'website',
     locale: 'es_MX',
@@ -54,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GoogleAnalytics />
         <FaviconSwitcher />
         <Providers>{children}</Providers>
+        <Analytics/>
       </body>
     </html>
   )
