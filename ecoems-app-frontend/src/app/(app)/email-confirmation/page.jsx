@@ -113,7 +113,7 @@ export default function EmailConfirmation() {
         </div>
 
         <Link
-          href="/app/login"
+          href="/login"
           className="mt-8 text-sm underline opacity-55 hover:opacity-100 transition-opacity"
         >
           Ir al inicio de sesión

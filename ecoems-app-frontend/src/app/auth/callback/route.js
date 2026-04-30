@@ -12,7 +12,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL
  * En ambos casos:
  *   - Se intercambia el código/token por una sesión
  *   - Se llama al backend para crear el perfil (name y last_name vienen de user_metadata)
- *   - 201 o 409 → home   |   otro error → /app/signup?error=profile_creation_failed
+ *   - 201 o 409 → home   |   otro error → /signup?error=profile_creation_failed
  */
 export async function GET(request) {
   const { searchParams, origin } = new URL(request.url)
@@ -25,18 +25,18 @@ export async function GET(request) {
   // Intercambiar el código/token por una sesión según el flujo activo
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (error) return NextResponse.redirect(`${origin}/app/login?error=link_invalido`)
+    if (error) return NextResponse.redirect(`${origin}/login?error=link_invalido`)
   } else if (token_hash && (type === 'signup' || type === 'email')) {
     const { error } = await supabase.auth.verifyOtp({ token_hash, type })
-    if (error) return NextResponse.redirect(`${origin}/app/login?error=link_invalido`)
+    if (error) return NextResponse.redirect(`${origin}/login?error=link_invalido`)
   } else {
-    return NextResponse.redirect(`${origin}/app/login?error=link_invalido`)
+    return NextResponse.redirect(`${origin}/login?error=link_invalido`)
   }
 
   // Leer la sesión activa tras el intercambio
   const { data: { session }, error: sessionError } = await supabase.auth.getSession()
   if (sessionError || !session) {
-    return NextResponse.redirect(`${origin}/app/login?error=link_invalido`)
+    return NextResponse.redirect(`${origin}/login?error=link_invalido`)
   }
 
   return await createBackendProfile(session, origin)
@@ -57,11 +57,11 @@ async function createBackendProfile(session, origin) {
 
     // 201 = perfil creado | 409 = perfil ya existía (confirmación repetida o dispositivo distinto)
     if (res.status === 201 || res.status === 409) {
-      return NextResponse.redirect(`${origin}/app/coming-soon`)
+      return NextResponse.redirect(`${origin}/coming-soon`)
     }
 
-    return NextResponse.redirect(`${origin}/app/signup?error=profile_creation_failed`)
+    return NextResponse.redirect(`${origin}/signup?error=profile_creation_failed`)
   } catch {
-    return NextResponse.redirect(`${origin}/app/login?error=servidor_no_disponible`)
+    return NextResponse.redirect(`${origin}/login?error=servidor_no_disponible`)
   }
 }

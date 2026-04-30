@@ -51,7 +51,7 @@ function SignUp() {
         if (authError) {
             setError(authError);
         } else {
-            router.push("/app/email-confirmation");
+            router.push("/email-confirmation");
         }
 
         setLoading(false);
@@ -173,7 +173,7 @@ function SignUp() {
                 {/* <div className="flex gap-0.5">
                     <p className="text-text-bottom-soft lg:text-base-dark">
                         ¿Ya tienes una cuenta?
-                        <Link href="/app/login" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
+                        <Link href="/login" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
                             Inicia sesión
                         </Link>
                     </p>

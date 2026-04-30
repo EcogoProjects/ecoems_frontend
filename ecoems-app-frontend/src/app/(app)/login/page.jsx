@@ -28,13 +28,13 @@ function SignIn() {
             setError(signInError);
             setLoading(false);
         } else {
-            router.push("/app/home");
+            router.push("/home");
         }
     };
 
     const handleGoogleSignIn = async () => {
         setError(null);
-        const { error } = await signInWithGoogle(`${window.location.origin}/app/home`);
+        const { error } = await signInWithGoogle(`${window.location.origin}/home`);
         if (error) setError(error);
     };
 
@@ -112,7 +112,7 @@ function SignIn() {
                 <div className="flex gap-0.5">
                    <p className="text-text-bottom-soft lg:text-base-dark">
                         ¿Aún no te has registrado? 
-                    <Link href="/app/signup" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
+                    <Link href="/signup" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
                         Regístrate
                     </Link>
                 </p> 
