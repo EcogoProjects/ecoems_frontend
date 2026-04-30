@@ -19,6 +19,711 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "modalidad-3-ecoems-2026-mixta",
+    title:
+      "Modalidad 3 ECOEMS 2026: la estrategia inteligente para entrar a la prepa",
+    excerpt:
+      "Descubre cómo funciona la Modalidad 3 del ECOEMS 2026 y por qué es la opción más estratégica para asegurar tu lugar.",
+    date: "Abr 28, 2026",
+    author: "ECOGO",
+    category: "ECOEMS",
+    featured: true,
+    coverImage: "/blog/Blog11.png",
+    content: [
+      {
+        type: "paragraph",
+        text: "Si quieres tomar decisiones inteligentes en el proceso ECOEMS, es importante conocer la Modalidad 3. Esta opción permite combinar aspiración y seguridad en un solo registro.",
+      },
+      {
+        type: "paragraph",
+        text: "Muchos estudiantes buscan entrar a la UNAM o al IPN, pero no consideran qué sucede si no alcanzan el puntaje necesario. La Modalidad 3 resuelve este problema al ofrecer una alternativa de respaldo.",
+      },
+
+      {
+        type: "heading",
+        text: "Qué es la Modalidad 3",
+      },
+      {
+        type: "paragraph",
+        text: "La Modalidad 3, también llamada modalidad mixta, permite combinar escuelas con examen y sin examen dentro de un mismo registro.",
+      },
+      {
+        type: "paragraph",
+        text: "Esto significa que puedes aspirar a la UNAM o al IPN y, al mismo tiempo, incluir opciones que no requieren examen como respaldo.",
+      },
+
+      {
+        type: "heading",
+        text: "Cuántas opciones puedes elegir",
+      },
+      {
+        type: "paragraph",
+        text: "Esta modalidad ofrece la mayor flexibilidad dentro del proceso.",
+      },
+      {
+        type: "list",
+        items: [
+          "Entre 5 y 10 opciones sin examen",
+          "Hasta 5 opciones de la UNAM",
+          "Hasta 5 opciones del IPN",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "En total, puedes registrar hasta 20 opciones, lo que aumenta significativamente tus posibilidades de obtener un lugar.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo funciona la asignación",
+      },
+      {
+        type: "paragraph",
+        text: "El sistema primero evalúa tu resultado en el examen.",
+      },
+      {
+        type: "paragraph",
+        text: "Si alcanzas el puntaje necesario, puedes ser asignado a una de tus opciones con examen.",
+      },
+      {
+        type: "paragraph",
+        text: "Si no alcanzas el puntaje, el sistema revisa automáticamente tus opciones sin examen y te asigna en función de la disponibilidad.",
+      },
+
+      {
+        type: "heading",
+        text: "Requisitos importantes",
+      },
+      {
+        type: "paragraph",
+        text: "Para incluir opciones de UNAM o IPN, necesitas cumplir con un promedio mínimo de 7.0 en secundaria.",
+      },
+      {
+        type: "paragraph",
+        text: "Además, deberás pagar el examen, con un costo aproximado de $450 pesos.",
+      },
+
+      {
+        type: "heading",
+        text: "Fechas clave",
+      },
+      {
+        type: "list",
+        items: ["Registro: del 17 de marzo al 17 de abril de 2026"],
+      },
+      {
+        type: "paragraph",
+        text: "Antes de iniciar, debes contar con tu Llave MX, ya que es obligatoria para el registro.",
+      },
+
+      {
+        type: "heading",
+        text: "Por qué es una estrategia inteligente",
+      },
+      {
+        type: "paragraph",
+        text: "La Modalidad 3 combina lo mejor de las otras modalidades.",
+      },
+      {
+        type: "list",
+        items: [
+          "Permite aspirar a escuelas con examen",
+          "Incluye opciones sin examen como respaldo",
+          "Reduce el riesgo de quedarse sin lugar",
+          "Aumenta tus probabilidades de asignación",
+        ],
+      },
+
+      {
+        type: "heading",
+        text: "Cómo te puede ayudar ECOGO",
+      },
+      {
+        type: "paragraph",
+        text: "ECOGO es una app diseñada para ayudarte a tomar decisiones estratégicas durante todo el proceso.",
+      },
+      {
+        type: "list",
+        items: [
+          "Selección de modalidad adecuada",
+          "Guía paso a paso en el registro",
+          "Apoyo para organizar tus opciones",
+          "Preparación para el examen UNAM/IPN",
+        ],
+      },
+
+      {
+        type: "paragraph",
+        text: "Elegir modalidad no se trata de facilidad o dificultad, sino de estrategia.",
+      },
+      {
+        type: "paragraph",
+        text: "La Modalidad 3 permite aspirar a mejores opciones sin perder seguridad dentro del proceso.",
+      },
+    ],
+  },
+  {
+    slug: "modalidad-2-ecoems-2026-unam-ipn",
+    title:
+      "Modalidad 2 ECOEMS 2026: el camino directo a UNAM o IPN (y sus riesgos)",
+    excerpt:
+      "Descubre cómo funciona la Modalidad 2 del ECOEMS 2026, sus requisitos y los riesgos de elegir solo escuelas con examen.",
+    date: "Abr 17, 2026",
+    author: "ECOGO",
+    category: "ECOEMS",
+    featured: false,
+    coverImage: "/blog/Blog10.png",
+    content: [
+      {
+        type: "paragraph",
+        text: "Si tienes como objetivo entrar a la UNAM o al IPN, es probable que estés considerando la Modalidad 2. Sin embargo, antes de elegirla, es importante entender que es la opción más directa, pero también la más riesgosa.",
+      },
+      {
+        type: "paragraph",
+        text: "En esta modalidad no hay respaldo automático. Todo depende de tu resultado en el examen.",
+      },
+
+      {
+        type: "heading",
+        text: "Qué incluye la Modalidad 2",
+      },
+      {
+        type: "paragraph",
+        text: "La Modalidad 2 está diseñada exclusivamente para quienes quieren ingresar a escuelas que requieren examen.",
+      },
+      {
+        type: "list",
+        items: [
+          "UNAM (Escuela Nacional Preparatoria y CCH)",
+          "IPN (CECyT y CET)",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "No es posible agregar opciones sin examen, por lo que no existe un respaldo dentro de esta modalidad.",
+      },
+
+      {
+        type: "heading",
+        text: "Cuántas opciones puedes elegir",
+      },
+      {
+        type: "paragraph",
+        text: "Puedes seleccionar hasta 5 opciones de la UNAM y hasta 5 del IPN, con un máximo de 10 opciones en total.",
+      },
+      {
+        type: "paragraph",
+        text: "El orden es importante, pero el factor determinante será tu puntaje en el examen.",
+      },
+
+      {
+        type: "heading",
+        text: "Requisito obligatorio",
+      },
+      {
+        type: "paragraph",
+        text: "Para poder elegir esta modalidad, necesitas contar con un promedio mínimo de 7.0 en secundaria.",
+      },
+      {
+        type: "paragraph",
+        text: "Si no cumples con este requisito, el sistema no te permitirá seleccionar estas opciones.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo es el examen",
+      },
+      {
+        type: "paragraph",
+        text: "El examen es en línea, consta de 128 preguntas de opción múltiple y evalúa 10 áreas de conocimiento.",
+      },
+      {
+        type: "list",
+        items: [
+          "Matemáticas",
+          "Razonamiento matemático",
+          "Español",
+          "Razonamiento verbal",
+          "Historia",
+          "Formación cívica y ética",
+          "Física",
+          "Química",
+          "Biología",
+          "Geografía",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Requiere preparación completa, ya que todas las áreas cuentan para tu resultado.",
+      },
+      {
+        type: "paragraph",
+        text: "El examen tiene un costo aproximado de $450 pesos.",
+      },
+
+      {
+        type: "heading",
+        text: "El riesgo de esta modalidad",
+      },
+      {
+        type: "paragraph",
+        text: "Si no alcanzas el puntaje necesario para ninguna de tus opciones, no recibirás asignación en la primera ronda.",
+      },
+      {
+        type: "paragraph",
+        text: "Después podrías participar en un periodo extemporáneo, pero ya competirías por lugares disponibles y no por tus opciones originales.",
+      },
+
+      {
+        type: "heading",
+        text: "Fechas importantes",
+      },
+      {
+        type: "list",
+        items: [
+          "Registro: del 17 de marzo al 17 de abril de 2026",
+          "Indicaciones del examen: del 18 al 22 de mayo",
+          "Resultados: 18 de agosto de 2026",
+        ],
+      },
+
+      {
+        type: "heading",
+        text: "Cómo te puede ayudar ECOGO",
+      },
+      {
+        type: "paragraph",
+        text: "ECOGO es una app diseñada para ayudarte a tomar mejores decisiones y prepararte correctamente.",
+      },
+      {
+        type: "list",
+        items: [
+          "Evaluación de la mejor modalidad para ti",
+          "Preparación para el examen UNAM/IPN",
+          "Organización por materias y tiempos",
+          "Seguimiento de cada etapa del proceso",
+        ],
+      },
+
+      {
+        type: "paragraph",
+        text: "La Modalidad 2 puede llevarte directamente a tu objetivo, pero también implica asumir un mayor riesgo.",
+      },
+      {
+        type: "paragraph",
+        text: "Tomar esta decisión requiere preparación, estrategia y claridad sobre tus opciones.",
+      },
+    ],
+  },
+  {
+    slug: "modalidad-1-ecoems-2026-sin-examen",
+    title:
+      "Modalidad 1 ECOEMS 2026: cómo entrar a la prepa sin examen y asegurar tu lugar",
+    excerpt:
+      "Descubre cómo funciona la Modalidad 1 del ECOEMS 2026, qué escuelas puedes elegir y cómo asegurar tu lugar sin examen.",
+    date: "Abr 28, 2026",
+    author: "ECOGO",
+    category: "ECOEMS",
+    featured: false,
+    coverImage: "/blog/Blog9.png",
+    content: [
+      {
+        type: "paragraph",
+        text: "Si el examen te genera estrés o estás buscando una forma más directa de entrar a la preparatoria, es importante que conozcas la Modalidad 1 del ECOEMS.",
+      },
+      {
+        type: "paragraph",
+        text: "Esta modalidad permite ingresar al bachillerato sin presentar examen. Es una opción oficial del proceso que busca garantizar un lugar a los aspirantes que completen correctamente su registro.",
+      },
+
+      {
+        type: "heading",
+        text: "Qué es la Modalidad 1",
+      },
+      {
+        type: "paragraph",
+        text: "La Modalidad 1 está diseñada para quienes quieren evitar el examen y aun así asegurar un lugar en la preparatoria.",
+      },
+      {
+        type: "paragraph",
+        text: "Aquí no compites por puntaje, sino que tu asignación depende de las opciones que elijas y la disponibilidad de espacios en cada plantel.",
+      },
+
+      {
+        type: "heading",
+        text: "Qué escuelas puedes elegir sin examen",
+      },
+      {
+        type: "paragraph",
+        text: "En esta modalidad participan distintas instituciones de educación media superior.",
+      },
+      {
+        type: "list",
+        items: [
+          "Colegio de Bachilleres (COLBACH)",
+          "CONALEP",
+          "IEMS",
+          "DGETI",
+          "DGB",
+          "DGETAyCM",
+          "Opciones del Estado de México (SECTI)",
+          "Algunos planteles de la UAEMéx (Texcoco)",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Todas estas opciones no requieren examen, pero es importante elegirlas de forma estratégica.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo elegir tus opciones correctamente",
+      },
+      {
+        type: "paragraph",
+        text: "En Modalidad 1 debes elegir entre 5 y 10 opciones. Sin embargo, lo más importante no es la cantidad, sino el orden en el que las colocas.",
+      },
+      {
+        type: "paragraph",
+        text: "El sistema intentará asignarte primero a tu opción principal. Si no hay disponibilidad, continuará con las siguientes hasta encontrar un lugar.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo funciona la asignación",
+      },
+      {
+        type: "paragraph",
+        text: "La asignación no se basa en puntajes, sino en dos factores:",
+      },
+      {
+        type: "list",
+        items: [
+          "Las opciones que elegiste",
+          "La disponibilidad de lugares en cada plantel",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Si hay espacio en alguna de tus opciones, el sistema te asignará ahí.",
+      },
+
+      {
+        type: "heading",
+        text: "Ventajas de la Modalidad 1",
+      },
+      {
+        type: "list",
+        items: [
+          "No necesitas presentar examen",
+          "No tienes que pagar por prueba de admisión",
+          "Evitas la presión del examen",
+          "Tienes un lugar asegurado dentro del sistema si completas el registro correctamente",
+        ],
+      },
+
+      {
+        type: "heading",
+        text: "Fechas importantes",
+      },
+      {
+        type: "list",
+        items: ["Registro: del 17 de marzo al 17 de abril de 2026"],
+      },
+      {
+        type: "paragraph",
+        text: "Antes de registrarte, debes contar con tu Llave MX, ya que es obligatoria para iniciar el proceso.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo te puede ayudar ECOGO",
+      },
+      {
+        type: "paragraph",
+        text: "ECOGO es una app diseñada para ayudarte a tomar mejores decisiones durante todo el proceso.",
+      },
+      {
+        type: "list",
+        items: [
+          "Selección estratégica de opciones",
+          "Explicación clara del proceso",
+          "Recordatorios de fechas importantes",
+          "Acompañamiento hasta la asignación final",
+        ],
+      },
+
+      {
+        type: "paragraph",
+        text: "No presentar examen no significa que sea más fácil, sino que requiere una mejor estrategia al momento de elegir.",
+      },
+      {
+        type: "paragraph",
+        text: "Si eliges correctamente, puedes asegurar tu lugar sin pasar por el proceso de examen.",
+      },
+    ],
+  },
+  {
+    slug: "que-estudiar-ecoems-2026-materias-examen",
+    title:
+      "Qué estudiar para el ECOEMS 2026: las materias reales del examen UNAM/IPN",
+    excerpt:
+      "Conoce las materias que vienen en el examen ECOEMS 2026 y cómo empezar a estudiar de forma estratégica.",
+    date: "Abr 28, 2026",
+    author: "ECOGO",
+    category: "ECOEMS",
+    featured: false,
+    coverImage: "/blog/Blog8.png",
+    content: [
+      {
+        type: "paragraph",
+        text: "Si elegiste la modalidad con examen o estás considerando UNAM o IPN, es normal preguntarte qué necesitas estudiar exactamente. A diferencia de otras opciones, aquí no basta con registrarte, necesitas prepararte de forma estratégica.",
+      },
+      {
+        type: "paragraph",
+        text: "El examen no es improvisado. Es una prueba estructurada que mide diferentes conocimientos al mismo tiempo. Se trata de un examen en línea de 128 preguntas de opción múltiple, por lo que además de dominar los temas, debes sentirte cómodo resolviendo todo en computadora y administrando bien tu tiempo.",
+      },
+
+      {
+        type: "heading",
+        text: "Las materias que vienen en el examen",
+      },
+      {
+        type: "paragraph",
+        text: "El examen está dividido en 10 áreas específicas, y cada una tiene peso en tu resultado final.",
+      },
+      {
+        type: "list",
+        items: [
+          "Razonamiento matemático",
+          "Matemáticas",
+          "Español",
+          "Razonamiento verbal",
+          "Historia",
+          "Formación cívica y ética",
+          "Física",
+          "Química",
+          "Biología",
+          "Geografía",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Las materias de ciencias se evalúan por separado, lo que significa que no puedes estudiarlas como un solo bloque. Cada una requiere atención específica.",
+      },
+
+      {
+        type: "heading",
+        text: "El error más común al estudiar",
+      },
+      {
+        type: "paragraph",
+        text: "Muchos estudiantes se enfocan solo en matemáticas y español, dejando de lado otras materias. Sin embargo, el examen evalúa equilibrio, no solo fortalezas individuales.",
+      },
+      {
+        type: "paragraph",
+        text: "También es común estudiar sin estrategia, sin saber cuánto tiempo dedicar a cada área o sin practicar en condiciones similares al examen real.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo estudiar de forma inteligente",
+      },
+      {
+        type: "paragraph",
+        text: "Para mejorar tu resultado, es importante estudiar con estrategia. Identifica en qué materias eres fuerte y en cuáles necesitas reforzar.",
+      },
+      {
+        type: "list",
+        items: [
+          "Prioriza tus áreas débiles",
+          "Practica en formato digital",
+          "Organiza tu tiempo de estudio",
+          "No descuides ninguna materia",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Recuerda que también necesitas cumplir con un promedio mínimo de 7.0 para poder acceder a opciones como UNAM o IPN.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo te puede ayudar ECOGO",
+      },
+      {
+        type: "paragraph",
+        text: "ECOGO es una app diseñada para ayudarte a estudiar de forma organizada y efectiva durante todo el proceso.",
+      },
+      {
+        type: "list",
+        items: [
+          "Guía clara de temas por materia",
+          "Organización de estudio por etapas",
+          "Práctica tipo examen",
+          "Preparación específica para UNAM/IPN",
+        ],
+      },
+
+      {
+        type: "paragraph",
+        text: "El examen no es imposible, pero tampoco es algo que puedas dejar para el último momento.",
+      },
+      {
+        type: "paragraph",
+        text: "La diferencia no la hace quién estudia más, sino quién estudia mejor. Empieza desde ahora y construye tu preparación paso a paso.",
+      },
+    ],
+  },
+  {
+    slug: "ecoems-2026-prepas-con-examen-unam-ipn",
+    title:
+      "ECOEMS 2026: las únicas prepas que sí hacen examen (UNAM e IPN explicado fácil)",
+    excerpt:
+      "Descubre qué escuelas sí requieren examen en ECOEMS 2026, cómo es la prueba y qué debes considerar antes de elegir.",
+    date: "Abr 28, 2026",
+    author: "ECOGO",
+    category: "ECOEMS",
+    featured: false,
+    coverImage: "/blog/Blog7.png",
+    content: [
+      {
+        type: "paragraph",
+        text: "Si estás en este proceso y tu objetivo es entrar a la UNAM o al IPN, hay algo que debes entender desde el inicio: en el sistema ECOEMS, la mayoría de las escuelas son de acceso directo, pero estas dos instituciones sí requieren examen.",
+      },
+      {
+        type: "paragraph",
+        text: "Mientras muchas opciones ya no piden prueba de admisión, la UNAM y el IPN mantienen un examen en línea que define el ingreso.",
+      },
+
+      {
+        type: "heading",
+        text: "Qué escuelas sí hacen examen",
+      },
+      {
+        type: "paragraph",
+        text: "Dentro del sistema ECOEMS, únicamente dos instituciones aplican examen:",
+      },
+      {
+        type: "list",
+        items: [
+          "UNAM (Escuela Nacional Preparatoria y CCH)",
+          "IPN (CECyT y CET)",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "No hay más opciones con examen dentro del sistema. Si eliges alguna de estas escuelas, deberás presentar la prueba.",
+      },
+
+      {
+        type: "heading",
+        text: "Requisitos importantes que debes cumplir",
+      },
+      {
+        type: "paragraph",
+        text: "Para poder elegir UNAM o IPN, necesitas cumplir con ciertos requisitos desde el registro.",
+      },
+      {
+        type: "list",
+        items: [
+          "Promedio mínimo de 7.0 en secundaria",
+          "Elegir Modalidad 2 o Modalidad 3",
+          "Pagar el examen (aproximadamente $450 pesos)",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Si no cumples con estos requisitos, el sistema no te permitirá seleccionar estas opciones.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo es el examen",
+      },
+      {
+        type: "paragraph",
+        text: "El examen es completamente en línea y consta de 128 preguntas de opción múltiple.",
+      },
+      {
+        type: "paragraph",
+        text: "Evalúa distintas áreas de conocimiento al mismo tiempo, por lo que requiere preparación integral.",
+      },
+      {
+        type: "list",
+        items: [
+          "Matemáticas",
+          "Razonamiento matemático",
+          "Español",
+          "Razonamiento verbal",
+          "Historia",
+          "Formación cívica y ética",
+          "Física",
+          "Química",
+          "Biología",
+          "Geografía",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Todas las materias cuentan, por lo que no es recomendable enfocarse solo en algunas.",
+      },
+
+      {
+        type: "heading",
+        text: "Fechas clave del proceso",
+      },
+      {
+        type: "list",
+        items: [
+          "Registro: del 17 de marzo al 17 de abril de 2026",
+          "Indicaciones del examen: del 18 al 22 de mayo",
+          "Resultados: 18 de agosto de 2026",
+        ],
+      },
+
+      {
+        type: "heading",
+        text: "El error más común al elegir modalidad",
+      },
+      {
+        type: "paragraph",
+        text: "Elegir únicamente Modalidad 2 puede ser riesgoso. Si no alcanzas el puntaje necesario, no tendrás una opción automática dentro del sistema.",
+      },
+      {
+        type: "paragraph",
+        text: "En cambio, la Modalidad 3 permite incluir opciones sin examen como respaldo, aumentando tus probabilidades de obtener un lugar.",
+      },
+
+      {
+        type: "heading",
+        text: "Cómo te puede ayudar ECOGO",
+      },
+      {
+        type: "paragraph",
+        text: "ECOGO es una app diseñada para ayudarte a entender y navegar todo el proceso ECOEMS sin errores.",
+      },
+      {
+        type: "list",
+        items: [
+          "Explicación clara de modalidades",
+          "Guía para entender el examen",
+          "Recordatorios de fechas importantes",
+          "Preparación para UNAM e IPN",
+        ],
+      },
+
+      {
+        type: "paragraph",
+        text: "Entrar a la UNAM o al IPN no depende de la suerte. Depende de entender el proceso, tomar buenas decisiones y prepararte correctamente.",
+      },
+      {
+        type: "paragraph",
+        text: "Si tu objetivo es una de estas escuelas, el examen es el camino. Y entre mejor te prepares, más cerca estarás de tu primera opción.",
+      },
+    ],
+  },
+  {
     slug: "llave-mx-ecoems-2026-como-crear",
     title: "Llave MX 2026: el primer paso obligatorio para entrar a la prepa",
     excerpt:
@@ -26,7 +731,7 @@ export const blogPosts: BlogPost[] = [
     date: "Abr 17, 2026",
     author: "ECOGO",
     category: "ECOEMS",
-    featured: true,
+    featured: false,
     coverImage: "/blog/Blog4.jpg",
     content: [
       {
@@ -264,7 +969,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Fechas clave, modalidades y errores que debes evitar en el proceso ECOEMS 2026.",
     date: "Abr 17, 2026",
-    coverImage: "/blog/Blog6.jpeg",
+    coverImage: "/blog/Blog4.jpg",
     author: "ECOGO",
     category: "ECOEMS",
     content: [
