@@ -20,7 +20,6 @@ const DiagnosticBanner = () => {
             }}
           />
           <div className="relative z-10 flex flex-col [@media(min-width:700px)]:flex-row items-center gap-6 px-8 py-8 [@media(min-width:700px)]:px-12 [@media(min-width:700px)]:py-10">
-
             {/* Contenedor de la Imagen */}
             <div className="flex-shrink-0 w-40 h-40 [@media(min-width:700px)]:w-48 [@media(min-width:700px)]:h-48 relative order-first">
               <Image
@@ -39,8 +38,13 @@ const DiagnosticBanner = () => {
               >
                 ¿Listo para saber que tan preparado estás?
                 <div className="flex flex-col md:flex-row md:gap-2 items-center justify-center [@media(min-width:700px)]:justify-end">
-                  <p className="text-2xl font-semibold">Realiza tu examen diagnóstico </p>
-                  <span className="text-2xl font-semibold" style={{ color: "#472E18" }}>
+                  <p className="text-2xl font-semibold">
+                    Realiza tu examen diagnóstico{" "}
+                  </p>
+                  <span
+                    className="text-2xl font-semibold"
+                    style={{ color: "#472E18" }}
+                  >
                     completamente gratis.
                   </span>
                 </div>
@@ -63,7 +67,7 @@ const DiagnosticBanner = () => {
                 className="inline-block px-7 py-3 rounded-full font-bold text-sm transition-all duration-200 shadow-md hover:scale-105 hover:shadow-lg active:scale-95"
                 style={{ backgroundColor: "#472E18", color: "#FFF9E4" }}
               >
-                Hacer examen diagnóstico
+                Hacer examen simulador
               </a>
             </div>
           </div>
