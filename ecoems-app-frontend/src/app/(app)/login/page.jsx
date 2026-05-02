@@ -3,16 +3,20 @@
 import Link from "next/link";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { signInWithEmail, signInWithGoogle } from "@/lib/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-function SignIn() {
+function SignInForm() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get('redirect');
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
+
+    const safeRedirect = redirectTo?.startsWith('/') ? redirectTo : '/home';
 
     const handleEmailSignIn = async (e) => {
         e.preventDefault();
@@ -28,7 +32,7 @@ function SignIn() {
             setError(signInError);
             setLoading(false);
         } else {
-            router.push("/home");
+            router.push(safeRedirect);
         }
     };
 
@@ -122,4 +126,10 @@ function SignIn() {
     );
 }
 
-export default SignIn;
+export default function SignIn() {
+    return (
+        <Suspense fallback={null}>
+            <SignInForm />
+        </Suspense>
+    );
+}

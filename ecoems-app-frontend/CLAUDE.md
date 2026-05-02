@@ -18,6 +18,7 @@ Plataforma de preparación para el examen ECOEMS (Examen de Conocimiento y Habil
 
 ```
 src/
+├── proxy.ts               # Route guard: protege rutas, redirige no-autenticados a /login
 ├── app/
 │   ├── layout.js              # Root layout (fuente Outfit, lang="es")
 │   ├── globals.css            # Variables CSS del tema y base de Tailwind
@@ -25,18 +26,19 @@ src/
 │   ├── plans/page.jsx         # Comparación de planes freemium/premium
 │   ├── auth/
 │   │   └── callback/route.js  # Route Handler: intercambia code/token y crea perfil en backend
-│   └── app/                   # Rutas protegidas de la aplicación
-│       ├── login/page.jsx
-│       ├── signup/page.jsx
-│       ├── email-confirmation/page.jsx  # Pantalla post-registro (revisa tu correo)
-│       ├── home/page.jsx      # Dashboard con selector de examen
-│       ├── exam/page.jsx      # Examen activo con preguntas
-│       ├── analytics/page.jsx # Estadísticas y progreso del usuario
-│       ├── profile/page.jsx   # Perfil y configuración del usuario
-│       └── program/page.jsx   # Programa de estudio ECOEMS
+│   └── (app)/                 # Route group — rutas protegidas (el (app) NO aparece en la URL)
+│       ├── login/page.jsx     # → /login
+│       ├── signup/page.jsx    # → /signup
+│       ├── email-confirmation/page.jsx  # → /email-confirmation
+│       ├── home/page.jsx      # → /home  (dashboard con selector de examen)
+│       ├── exam/page.jsx      # → /exam
+│       ├── analytics/page.jsx # → /analytics
+│       ├── profile/page.jsx   # → /profile
+│       ├── program/page.jsx   # → /program
+│       └── coming-soon/page.jsx  # → /coming-soon
 ├── components/
-│   ├── NavBarDesktop.jsx      # Navbar fijo superior (oculto en mobile)
-│   ├── NavBarMovile.jsx       # Navbar fijo inferior (oculto en desktop)
+│   ├── NavBarDesktop.jsx      # Navbar fijo superior (oculto en mobile) — dropdown con signOut al hacer clic en avatar
+│   ├── NavBarMovile.jsx       # Navbar fijo inferior (oculto en desktop) — dropdown con signOut al hacer clic en avatar
 │   ├── Announcement_box.jsx
 │   ├── Timer.jsx
 │   ├── MarginTop.jsx / MarginBottom.jsx  # Espaciado para compensar navbars fijos
@@ -67,7 +69,7 @@ src/
 └── utils/
     ├── supabase/
     │   ├── client.ts          # createBrowserClient — solo para lib/api (no usar directo en páginas)
-    │   └── server.ts          # createServerClient con cookies (Server Components, middleware)
+    │   └── server.ts          # createServerClient con cookies (Server Components, proxy)
     ├── ecoems_program.js      # Estructura del programa ECOEMS (materias > temas > subtemas)
     └── questions_examples.js  # Preguntas de ejemplo (datos mock)
 ```
@@ -165,20 +167,41 @@ NEXT_PUBLIC_API_URL=...
 ```
 
 - **Desde componentes**: usar funciones de `@/lib/api` (nunca `createClient()` directo)
-- **Server Components / middleware**: usar `createClient()` de `@/utils/supabase/server`
+- **Server Components / proxy**: usar `createClient()` de `@/utils/supabase/server`
 - Métodos implementados: email/password y Google OAuth
 - Facebook OAuth está en la UI pero sin implementar
+
+### Protección de rutas (`src/proxy.ts`)
+
+El archivo `proxy.ts` (equivalente al `middleware.ts` de Next.js ≤15 — renombrado en v16) actúa como route guard:
+
+| Ruta | Sin sesión | Con sesión |
+|---|---|---|
+| `/home`, `/exam`, `/analytics`, `/profile`, `/program`, `/coming-soon` | → `/login?redirect=<ruta>` | pasa |
+| `/login`, `/signup` | pasa | → `/home` |
+| Todo lo demás (`/`, `/plans`, `/auth/callback`, estáticos) | pasa | pasa |
+
+Reglas críticas al modificar `proxy.ts`:
+- Usar **`getUser()`** — nunca `getSession()` (getSession no verifica contra servidores de Supabase)
+- Siempre devolver `supabaseResponse` (no un `NextResponse.next()` nuevo) para no romper el refresco de tokens
+- Al redirigir, copiar cookies de `supabaseResponse` al redirect para preservar el token
+
+### Flujo de login con redirect
+
+`/login` acepta el parámetro `?redirect=/ruta` y redirige ahí tras autenticarse:
+- El proxy lo inyecta automáticamente cuando bloquea una ruta protegida
+- Validación de seguridad: solo se acepta si empieza con `/` (previene open redirect)
 
 ### Flujo de registro completo
 
 1. Usuario llena el form → `signUp()` llama a `supabase.auth.signUp()` con `emailRedirectTo: /auth/callback`
 2. Supabase envía el correo de confirmación; `name` y `last_name` se guardan en `user_metadata`
-3. `signUp()` retorna sin llamar al backend — solo redirige a `/app/email-confirmation`
+3. `signUp()` retorna sin llamar al backend — solo redirige a `/email-confirmation`
 4. Usuario hace clic en el link de su correo → llega a `/auth/callback`
 5. El callback intercambia el `code` (PKCE) o `token_hash` (OTP) por una sesión
 6. El callback llama a `POST /users/me` con el JWT y los datos de `user_metadata`
-7. `201` o `409` (perfil ya existía) → redirect a `/app/home`
-8. Cualquier otro error → redirect a `/app/signup?error=profile_creation_failed`
+7. `201` o `409` (perfil ya existía) → redirect a `/coming-soon`
+8. Cualquier otro error → redirect a `/signup?error=profile_creation_failed`
 
 **Detección de email duplicado en `signUp()`:**
 - Sin confirmación de email: Supabase retorna `error.message === 'User already registered'`
@@ -228,8 +251,10 @@ npm run lint     # Linting con ESLint
 
 ## Notas importantes
 
+- **`proxy.ts` no `middleware.ts`**: en Next.js 16 el archivo de middleware se renombró a `proxy.ts` y la función exportada se llama `proxy` (no `middleware`). Crear un `middleware.ts` no tendrá efecto.
 - **React Compiler está activo**: evitar patrones que rompan las reglas de React (efectos en el render, mutaciones de estado directas)
 - **Tailwind v4**: no existe `tailwind.config.js`; cualquier extensión del tema va en `globals.css` con `@theme inline`
 - **NavBars fijos**: usar `<MarginTop />` y `<MarginBottom />` en páginas protegidas para compensar el espacio de los navbars fijos
 - **Next.js 16**: tiene breaking changes respecto a versiones anteriores — consultar `node_modules/next/dist/docs/` antes de usar APIs de Next.js
 - **`api` client solo en cliente**: `src/lib/api/client.js` no funciona en Route Handlers de servidor; usar `fetch` directo con `session.access_token`
+- **Caché `.next` y cambios de rutas**: Next.js 16 usa Turbopack por defecto en dev y mantiene un caché persistente en `.next/dev/cache/turbopack/`. Si se reorganiza la estructura de rutas (ej. renombrar carpetas), ese caché queda corrupto y puede causar crash del sistema por agotamiento de RAM al arrancar `npm run dev`. Solución: borrar `.next/` antes de levantar el servidor. Quien tenga el proyecto localmente con la estructura anterior necesita hacer `rm -rf .next` una vez. Clones frescos no tienen este problema.
