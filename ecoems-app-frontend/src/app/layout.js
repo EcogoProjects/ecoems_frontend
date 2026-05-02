@@ -1,10 +1,12 @@
-import { Outfit} from "next/font/google";
+import { Outfit } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const outfit = Outfit({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-outfit'
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-outfit",
 });
 
 export const metadata = {
@@ -14,13 +16,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="es"
-      className={`${outfit.variable} h-full antialiased`}
-    >
+    <html lang="es" className={`${outfit.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         {children}
+        <Analytics />
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
     </html>
   );
 }
