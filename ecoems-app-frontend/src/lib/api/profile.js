@@ -12,6 +12,25 @@ export async function getProfile() {
 }
 
 /**
+ * Obtiene información básica del usuario para poblar el store global.
+ * GET /users/me/basic-info
+ * @returns {{ data: { name, avatar_url, onboarding_completed, plan_type }|null, error: string|null }}
+ */
+export async function getUserBasicInfo() {
+  return api.get('/users/me/basic-info')
+}
+
+/**
+ * Actualiza perfil + completa el onboarding del usuario.
+ * PATCH /users/me
+ * @param {{ avatar_url, state, town, target_school_id, gender, phone?, onboarding_completed }} data
+ * @returns {{ data: object|null, error: string|null }}
+ */
+export async function patchUserMe(data) {
+  return api.patch('/users/me', data)
+}
+
+/**
  * Actualiza campos del perfil. Solo se envían los campos que cambian.
  * PUT /api/v1/profile
  * @param {{ username?: string, phone?: string, school?: string, city?: string, address?: string }} updates

@@ -6,9 +6,11 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { signOut } from "@/lib/api";
+import { useUserStore } from "@/store/userStore";
 
 function NavBarMovile() {
     const image_url = "/assets/ecogo_avatar_04.png";
+    const name = useUserStore((s) => s.name);
     const pathname = usePathname();
     const router = useRouter();
     const [menuOpen, setMenuOpen] = useState(false);
@@ -23,6 +25,7 @@ function NavBarMovile() {
             setSignOutError('No se pudo cerrar sesión. Intenta de nuevo.');
             setSigningOut(false);
         } else {
+            useUserStore.getState().clear();
             router.push('/login');
         }
     };
@@ -60,7 +63,7 @@ function NavBarMovile() {
                                             className="rounded-full"
                                         />
                                     </div>
-                                    <p className="text-sm font-semibold text-white truncate">Nombre de Usuario</p>
+                                    <p className="text-sm font-semibold text-white truncate">{name}</p>
                                 </div>
                                 <div className="border-t border-white/10 mx-3" />
                                 <button

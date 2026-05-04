@@ -4,7 +4,8 @@ import Link from "next/link";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useState, Suspense } from "react";
-import { signInWithEmail, signInWithGoogle } from "@/lib/api";
+import { signInWithEmail, signInWithGoogle, getUserBasicInfo } from "@/lib/api";
+import { setOnboardingCookie } from "@/utils/onboardingCookie";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function SignInForm() {
@@ -31,8 +32,15 @@ function SignInForm() {
         if (signInError) {
             setError(signInError);
             setLoading(false);
-        } else {
+            return;
+        }
+
+        const { data: basicInfo } = await getUserBasicInfo();
+        if (basicInfo?.onboarding_completed) {
+            setOnboardingCookie();
             router.push(safeRedirect);
+        } else {
+            router.push('/initial-registration');
         }
     };
 

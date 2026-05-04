@@ -65,3 +65,26 @@ async function createBackendProfile(session, origin) {
     return NextResponse.redirect(`${origin}/login?error=servidor_no_disponible`)
   }
 }
+
+async function redirectAfterProfile(accessToken, origin) {
+  try {
+    const res = await fetch(`${BASE_URL}/users/me/basic-info`, {
+      headers: { 'Authorization': `Bearer ${accessToken}` },
+    })
+    if (res.ok) {
+      const data = await res.json()
+      if (data.onboarding_completed) {
+        const response = NextResponse.redirect(`${origin}/home`)
+        response.cookies.set('onboarding', 'done', {
+          path: '/',
+          secure: true,
+          sameSite: 'strict',
+        })
+        return response
+      }
+    }
+  } catch {
+    // Si falla la consulta, mandamos a onboarding de todas formas
+  }
+  return NextResponse.redirect(`${origin}/initial-registration`)
+}
