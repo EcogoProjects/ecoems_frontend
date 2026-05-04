@@ -25,6 +25,11 @@ Las siguientes dependencias pertenecen a la conexión con supabase:
 npm install @supabase/supabase-js @supabase/ssr
 ```
 
+Las sisguiente dependencias corresponden a el renderizado de preguntas:
+```bash
+npm install react-markdown remark-math rehype-katex katex
+```
+
 ## Ejecución
 ```bash
 cd ecoems-app-frontend
