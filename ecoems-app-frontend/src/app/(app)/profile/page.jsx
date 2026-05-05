@@ -13,7 +13,7 @@ function ProfilePage() {
     
     const [username, setUsername] = useState("Nombre de Usuario");
     const email = "ejemplo@gmail.com"
-    const [phone_number, setPhone_number] = useState("+1234567890");
+    const [phone_number, setPhone_number] = useState("+1234567893");
     const plan_start = "04/26";
     const plan_end = "07/26"
 

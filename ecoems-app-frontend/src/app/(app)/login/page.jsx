@@ -6,6 +6,7 @@ import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useState, Suspense } from "react";
 import { signInWithEmail, signInWithGoogle, getUserBasicInfo } from "@/lib/api";
 import { setOnboardingCookie } from "@/utils/onboardingCookie";
+import { useUserStore } from "@/store/userStore";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function SignInForm() {
@@ -36,6 +37,8 @@ function SignInForm() {
         }
 
         const { data: basicInfo } = await getUserBasicInfo();
+        useUserStore.getState().setUser({ ...(basicInfo ?? {}), isLoaded: true });
+
         if (basicInfo?.onboarding_completed) {
             setOnboardingCookie();
             router.push(safeRedirect);

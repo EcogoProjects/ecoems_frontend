@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "@/lib/api";
 import { useUserStore } from "@/store/userStore";
+import { clearOnboardingCookie } from "@/utils/onboardingCookie";
 
 function NavBarDesktop() {
     const image_url = "/assets/ecogo_avatar_04.png";
@@ -23,6 +24,7 @@ function NavBarDesktop() {
             setSignOutError('No se pudo cerrar sesión. Intenta de nuevo.');
             setSigningOut(false);
         } else {
+            clearOnboardingCookie();
             useUserStore.getState().clear();
             router.push('/login');
         }
