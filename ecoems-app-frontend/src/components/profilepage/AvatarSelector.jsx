@@ -13,12 +13,11 @@ function AvatarSelector({ avatars, onSelect, onClose }) {
                 </div>
                 
                 <div className="flex justify-center flex-wrap gap-3">
-                    {avatars.map((avatar, index) => (
-                        <div key={index} className="cursor-pointer
-                        rounded-full overflow-hidden" onClick={() => onSelect(avatar)}>
-                            <Image src={avatar} 
-                            alt={`Avatar ${index + 1}`} 
-                            width={80} height={80} 
+                    {avatars.map((avatar) => (
+                        <div key={avatar.id} className="cursor-pointer rounded-full overflow-hidden" onClick={() => onSelect(avatar.avatar_url)}>
+                            <Image src={avatar.avatar_url}
+                            alt={avatar.name}
+                            width={80} height={80}
                             className="rounded-full border-3 border-base-dark" />
                         </div>
                     ))}

@@ -61,13 +61,14 @@ src/
 ├── store/
 │   └── userStore.ts           # Store Zustand global: name, avatar_url, onboarding_completed, plan_type, isLoaded
 ├── hooks/
-│   └── useEstadosMunicipios.ts
+│   ├── useEstadosMunicipios.ts
+│   └── useProfile.ts              # Carga y cachea el perfil completo del usuario (GET /users/me)
 ├── lib/
 │   ├── api/                   # Toda la capa de I/O con Supabase — SIEMPRE usar esto
 │   │   ├── index.js           # Re-exporta todo: import { fn } from '@/lib/api'
 │   │   ├── auth.js            # signInWithEmail, signInWithGoogle, signUp, signOut, getUser, getSession, onAuthStateChange
 │   │   ├── client.js          # Fetcher base (solo cliente — NO usar en Route Handlers de servidor)
-│   │   ├── profile.js         # getUserBasicInfo, patchUserMe, getProfile, updateProfile, updateAvatar
+│   │   ├── profile.js         # getUserMe, getUserBasicInfo, patchUserMe, getProfile, updateProfile, updateAvatar
 │   │   ├── exam.js            # getQuestions, saveExamResult, getExamHistory
 │   │   ├── analytics.js       # getUserStats, getSubjectStats, getTopSubjects, getWeakSubjects, getProgressHistory
 │   │   └── subscription.js    # getSubscription, isPremium
@@ -152,6 +153,7 @@ const { data, error } = await api.post('/api/v1/exam-results', payload)
 | Módulo | Método | Endpoint |
 |---|---|---|
 | **users** | POST | `/users/me` |
+| | GET | `/users/me` |
 | | GET | `/users/me/basic-info` |
 | | PATCH | `/users/me` |
 | **schools** | GET | `/schools` |
@@ -292,4 +294,5 @@ npm run lint     # Linting con ESLint
 - **NavBars fijos**: usar `<MarginTop />` y `<MarginBottom />` en páginas protegidas para compensar el espacio de los navbars fijos
 - **Next.js 16**: tiene breaking changes respecto a versiones anteriores — consultar `node_modules/next/dist/docs/` antes de usar APIs de Next.js
 - **`api` client solo en cliente**: `src/lib/api/client.js` no funciona en Route Handlers de servidor; usar `fetch` directo con `session.access_token`
+- **`useProfile` y caché de módulo**: `src/hooks/useProfile.ts` usa una variable `let profileCache` a nivel de módulo (fuera del componente) para cachear el perfil completo del usuario. Sobrevive al desmontaje del componente y evita refetches al navegar hacia atrás. Si se necesita invalidar el caché (ej. tras guardar cambios en el perfil), asignar `profileCache = null` antes de navegar. El hook combina `getUserMe()` + `getUser()` en paralelo y expone `{ data, isLoading }`.
 - **Caché `.next` y cambios de rutas**: Next.js 16 usa Turbopack por defecto en dev y mantiene un caché persistente en `.next/dev/cache/turbopack/`. Si se reorganiza la estructura de rutas (ej. renombrar carpetas), ese caché queda corrupto y puede causar crash del sistema por agotamiento de RAM al arrancar `npm run dev`. Solución: borrar `.next/` antes de levantar el servidor. Quien tenga el proyecto localmente con la estructura anterior necesita hacer `rm -rf .next` una vez. Clones frescos no tienen este problema.

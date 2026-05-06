@@ -21,6 +21,15 @@ export async function getUserBasicInfo() {
 }
 
 /**
+ * Obtiene el perfil completo del usuario autenticado.
+ * GET /users/me
+ * @returns {{ data: { name, last_name, phone, gender, state, town, avatar_url, active_plan, target_school }|null, error: string|null }}
+ */
+export async function getUserMe() {
+  return api.get('/users/me')
+}
+
+/**
  * Actualiza perfil + completa el onboarding del usuario.
  * PATCH /users/me
  * @param {{ avatar_url, state, town, target_school_id, gender, phone?, onboarding_completed }} data
