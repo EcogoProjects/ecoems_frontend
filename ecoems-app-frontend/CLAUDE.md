@@ -38,7 +38,7 @@ src/
 │       └── coming-soon/page.jsx  # → /coming-soon
 ├── components/
 │   ├── AppProvider.tsx        # Puebla el store de Zustand en page refresh / navegación directa con sesión existente
-│   ├── NavBarDesktop.jsx      # Navbar fijo superior (oculto en mobile) — dropdown con signOut al hacer clic en avatar
+│   ├── NavBarDesktop.jsx      # Navbar fijo superior (oculto en mobile) — altura fija h-14; izquierda: logo + links de nav (Home, Dashboard) con indicador activo border-b en --base-hard-color via usePathname; derecha: botón avatar+nombre abre dropdown (w-64) con link a /profile y signOut
 │   ├── NavBarMovile.jsx       # Navbar fijo inferior (oculto en desktop) — dropdown con signOut al hacer clic en avatar
 │   ├── Announcement_box.jsx
 │   ├── Timer.jsx

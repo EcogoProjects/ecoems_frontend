@@ -170,14 +170,14 @@ function SignUp() {
                     {loading ? "Registrando..." : "Registrarse"}
                 </button>
 
-                {/* <div className="flex gap-0.5">
+                <div className="flex gap-0.5">
                     <p className="text-text-bottom-soft lg:text-base-dark">
                         ¿Ya tienes una cuenta?
                         <Link href="/login" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
                             Inicia sesión
                         </Link>
                     </p>
-                </div> */}
+                </div> 
             </form>
         </div>
     );
