@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 
-function AvatarSelector({ avatars, onSelect, onClose }) {
+function AvatarSelector({ avatars, onSelect, onClose, isSaving = false }) {
     const [selected, setSelected] = useState(null);
 
     return (
@@ -10,7 +10,7 @@ function AvatarSelector({ avatars, onSelect, onClose }) {
             <div className="bg-base-soft p-6 rounded-2xl max-w-md w-full flex flex-col gap-5">
                 <div className="flex justify-between items-center">
                     <h2 className="text-lg font-bold">Selecciona un avatar</h2>
-                    <button onClick={onClose} className="cursor-pointer hover:opacity-70 transition-opacity">
+                    <button onClick={onClose} disabled={isSaving} className="cursor-pointer hover:opacity-70 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed">
                         <IoCloseSharp size={20} />
                     </button>
                 </div>
@@ -42,10 +42,10 @@ function AvatarSelector({ avatars, onSelect, onClose }) {
 
                 <button
                     onClick={() => selected && onSelect(selected)}
-                    disabled={!selected}
+                    disabled={!selected || isSaving}
                     className="w-full bg-base-dark text-base-soft py-2.5 rounded-full text-[14px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                 >
-                    Guardar
+                    {isSaving ? 'Guardando...' : 'Guardar'}
                 </button>
             </div>
         </div>

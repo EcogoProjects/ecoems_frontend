@@ -37,10 +37,26 @@ function formatPlanDate(dateStr: string | undefined): string {
 }
 
 let profileCache: ProfileData | null = null;
+const subscribers = new Set<(data: ProfileData) => void>();
+
+export function updateProfileCache(updates: Partial<ProfileData>): void {
+  if (!profileCache) return;
+  profileCache = { ...profileCache, ...updates };
+  subscribers.forEach(fn => fn(profileCache!));
+}
+
+export function clearProfileCache(): void {
+  profileCache = null;
+}
 
 export function useProfile() {
   const [data, setData] = useState<ProfileData | null>(profileCache);
   const [isLoading, setIsLoading] = useState(profileCache === null);
+
+  useEffect(() => {
+    subscribers.add(setData);
+    return () => { subscribers.delete(setData); };
+  }, []);
 
   useEffect(() => {
     if (profileCache !== null) return;

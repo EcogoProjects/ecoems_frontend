@@ -8,6 +8,7 @@ import { LuHouse, LuChevronDown } from "react-icons/lu";
 import { signOut } from "@/lib/api";
 import { useUserStore } from "@/store/userStore";
 import { clearOnboardingCookie } from "@/utils/onboardingCookie";
+import { clearProfileCache } from "@/hooks/useProfile";
 
 function NavBarDesktop() {
     const image_url = useUserStore((s) => s.avatar_url);
@@ -17,6 +18,7 @@ function NavBarDesktop() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [signingOut, setSigningOut] = useState(false);
     const [signOutError, setSignOutError] = useState(null);
+    const avatarDefault = '/assets/ecogo_avatar_01.png';
 
     const handleSignOut = async () => {
         setSigningOut(true);
@@ -27,6 +29,7 @@ function NavBarDesktop() {
             setSigningOut(false);
         } else {
             clearOnboardingCookie();
+            clearProfileCache();
             useUserStore.getState().clear();
             router.push('/login');
         }
@@ -75,7 +78,7 @@ function NavBarDesktop() {
                         className={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-full transition-colors hover:bg-white/10 active:scale-95 ${menuOpen ? 'bg-white/10' : ''}`}
                     >
                         <Image
-                            src={image_url}
+                            src={image_url || avatarDefault}
                             alt="Profile Icon"
                             width={30}
                             height={30}

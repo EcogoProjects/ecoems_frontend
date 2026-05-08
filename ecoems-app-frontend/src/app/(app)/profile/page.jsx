@@ -7,11 +7,13 @@ import AvatarSelector from "@/components/profilepage/AvatarSelector";
 import { MdModeEdit } from "react-icons/md";
 import { LuCreditCard, LuUser, LuMapPin, LuSchool, LuClipboardList, LuLock } from "react-icons/lu";
 import { AiTwotoneIdcard } from "react-icons/ai";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEstadosMunicipios } from "@/hooks/useEstadosMunicipios";
 import { useProfile } from "@/hooks/useProfile";
+import { useUpdateAvatar } from "@/hooks/useUpdateAvatar";
+import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import avatarsData from "@/lib/data/avatars.json";
 
 const AVATARS = avatarsData.avatars;
@@ -132,63 +134,61 @@ function ProfileSkeleton() {
 
 function ProfilePage() {
     const { data: profileData, isLoading } = useProfile();
-
-    // synced arranca true si el caché ya existía al montar (sin lag, sin fetch)
-    const synced = useRef(profileData !== null);
-
-    // Estado editable — lazy init desde caché si existe, vacío si es primer fetch
-    const [username, setUsername] = useState(() => profileData?.name ?? "");
-    const [lastName, setLastName] = useState(() => profileData?.last_name ?? "");
-    const [gender, setGender] = useState(() => profileData?.gender ?? "");
-    const [phone_number, setPhone_number] = useState(() => profileData?.phone ?? "");
-    const [estado, setEstado] = useState(() => profileData?.state ?? "");
-    const [municipio, setMunicipio] = useState(() => profileData?.town ?? "");
-    const [image_url, setImage_url] = useState(() => profileData?.avatar_url || AVATARS[0]?.avatar_url || "");
-
-    // Sincroniza estado editable cuando llegan los datos por primera vez (sin caché)
-    useEffect(() => {
-        if (synced.current || !profileData) return;
-        synced.current = true;
-        setUsername(profileData.name);
-        setLastName(profileData.last_name);
-        setPhone_number(profileData.phone);
-        setGender(profileData.gender);
-        setEstado(profileData.state);
-        setMunicipio(profileData.town);
-        if (profileData.avatar_url) setImage_url(profileData.avatar_url);
-    }, [profileData]);
+    const { isAvatarLoading, patchAvatar } = useUpdateAvatar();
+    const { patchProfile, isProfileLoading } = useUpdateProfile();
 
     const [isEditingMain, setIsEditingMain] = useState(false);
-    const [tempUsername, setTempUsername] = useState("");
-    const [tempLastName, setTempLastName] = useState("");
-    const [tempPhone, setTempPhone] = useState("");
-    const [tempGender, setTempGender] = useState("");
-    const [tempEstado, setTempEstado] = useState("");
-    const [tempMunicipio, setTempMunicipio] = useState("");
+    const [form, setForm] = useState({
+        name:      profileData?.name      ?? '',
+        last_name: profileData?.last_name ?? '',
+        phone:     profileData?.phone     ?? '',
+        gender:    profileData?.gender    ?? '',
+        state:     profileData?.state     ?? '',
+        town:      profileData?.town      ?? '',
+    });
+    const [saveError, setSaveError] = useState(null);
 
-    const { estados, municipios } = useEstadosMunicipios(tempEstado);
+    const { estados, municipios } = useEstadosMunicipios(form.state);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleSaveMainEdits = () => {
-        setUsername(tempUsername);
-        setLastName(tempLastName);
-        setPhone_number(tempPhone);
-        setGender(tempGender);
-        setEstado(tempEstado);
-        setMunicipio(tempMunicipio);
+    const validateForm = () => {
+        if (!form.name.trim())      return 'El nombre es obligatorio.';
+        if (!form.last_name.trim()) return 'Los apellidos son obligatorios.';
+        if (!form.phone.trim())     return 'El teléfono es obligatorio.';
+        if (!form.gender)           return 'El género es obligatorio.';
+        if (!form.state)            return 'El estado es obligatorio.';
+        if (!form.town)             return 'La delegación / municipio es obligatoria.';
+        return null;
+    };
+
+    const handleSave = async () => {
+        if (!hasChanges) return;
+        const validationError = validateForm();
+        if (validationError) { setSaveError(validationError); return; }
+        setSaveError(null);
+        const { error } = await patchProfile(changed);
+        if (error) { setSaveError(error); return; }
         setIsEditingMain(false);
     };
 
     const handleCancelMainEdits = () => {
-        setTempUsername(username);
-        setTempLastName(lastName);
-        setTempPhone(phone_number);
-        setTempGender(gender);
-        setTempEstado(estado);
-        setTempMunicipio(municipio);
+        setForm({
+            name:      profileData?.name      ?? '',
+            last_name: profileData?.last_name ?? '',
+            phone:     profileData?.phone     ?? '',
+            gender:    profileData?.gender    ?? '',
+            state:     profileData?.state     ?? '',
+            town:      profileData?.town      ?? '',
+        });
+        setSaveError(null);
         setIsEditingMain(false);
     };
+
+    const changed = Object.fromEntries(
+        Object.entries(form).filter(([key, value]) => value !== profileData?.[key])
+    );
+    const hasChanges = Object.keys(changed).length > 0;
 
     if (isLoading) return <ProfileSkeleton />;
 
@@ -217,14 +217,14 @@ function ProfilePage() {
                                 className="relative w-28 h-28 flex-shrink-0 rounded-full border-3 border-base-soft shadow-[0_10px_24px_rgba(71,46,24,0.25)] overflow-hidden cursor-pointer group"
                                 onClick={() => setIsModalOpen(true)}
                             >
-                                <Image src={image_url} alt="Avatar de perfil" width={112} height={112} className="object-cover w-full h-full" />
+                                <Image src={profileData?.avatar_url || AVATARS[0]?.avatar_url} alt="Avatar de perfil" width={112} height={112} className="object-cover w-full h-full" />
                                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <MdModeEdit className="text-white text-2xl" />
                                 </div>
                             </div>
 
                             <div>
-                                <h2 className="text-[22px] font-semibold tracking-tight mb-1">{username} {lastName}</h2>
+                                <h2 className="text-[22px] font-semibold tracking-tight mb-1">{profileData?.name} {profileData?.last_name}</h2>
                                 <p className="text-[14px] opacity-75">{profileData?.email ?? ""}</p>
                             </div>
                         </div>
@@ -281,7 +281,7 @@ function ProfilePage() {
                                 Datos personales
                             </div>
                             {!isEditingMain && (
-                                <CardEditBtn onClick={() => { setTempUsername(username); setTempLastName(lastName); setTempPhone(phone_number); setTempGender(gender); setTempEstado(estado); setTempMunicipio(municipio); setIsEditingMain(true); }}>
+                                <CardEditBtn onClick={() => { setForm({ name: profileData?.name ?? '', last_name: profileData?.last_name ?? '', phone: profileData?.phone ?? '', gender: profileData?.gender ?? '', state: profileData?.state ?? '', town: profileData?.town ?? '' }); setIsEditingMain(true); }}>
                                     <MdModeEdit size={13} />
                                     Editar
                                 </CardEditBtn>
@@ -290,17 +290,24 @@ function ProfilePage() {
 
                         <div className="flex flex-col gap-4">
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <FieldRow label="Nombre(s)" value={isEditingMain ? tempUsername : username} editing={isEditingMain} onChange={(e) => setTempUsername(e.target.value)} />
-                                <FieldRow label="Apellidos" value={isEditingMain ? tempLastName : lastName} editing={isEditingMain} onChange={(e) => setTempLastName(e.target.value)} />
-                                <FieldRow label="Teléfono" value={isEditingMain ? tempPhone : phone_number} editing={isEditingMain} onChange={(e) => setTempPhone(e.target.value)} type="tel" />
-                                <FieldRow label="Género" value={isEditingMain ? tempGender : gender} editing={isEditingMain} onChange={(e) => setTempGender(e.target.value)} selectOptions={["Masculino", "Femenino", "Otro", "Prefiero no decir"]} />
-                                <FieldRow label="Estado" value={isEditingMain ? tempEstado : estado} empty={!estado} editing={isEditingMain} onChange={(e) => { setTempEstado(e.target.value); setTempMunicipio(""); }} selectOptions={estados} />
-                                <FieldRow label="Delegación / Municipio" value={isEditingMain ? tempMunicipio : municipio} empty={!municipio} editing={isEditingMain} onChange={(e) => setTempMunicipio(e.target.value)} selectOptions={municipios} disabled={isEditingMain && !tempEstado} />
+                                <FieldRow label="Nombre(s)" value={isEditingMain ? form.name : profileData?.name} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value.slice(0, 100) }))} />
+                                <FieldRow label="Apellidos" value={isEditingMain ? form.last_name : profileData?.last_name} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, last_name: e.target.value.slice(0, 100) }))} />
+                                <FieldRow label="Teléfono" value={isEditingMain ? form.phone : profileData?.phone} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} type="tel" />
+                                <FieldRow label="Género" value={isEditingMain ? form.gender : profileData?.gender} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, gender: e.target.value }))} selectOptions={["Masculino", "Femenino", "Otro", "Prefiero no decir"]} />
+                                <FieldRow label="Estado" value={isEditingMain ? form.state : profileData?.state} empty={!profileData?.state} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, state: e.target.value, town: '' }))} selectOptions={estados} />
+                                <FieldRow label="Delegación / Municipio" value={isEditingMain ? form.town : profileData?.town} empty={!profileData?.town} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, town: e.target.value }))} selectOptions={municipios} disabled={isEditingMain && !form.state} />
                             </div>
                             {isEditingMain && (
-                                <div className="flex gap-2">
-                                    <button onClick={handleSaveMainEdits} className="bg-base-dark text-base-soft px-5 py-2 rounded-full text-[13px] font-semibold hover:opacity-80 transition cursor-pointer">Guardar</button>
-                                    <button onClick={handleCancelMainEdits} className="bg-base-dark/20 text-base-dark px-5 py-2 rounded-full text-[13px] font-semibold hover:opacity-70 transition cursor-pointer">Cancelar</button>
+                                <div className="flex flex-col gap-2">
+                                    <p className={`h-11 overflow-hidden text-sm transition-opacity text-red-600 ${saveError ? 'opacity-100' : 'opacity-0 select-none'}`}>
+                                        {saveError ?? ' '}
+                                    </p>
+                                    <div className="flex gap-2">
+                                        <button onClick={handleSave} disabled={!hasChanges || isProfileLoading} className="bg-base-dark text-base-soft px-5 py-2 rounded-full text-[13px] font-semibold hover:opacity-80 transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                                            {isProfileLoading ? 'Guardando...' : 'Guardar'}
+                                        </button>
+                                        <button onClick={handleCancelMainEdits} className="bg-base-dark/20 text-base-dark px-5 py-2 rounded-full text-[13px] font-semibold hover:opacity-70 transition cursor-pointer">Cancelar</button>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -338,8 +345,12 @@ function ProfilePage() {
             {isModalOpen && (
                 <AvatarSelector
                     avatars={AVATARS}
-                    onSelect={(avatarUrl) => { setImage_url(avatarUrl); setIsModalOpen(false); }}
+                    onSelect={async (avatarUrl) => {
+                        const { error } = await patchAvatar(avatarUrl);
+                        if (!error) setIsModalOpen(false);
+                    }}
                     onClose={() => setIsModalOpen(false)}
+                    isSaving={isAvatarLoading}
                 />
             )}
             <MarginBottom />

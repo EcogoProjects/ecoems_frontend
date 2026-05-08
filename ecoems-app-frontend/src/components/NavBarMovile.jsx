@@ -8,6 +8,7 @@ import { useState } from "react";
 import { signOut } from "@/lib/api";
 import { useUserStore } from "@/store/userStore";
 import { clearOnboardingCookie } from "@/utils/onboardingCookie";
+import { clearProfileCache } from "@/hooks/useProfile";
 
 function NavBarMovile() {
     const image_url = "/assets/ecogo_avatar_04.png";
@@ -27,6 +28,7 @@ function NavBarMovile() {
             setSigningOut(false);
         } else {
             clearOnboardingCookie();
+            clearProfileCache();
             useUserStore.getState().clear();
             router.push('/login');
         }
