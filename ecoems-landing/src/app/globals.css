@@ -63,3 +63,45 @@
     font-family: 'Outfit', 'Inter', sans-serif;
   }
 }
+
+/* Target imperative DOM injections outside React loop; encapsulated in utilities for precedence */
+@layer utilities {
+  /* Prevents browser scroll hijack and enforces typography */
+  .leaflet-container {
+    z-index: 0 !important;
+    font-family: 'Outfit', sans-serif;
+    touch-action: manipulation;
+  }
+
+  /* UI contrast boost */
+  .leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 10px 20px rgba(43, 29, 20, 0.1) !important;
+  }
+  .leaflet-control-zoom a {
+    color: #4A3320 !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  }
+
+  /* Spiderfy trace styling */
+  path.leaflet-spider-leg {
+    stroke: #C89F6B !important;
+    stroke-width: 2.5px !important;
+    stroke-opacity: 0.8 !important;
+    stroke-dasharray: 8 6 !important;
+    animation: map-dash-flow 1.5s linear infinite !important;
+  }
+
+  /* Efecto cinemático cuando se enfoca una escuela */
+  .map-focus .leaflet-tile-pane {
+    filter: grayscale(0.6) brightness(0.7) contrast(1.2);
+  }
+  .leaflet-tile-pane {
+    transition: filter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Ocultar marcador nativo de <details> en Safari/Chrome */
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+}

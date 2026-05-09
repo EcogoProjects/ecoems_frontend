@@ -124,6 +124,18 @@ export default {
           "25%": { transform: "rotate(-8deg)" },
           "75%": { transform: "rotate(8deg)" },
         },
+        "map-pulse": {
+          "0%": { transform: "translate(-50%, -50%) scale(0.8)", opacity: "0.8" },
+          "100%": { transform: "translate(-50%, -50%) scale(2.5)", opacity: "0" },
+        },
+        "map-dash-flow": {
+          from: { "stroke-dashoffset": "28" },
+          to: { "stroke-dashoffset": "0" },
+        },
+        "map-radar": {
+          "0%": { "fill-opacity": "0.05", "stroke-opacity": "0.2", transform: "scale(0.98)" },
+          "100%": { "fill-opacity": "0.15", "stroke-opacity": "0.8", transform: "scale(1.02)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -135,6 +147,9 @@ export default {
         "pulse-soft": "pulse-soft 2.5s ease-in-out infinite",
         breathe: "breathe 6s ease-in-out infinite",
         wiggle: "wiggle 0.5s ease-in-out",
+        "map-pulse": "map-pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1)",
+        "map-dash-flow": "map-dash-flow 1.5s linear infinite",
+        "map-radar": "map-radar 3s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)",
       },
     },
   },
