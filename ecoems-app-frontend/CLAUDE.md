@@ -37,7 +37,8 @@ src/
 │       ├── program/page.jsx   # → /program
 │       └── coming-soon/page.jsx  # → /coming-soon
 ├── components/
-│   ├── NavBarDesktop.jsx      # Navbar fijo superior (oculto en mobile) — dropdown con signOut al hacer clic en avatar
+│   ├── AppProvider.tsx        # Puebla el store de Zustand en page refresh / navegación directa con sesión existente
+│   ├── NavBarDesktop.jsx      # Navbar fijo superior (oculto en mobile) — altura fija h-14; izquierda: logo + links de nav (Home, Dashboard) con indicador activo border-b en --base-hard-color via usePathname; derecha: botón avatar+nombre abre dropdown (w-64) con link a /profile y signOut
 │   ├── NavBarMovile.jsx       # Navbar fijo inferior (oculto en desktop) — dropdown con signOut al hacer clic en avatar
 │   ├── Announcement_box.jsx
 │   ├── Timer.jsx
@@ -57,19 +58,29 @@ src/
 │   │   └── ExamSelector.jsx
 │   └── profilepage/
 │       └── AvatarSelector.jsx
+├── store/
+│   └── userStore.ts           # Store Zustand global: name, avatar_url, onboarding_completed, plan_type, isLoaded
+├── hooks/
+│   ├── useEstadosMunicipios.ts
+│   ├── useProfile.ts              # Carga y cachea el perfil completo del usuario (GET /users/me). Exporta updateProfileCache(), clearProfileCache() y el hook useProfile() → { data, isLoading }.
+│   ├── useUpdateAvatar.ts         # PATCH de avatar: patchAvatar(avatarUrl) con isAvatarLoading.
+│   └── useUpdateProfile.ts        # PATCH de datos personales: patchProfile(payload) con isProfileLoading.
 ├── lib/
-│   └── api/                   # Toda la capa de I/O con Supabase — SIEMPRE usar esto
-│       ├── index.js           # Re-exporta todo: import { fn } from '@/lib/api'
-│       ├── auth.js            # signInWithEmail, signInWithGoogle, signUp, signOut, getUser, getSession, onAuthStateChange
-│       ├── client.js          # Fetcher base (solo cliente — NO usar en Route Handlers de servidor)
-│       ├── profile.js         # getProfile, updateProfile, updateAvatar
-│       ├── exam.js            # getQuestions, saveExamResult, getExamHistory
-│       ├── analytics.js       # getUserStats, getSubjectStats, getTopSubjects, getWeakSubjects, getProgressHistory
-│       └── subscription.js    # getSubscription, isPremium
+│   ├── api/                   # Toda la capa de I/O con Supabase — SIEMPRE usar esto
+│   │   ├── index.js           # Re-exporta todo: import { fn } from '@/lib/api'
+│   │   ├── auth.js            # signInWithEmail, signInWithGoogle, signUp, signOut, getUser, getSession, onAuthStateChange
+│   │   ├── client.js          # Fetcher base (solo cliente — NO usar en Route Handlers de servidor)
+│   │   ├── profile.js         # getUserMe, getUserBasicInfo, patchUserMe, getProfile, updateProfile, updateAvatar
+│   │   ├── exam.js            # getQuestions, saveExamResult, getExamHistory
+│   │   ├── analytics.js       # getUserStats, getSubjectStats, getTopSubjects, getWeakSubjects, getProgressHistory
+│   │   └── subscription.js    # getSubscription, isPremium
+│   └── data/
+│       └── avatars.json       # Lista de avatares disponibles para el onboarding
 └── utils/
     ├── supabase/
     │   ├── client.ts          # createBrowserClient — solo para lib/api (no usar directo en páginas)
     │   └── server.ts          # createServerClient con cookies (Server Components, proxy)
+    ├── onboardingCookie.ts    # setOnboardingCookie() / clearOnboardingCookie()
     ├── ecoems_program.js      # Estructura del programa ECOEMS (materias > temas > subtemas)
     └── questions_examples.js  # Preguntas de ejemplo (datos mock)
 ```
@@ -144,6 +155,10 @@ const { data, error } = await api.post('/api/v1/exam-results', payload)
 | Módulo | Método | Endpoint |
 |---|---|---|
 | **users** | POST | `/users/me` |
+| | GET | `/users/me` |
+| | GET | `/users/me/basic-info` |
+| | PATCH | `/users/me` |
+| **schools** | GET | `/schools` |
 | **profile** | GET | `/api/v1/profile` |
 | | PUT | `/api/v1/profile` |
 | | PATCH | `/api/v1/profile/avatar` |
@@ -186,6 +201,31 @@ Reglas críticas al modificar `proxy.ts`:
 - Siempre devolver `supabaseResponse` (no un `NextResponse.next()` nuevo) para no romper el refresco de tokens
 - Al redirigir, copiar cookies de `supabaseResponse` al redirect para preservar el token
 
+### Store de usuario y AppProvider
+
+`src/store/userStore.ts` guarda `{ name, avatar_url, onboarding_completed, plan_type, isLoaded }`. El flag `isLoaded` evita llamadas duplicadas al backend.
+
+`AppProvider` (montado en el root layout) llama a `getUserBasicInfo()` una sola vez cuando `isLoaded` es `false`. Cubre el caso de **page refresh o navegación directa a una ruta protegida** con sesión preexistente.
+
+**Importante:** `AppProvider` dispara en el primer render del layout, que puede ocurrir antes de que el usuario haya iniciado sesión (ej. cuando aterriza en `/login`). En ese caso la llamada falla, `isLoaded` queda en `true` con datos vacíos, y `AppProvider` no volverá a intentarlo. Por eso el flujo de login **debe** poblar el store directamente (ver abajo).
+
+### Flujo de login con email/contraseña
+
+1. `signInWithEmail()` → Supabase autentica y guarda la sesión
+2. `getUserBasicInfo()` → obtiene `name`, `avatar_url`, `plan_type`, `onboarding_completed`
+3. `useUserStore.getState().setUser({ ...basicInfo, isLoaded: true })` → puebla el store **antes** de redirigir
+4. Si `onboarding_completed`: `setOnboardingCookie()` + `router.push(safeRedirect)`; si no: `router.push('/initial-registration')`
+
+### Flujo de signOut
+
+1. `supabase.auth.signOut()` elimina la sesión
+2. `clearOnboardingCookie()` borra la cookie `onboarding` del browser
+3. `clearProfileCache()` resetea el caché de perfil a `null` — **crítico** para que el siguiente usuario no vea datos del anterior
+4. `useUserStore.getState().clear()` resetea el store a valores nulos (`isLoaded: false`)
+5. `router.push('/login')`
+
+Las tres limpiezas ocurren en el componente (NavBarDesktop / NavBarMovile), no en el proxy.
+
 ### Flujo de login con redirect
 
 `/login` acepta el parámetro `?redirect=/ruta` y redirige ahí tras autenticarse:
@@ -211,7 +251,7 @@ Reglas críticas al modificar `proxy.ts`:
 ## Convenciones de código
 
 - Todos los componentes son **funcionales** con hooks (`useState`, `useEffect`)
-- Sin gestión de estado global (no Redux, no Zustand, no Context)
+- Estado global con **Zustand** (`src/store/userStore.ts`) — solo para datos del usuario autenticado (`name`, `avatar_url`, `plan_type`, `onboarding_completed`, `isLoaded`)
 - Navegación client-side con `useRouter` y `usePathname` de `'next/navigation'`
 - Alias de importación `@/` apunta a `src/` (configurado en `jsconfig.json`)
 - Páginas interactivas usan `'use client'` al inicio del archivo
@@ -257,4 +297,10 @@ npm run lint     # Linting con ESLint
 - **NavBars fijos**: usar `<MarginTop />` y `<MarginBottom />` en páginas protegidas para compensar el espacio de los navbars fijos
 - **Next.js 16**: tiene breaking changes respecto a versiones anteriores — consultar `node_modules/next/dist/docs/` antes de usar APIs de Next.js
 - **`api` client solo en cliente**: `src/lib/api/client.js` no funciona en Route Handlers de servidor; usar `fetch` directo con `session.access_token`
+- **`useProfile` y caché de módulo**: `src/hooks/useProfile.ts` usa una variable `let profileCache` a nivel de módulo para cachear el perfil. Expone tres funciones además del hook:
+  - `updateProfileCache(updates)` — muta campos concretos del caché y notifica a todas las instancias activas del hook vía un `Set<setData>` de suscriptores, provocando re-render inmediato sin recargar.
+  - `clearProfileCache()` — resetea el caché a `null`. **Debe llamarse en el signOut** para evitar que el siguiente usuario vea datos del anterior.
+  - `useProfile()` → `{ data, isLoading }` — el hook se registra como suscriptor al montarse y se da de baja al desmontarse.
+- **`useUpdateAvatar`**: `src/hooks/useUpdateAvatar.ts` — PATCH del avatar. Expone `patchAvatar(avatarUrl)` e `isAvatarLoading`. Llama a `updateProfileCache` y `useUserStore.getState().setUser()` al completarse.
+- **`useUpdateProfile`**: `src/hooks/useUpdateProfile.ts` — PATCH de datos personales (`name`, `last_name`, `phone`, `gender`, `state`, `town`). Expone `patchProfile(payload)` e `isProfileLoading`. Mismo patrón de cache y store que `useUpdateAvatar`.
 - **Caché `.next` y cambios de rutas**: Next.js 16 usa Turbopack por defecto en dev y mantiene un caché persistente en `.next/dev/cache/turbopack/`. Si se reorganiza la estructura de rutas (ej. renombrar carpetas), ese caché queda corrupto y puede causar crash del sistema por agotamiento de RAM al arrancar `npm run dev`. Solución: borrar `.next/` antes de levantar el servidor. Quien tenga el proyecto localmente con la estructura anterior necesita hacer `rm -rf .next` una vez. Clones frescos no tienen este problema.

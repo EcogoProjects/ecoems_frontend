@@ -1,0 +1,24 @@
+{
+    "avatars": [    
+        {
+            "id": 1,
+            "name": "avatar-1-mapache",
+            "avatar_url": "https://gznfqbcsprhambfkzcex.supabase.co/storage/v1/object/public/Avatars/ecogo_avatar_01.png"
+        },
+        {
+            "id": 2,
+            "name": "avatar-2-conejo",
+            "avatar_url": "https://gznfqbcsprhambfkzcex.supabase.co/storage/v1/object/public/Avatars/ecogo_avatar_02.png"
+        },
+        {
+            "id": 3,
+            "name": "avatar-3-gato",
+            "avatar_url": "https://gznfqbcsprhambfkzcex.supabase.co/storage/v1/object/public/Avatars/ecogo_avatar_03.png"
+        },
+        {
+            "id": 4,
+            "name": "avatar-4-perro",
+            "avatar_url": "https://gznfqbcsprhambfkzcex.supabase.co/storage/v1/object/public/Avatars/ecogo_avatar_04.png"
+        }
+    ]
+}

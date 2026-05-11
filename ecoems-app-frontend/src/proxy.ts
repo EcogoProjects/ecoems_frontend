@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const PROTECTED_ROUTES = ['/home', '/exam', '/analytics', '/profile', '/program', '/coming-soon']
+const PROTECTED_ROUTES = ['/home', '/exam', '/analytics', '/profile', '/program', '/coming-soon', '/initial-registration']
 const AUTH_ROUTES = ['/login', '/signup']
 
 export async function proxy(request: NextRequest) {
@@ -35,24 +35,40 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route))
   const isAuthRoute = AUTH_ROUTES.some(route => pathname.startsWith(route))
+  const isOnboarding = pathname.startsWith('/initial-registration')
 
+  // Propaga cookies de Supabase al redirect para no perder el refresh de token
+  function withCookies(response: NextResponse) {
+    supabaseResponse.cookies.getAll().forEach(cookie =>
+      response.cookies.set(cookie.name, cookie.value, cookie)
+    )
+    return response
+  }
+
+  // Ruta protegida sin sesión → login
   if (isProtected && !user) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('redirect', pathname)
-    const redirectResponse = NextResponse.redirect(loginUrl)
-    // Propagar cookies de Supabase para no perder el refresh de token
-    supabaseResponse.cookies.getAll().forEach(cookie =>
-      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
-    )
-    return redirectResponse
+    return withCookies(NextResponse.redirect(loginUrl))
   }
 
+  if (user) {
+    const hasOnboarding = request.cookies.get('onboarding')?.value === 'done'
+
+    // Regla B: onboarding ya completado, intento de volver a /initial-registration → home
+    if (hasOnboarding && isOnboarding) {
+      return withCookies(NextResponse.redirect(new URL('/home', request.url)))
+    }
+
+    // Regla A: sin cookie de onboarding, cualquier ruta que no sea /initial-registration → onboarding
+    if (!hasOnboarding && !isOnboarding) {
+      return withCookies(NextResponse.redirect(new URL('/initial-registration', request.url)))
+    }
+  }
+
+  // Ruta de auth con sesión activa → home
   if (isAuthRoute && user) {
-    const redirectResponse = NextResponse.redirect(new URL('/home', request.url))
-    supabaseResponse.cookies.getAll().forEach(cookie =>
-      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
-    )
-    return redirectResponse
+    return withCookies(NextResponse.redirect(new URL('/home', request.url)))
   }
 
   return supabaseResponse
