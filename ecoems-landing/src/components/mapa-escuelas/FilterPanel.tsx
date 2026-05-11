@@ -235,22 +235,12 @@ export default function FilterPanel({
         />
 
 
-        <div className="flex gap-2">
-          <button
-            onClick={() => onFiltersChange({ clave: "", municipio: "", institucion: "" })}
-            className="flex-1 p-2.5 text-[0.85rem] rounded-xl font-bold bg-[#F5EFE6] text-[#8b6a4a] transition-all hover:bg-[#e8dfd1] hover:text-[#4A3320]"
-          >
-            Limpiar
-          </button>
-          <button
-            onClick={() => {
-              if (window.innerWidth <= 900) onTogglePanel();
-            }}
-            className="flex-[1.5] p-2.5 text-[0.85rem] rounded-xl font-bold bg-gradient-to-r from-[#4A3320] to-[#2B1D14] text-white shadow-[0_10px_20px_rgba(43,29,20,0.2)] transition-all hover:shadow-[0_10px_20px_rgba(200,159,107,0.3)] hover:-translate-y-0.5 active:scale-95"
-          >
-            Aplicar Filtros
-          </button>
-        </div>
+        <button
+          onClick={() => onFiltersChange({ clave: "", municipio: "", institucion: "" })}
+          className="w-full p-2.5 text-[0.85rem] rounded-xl font-bold bg-[#F5EFE6] text-[#8b6a4a] transition-all hover:bg-[#e8dfd1] hover:text-[#4A3320]"
+        >
+          Limpiar filtros
+        </button>
           </div>
         </div>
       )}
