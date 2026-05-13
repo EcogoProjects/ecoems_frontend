@@ -56,15 +56,6 @@ const BlogGrid = () => {
               <span className="text-xs text-muted-foreground">{featured.author}</span>
               <span className="text-xs text-muted-foreground">·</span>
               <Link href={`/blog/${featured.slug}`} className="text-xs font-semibold hover:underline" style={{ color: '#472E18' }}>Leer artículo →</Link>
-              <a
-                href="https://www.llave.gob.mx/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-auto text-xs font-semibold px-3 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap"
-                style={{ backgroundColor: '#472E18', color: '#EAD9C3' }}
-              >
-                Crear Llave MX →
-              </a>
             </div>
           </div>
         </div>

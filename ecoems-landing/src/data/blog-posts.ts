@@ -19,6 +19,328 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'plan-real-dominar-ecoems-2026',
+    title: 'Tu plan real para dominar el ECOEMS 2026 (no solo estudiar, ganar el examen)',
+    excerpt: 'Aprende una estrategia inteligente para prepararte para el ECOEMS 2026, medir tu avance y aumentar tus posibilidades de entrar a la UNAM o al IPN.',
+    date: 'May 13, 2026',
+    author: 'ECOGO',
+    category: 'Estudio',
+    featured: true,
+    coverImage: '/blog/Blog13.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Entrar a la UNAM o al IPN no es cuestión de suerte. Es cuestión de estrategia.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Claro que estudiar importa, pero lo que realmente hace la diferencia es cómo estudias, qué practicas y si sabes medir tu avance. El ECOEMS no es cualquier examen: son 128 preguntas en línea, con tiempo limitado y miles de aspirantes compitiendo por los mismos lugares.'
+      },
+      {
+        type: 'paragraph',
+        text: 'La buena noticia es que ya no tienes que prepararte a ciegas. Hoy puedes construir una estrategia real y estudiar con dirección usando herramientas adecuadas.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 1: Deja de adivinar tu nivel'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos empiezan estudiando sin saber en qué materias van bien o mal. Eso significa perder tiempo desde el inicio.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Lo primero es hacer un diagnóstico real que te muestre exactamente dónde estás parado.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No es lo mismo pensar que vas bien en matemáticas que comprobarlo con resultados. Tampoco es lo mismo ignorar una debilidad que detectarla y trabajarla desde ahora.'
+      },
+      {
+        type: 'paragraph',
+        text: 'También ayuda definir tu escuela objetivo desde el principio. Así dejas de estudiar por si acaso y empiezas a prepararte con una meta clara.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 2: Entrena todos los días'
+      },
+      {
+        type: 'paragraph',
+        text: 'No se trata de estudiar horas infinitas. Se trata de ser constante.'
+      },
+      {
+        type: 'paragraph',
+        text: 'La mejor estrategia es practicar todos los días con sesiones cortas pero enfocadas.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Lo importante no es cuánto estudias en un solo día, sino mantener el hábito de avanzar diariamente.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Y cuando te equivoques, no sigas de largo. Analiza el error, entiende por qué pasó y conviértelo en aprendizaje real.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 3: Construye bases fuertes'
+      },
+      {
+        type: 'paragraph',
+        text: 'Uno de los errores más comunes es querer avanzar rápido sin dominar lo básico.'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen no perdona vacíos importantes.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Necesitas una estructura que te permita avanzar paso a paso: entender temas, reforzarlos y luego subir de nivel.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Memorizar puede ayudar un poco, pero lo que realmente suma puntos es comprender lo que estás haciendo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 4: Mide tu progreso'
+      },
+      {
+        type: 'paragraph',
+        text: 'Este punto es clave y casi nadie lo hace.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudian durante semanas o meses sin saber si eso será suficiente, hasta que llega el resultado final.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Cuando puedes ver tu progreso en tiempo real, todo cambia.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Necesitas saber cuántos aciertos llevas, cuánto te falta y qué materias debes reforzar.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Imagínate saber que estás a pocos puntos de entrar a la escuela que quieres y tener claro qué hacer para lograrlo. Eso es ventaja.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 5: Simula el examen real'
+      },
+      {
+        type: 'paragraph',
+        text: 'Aquí es donde muchos fallan.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Estudian en cuadernos y hacen ejercicios, pero nunca practican como realmente será el examen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'El día importante cambia todo: el tiempo, la pantalla y la presión.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Por eso necesitas hacer simulacros reales: resolver 128 preguntas, controlar el tiempo y acostumbrarte al formato digital.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Cuando llegue el día, no sentirás que enfrentas algo nuevo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 6: Ajusta tu estrategia constantemente'
+      },
+      {
+        type: 'paragraph',
+        text: 'Tu preparación no debe ser fija.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Lo que hoy necesitas mejorar, mañana puede cambiar.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Por eso es importante revisar tu avance constantemente, detectar qué materias te están bajando puntos y ajustar tu enfoque.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Esa capacidad de adaptación acelera tus resultados.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La realidad'
+      },
+      {
+        type: 'paragraph',
+        text: 'No gana el que más estudia. Gana el que mejor se prepara.'
+      },
+      {
+        type: 'paragraph',
+        text: 'En un examen donde cada acierto cuenta, tener una estrategia clara puede ser la diferencia entre quedar en tu primera opción o no lograrlo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Empieza hoy'
+      },
+      {
+        type: 'paragraph',
+        text: 'No esperes a sentirte listo.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Empieza con lo que tienes, desde donde estás, pero empieza hoy.'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen no se gana el último día. Se gana con lo que haces desde ahora.'
+      }
+    ],
+  },
+  {
+    slug: 'ecogo-companero-curso-o-estudias-solo',
+    title: 'ECOGO: el compañero que te falta (aunque ya tengas curso o estudies solo)',
+    excerpt: 'Descubre cómo ECOGO complementa cursos tradicionales o estudio independiente para prepararte mejor para el ECOEMS 2026.',
+    date: 'May 13, 2026',
+    author: 'ECOGO',
+    category: 'Estrategia',
+    featured: false,
+    coverImage: '/blog/Blog12.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si estás en el proceso para entrar a la UNAM o al IPN, seguramente ya entendiste algo importante: este examen no es cualquier cosa. Son 128 preguntas en línea, con tiempo limitado y muchísima competencia.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudiantes están en uno de estos dos escenarios: ya están en un curso tradicional o están estudiando por su cuenta.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Pero ninguno de esos caminos está completo por sí solo. Aunque tengas clases, guías o disciplina, muchas veces falta práctica real, retroalimentación inmediata y claridad sobre si realmente estás avanzando.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Ahí es donde entra ECOGO.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Si ya tienes curso: esto es lo que te está faltando'
+      },
+      {
+        type: 'paragraph',
+        text: 'Tener un curso ayuda, pero muchos siguen usando métodos tradicionales mientras que el examen será completamente digital.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No es lo mismo resolver ejercicios en una libreta que enfrentarte a una pantalla, con cronómetro corriendo y presión real.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Con ECOGO puedes complementar tu curso practicando justo como será el examen: simulacros largos, preguntas tipo examen y control de tiempo.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Además, si te equivocas, puedes recibir explicaciones inmediatas sin esperar a la siguiente clase.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Eso acelera tu aprendizaje y mejora tus resultados.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Si estudias por tu cuenta: esto cambia el juego'
+      },
+      {
+        type: 'paragraph',
+        text: 'Estudiar solo es totalmente válido, pero también puede volverse confuso.'
+      },
+      {
+        type: 'paragraph',
+        text: 'A veces no sabes por dónde empezar, si realmente avanzas o si lo que estás haciendo funciona.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Con ECOGO dejas de estudiar a ciegas.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Empiezas con un diagnóstico que te muestra tu nivel actual. Después sigues una ruta clara para avanzar paso a paso, sin saltarte temas importantes.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Y además puedes ver tu progreso en tiempo real.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No solo sabes cuánto llevas recorrido, también sabes cuánto te falta para llegar a tu objetivo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'No es solo estudiar: es tener estrategia'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudiantes estudian durante meses sin saber si eso será suficiente.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Con ECOGO puedes ver tu avance, detectar áreas débiles y medir qué tan cerca estás de tu meta.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Ya no se trata de esperar a ver si alcanza. Se trata de saber que vas en camino.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Motivación real'
+      },
+      {
+        type: 'paragraph',
+        text: 'Este proceso no siempre es sencillo. Hay días de cansancio, dudas o poca motivación.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Por eso también importa tener una herramienta que te acompañe, te muestre avances y te ayude a seguir.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Empieza hoy'
+      },
+      {
+        type: 'paragraph',
+        text: 'No necesitas esperar al momento perfecto para comenzar.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Puedes empezar hoy, conocer cómo funciona y prepararte con estrategia desde ahora.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Quédate con esto'
+      },
+      {
+        type: 'paragraph',
+        text: 'No importa si tienes curso o estudias por tu cuenta. Lo importante es cómo te preparas.'
+      }
+    ],
+  },
+  {
     slug: "modalidad-3-ecoems-2026-mixta",
     title:
       "Modalidad 3 ECOEMS 2026: la estrategia inteligente para entrar a la prepa",
@@ -27,7 +349,7 @@ export const blogPosts: BlogPost[] = [
     date: "Abr 28, 2026",
     author: "ECOGO",
     category: "ECOEMS",
-    featured: true,
+    featured: false,
     coverImage: "/blog/Blog11.png",
     content: [
       {
