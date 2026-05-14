@@ -12,7 +12,7 @@ Plataforma de preparación para el examen ECOEMS (Examen de Conocimiento y Habil
 - **Supabase** (`@supabase/supabase-js` + `@supabase/ssr`) para autenticación y base de datos
 - **Recharts 3** para gráficas en analytics
 - **react-icons 5** y **@boxicons/react** para iconografía
-- Lenguaje de código: mezcla de **JS/JSX** (mayoría) y **TS** (solo utils/supabase)
+- Lenguaje de código: mezcla de **JS/JSX** (mayoría) y **TS** (utils/supabase y todos los hooks en `src/hooks/`)
 
 ## Estructura del proyecto
 
@@ -49,13 +49,16 @@ src/
 │   │   ├── CircleAvgIndicator.jsx
 │   │   ├── ExamProgressChart.jsx
 │   │   ├── SubjectScoreItem.jsx
-│   │   └── TopicAccordion.jsx
+│   │   ├── TopicAccordion.jsx
+│   │   └── TopicAccordionSkeleton.jsx  # Skeleton de carga para TopicAccordion
 │   ├── exam/                  # Componentes específicos de examen
 │   │   ├── ExamOption.jsx
 │   │   ├── ExamExplanation.jsx
-│   │   └── ExamTypeButton.jsx
+│   │   ├── ExamTypeButton.jsx
+│   │   └── ExamDescription.jsx  # Modal de configuración de examen: selects en cascada (materia→tema→subtema) con datos de useSyllabus, indicador de vidas (FaHeart), botón Comenzar deshabilitado hasta completar selección
 │   ├── homepage/
-│   │   └── ExamSelector.jsx
+│   │   ├── ExamSelector.jsx     # Botones de tipo de examen; al click en Rápido verifica canQuickExam (via useExam) y abre ExamDescription o modal de límite diario; bloquea scroll del body mientras hay modal abierto
+│   │   └── DailyLivesBar.jsx    # Barra prominente entre navbar y ExamSelector; muestra quick_exams_remaining (corazones rojos) y quick_exams_count (corazones apagados) consumiendo useExam; skeleton de puntos animados durante carga
 │   └── profilepage/
 │       └── AvatarSelector.jsx
 ├── store/
@@ -64,16 +67,19 @@ src/
 │   ├── useEstadosMunicipios.ts
 │   ├── useProfile.ts              # Carga y cachea el perfil completo del usuario (GET /users/me). Exporta updateProfileCache(), clearProfileCache() y el hook useProfile() → { data, isLoading }.
 │   ├── useUpdateAvatar.ts         # PATCH de avatar: patchAvatar(avatarUrl) con isAvatarLoading.
-│   └── useUpdateProfile.ts        # PATCH de datos personales: patchProfile(payload) con isProfileLoading.
+│   ├── useUpdateProfile.ts        # PATCH de datos personales: patchProfile(payload) con isProfileLoading.
+│   ├── useSyllabus.ts             # Carga y cachea el temario completo (GET /syllabus). Mapea name → subject/topic para TopicAccordion. → { data: SyllabusSubject[], isLoading }.
+│   └── useExam.ts                 # Gestiona sesión de examen y uso diario. Expone startExamSession(params), isLoading, session, dailyUsage, isUsageLoading, canQuickExam. Caché de módulo (dailyUsageCache) para evitar fetches duplicados.
 ├── lib/
 │   ├── api/                   # Toda la capa de I/O con Supabase — SIEMPRE usar esto
 │   │   ├── index.js           # Re-exporta todo: import { fn } from '@/lib/api'
 │   │   ├── auth.js            # signInWithEmail, signInWithGoogle, signUp, signOut, getUser, getSession, onAuthStateChange
 │   │   ├── client.js          # Fetcher base (solo cliente — NO usar en Route Handlers de servidor)
 │   │   ├── profile.js         # getUserMe, getUserBasicInfo, patchUserMe, getProfile, updateProfile, updateAvatar
-│   │   ├── exam.js            # getQuestions, saveExamResult, getExamHistory
+│   │   ├── exam.js            # startExam({ exam_type, subject_id, topic_id, subtopic_id }) → POST /exams/start; getDailyUsage() → GET /users/me/usage/daily
 │   │   ├── analytics.js       # getUserStats, getSubjectStats, getTopSubjects, getWeakSubjects, getProgressHistory
-│   │   └── subscription.js    # getSubscription, isPremium
+│   │   ├── subscription.js    # getSubscription, isPremium
+│   │   └── syllabus.js        # getSyllabus() → GET /syllabus
 │   └── data/
 │       └── avatars.json       # Lista de avatares disponibles para el onboarding
 └── utils/
@@ -82,7 +88,9 @@ src/
     │   └── server.ts          # createServerClient con cookies (Server Components, proxy)
     ├── onboardingCookie.ts    # setOnboardingCookie() / clearOnboardingCookie()
     ├── ecoems_program.js      # Estructura del programa ECOEMS (materias > temas > subtemas)
-    └── questions_examples.js  # Preguntas de ejemplo (datos mock)
+    ├── questions_examples.js  # Preguntas de ejemplo (datos mock)
+    └── exam/
+        └── examLogic.ts       # DailyUsage (interface) + canTakeQuickExam(usage) → boolean (regla: quick_exams_remaining > 0)
 ```
 
 ## Tema visual y estilos
@@ -133,7 +141,7 @@ Patrón de retorno uniforme en todas las funciones:
 | Capa | Responsable de | Módulos |
 |---|---|---|
 | **Supabase** | Auth: login, registro, OAuth, sesión | `auth.js` |
-| **Backend `localhost:8000`** | Todos los datos de la app | `profile`, `exam`, `analytics`, `subscription` |
+| **Backend `localhost:8000`** | Todos los datos de la app | `profile`, `exam`, `analytics`, `subscription`, `syllabus` |
 
 El flujo de autenticación con el backend es:
 1. Usuario se loguea → Supabase devuelve un **JWT**
@@ -158,6 +166,7 @@ const { data, error } = await api.post('/api/v1/exam-results', payload)
 | | GET | `/users/me` |
 | | GET | `/users/me/basic-info` |
 | | PATCH | `/users/me` |
+| | GET | `/users/me/usage/daily` |
 | **schools** | GET | `/schools` |
 | **profile** | GET | `/api/v1/profile` |
 | | PUT | `/api/v1/profile` |
@@ -171,6 +180,8 @@ const { data, error } = await api.post('/api/v1/exam-results', payload)
 | | GET | `/api/v1/analytics/subjects/weak?limit=` |
 | | GET | `/api/v1/analytics/progress?limit=` |
 | **subscription** | GET | `/api/v1/subscription` |
+| **syllabus** | GET | `/syllabus` |
+| **exams** | POST | `/exams/start` |
 
 ## Autenticación (Supabase)
 
@@ -303,4 +314,16 @@ npm run lint     # Linting con ESLint
   - `useProfile()` → `{ data, isLoading }` — el hook se registra como suscriptor al montarse y se da de baja al desmontarse.
 - **`useUpdateAvatar`**: `src/hooks/useUpdateAvatar.ts` — PATCH del avatar. Expone `patchAvatar(avatarUrl)` e `isAvatarLoading`. Llama a `updateProfileCache` y `useUserStore.getState().setUser()` al completarse.
 - **`useUpdateProfile`**: `src/hooks/useUpdateProfile.ts` — PATCH de datos personales (`name`, `last_name`, `phone`, `gender`, `state`, `town`). Expone `patchProfile(payload)` e `isProfileLoading`. Mismo patrón de cache y store que `useUpdateAvatar`.
+- **`useSyllabus`**: `src/hooks/useSyllabus.ts` — carga el temario completo (`GET /syllabus`) con caché de módulo (`let syllabusCache`). Mapea el campo `name` de la API a `subject` (materias) y `topic` (temas) para que `TopicAccordion` lo consuma sin cambios. Retorna `{ data: SyllabusSubject[] | null, isLoading }`. La home page muestra `<TopicAccordionSkeleton />` mientras `isLoading` es `true`.
+- **`useExam`**: `src/hooks/useExam.ts` — gestiona sesión de examen y uso diario. Caché de módulo `dailyUsageCache` (mismo patrón que `useSyllabus`) para que múltiples componentes puedan llamarlo sin fetches duplicados. Expone:
+  - `startExamSession({ exam_type, subject_id?, topic_id?, subtopic_id? })` → `{ data: ExamSession, error }` — llama a `POST /exams/start`
+  - `isLoading` — true mientras startExamSession está en curso
+  - `session: ExamSession | null` — sesión activa con `session_id`, `expires_at` y `questions[]`
+  - `dailyUsage: DailyUsage | null` — `{ usage_date, quick_exams_count, hints_used_count, quick_exams_remaining, hints_remaining }`
+  - `isUsageLoading` — true hasta que llegue la respuesta de `GET /users/me/usage/daily`
+  - `canQuickExam: boolean` — derivado de `canTakeQuickExam(dailyUsage)` en `examLogic.ts`
+- **`examLogic.ts`**: `src/utils/exam/examLogic.ts` — lógica pura de elegibilidad. `DailyUsage` interface + `canTakeQuickExam(usage): boolean` (regla: `quick_exams_remaining > 0`). El hook solo llama esta función; la decisión vive aquí.
+- **`ExamDescription`**: `src/components/exam/ExamDescription.jsx` — modal de configuración previa al examen. Selects en cascada (materia → tema → subtema) con datos de `useSyllabus`. Nombres largos se truncan a 70 chars con `clip()` + atributo `title` para tooltip. Sección de vidas: `examsRemaining` corazones rojos + `examsUsed` corazones apagados. Botón Comenzar deshabilitado (`bg-base-hard/60`) hasta que los 3 selects tienen valor.
+- **`DailyLivesBar`**: `src/components/homepage/DailyLivesBar.jsx` — barra prominente en `/home` entre la AnnouncementBox y el ExamSelector. Muestra `quick_exams_remaining` (corazones rojos FaHeart) y `quick_exams_count` (corazones apagados) con el conteo `X/N`. Durante carga: 3 círculos con `animate-pulse`. Consume `useExam()`; la caché del hook evita doble fetch con ExamSelector.
+- **Animación acordeón (grid trick)**: para animar apertura/cierre de contenido sin JavaScript de medición, usar el patrón `grid-rows-[0fr]/[1fr]` con `transition-all`. El contenido **siempre está en el DOM**; el div exterior alterna entre las dos clases y el div interior lleva `overflow-hidden`. Usado en `TopicAccordion`.
 - **Caché `.next` y cambios de rutas**: Next.js 16 usa Turbopack por defecto en dev y mantiene un caché persistente en `.next/dev/cache/turbopack/`. Si se reorganiza la estructura de rutas (ej. renombrar carpetas), ese caché queda corrupto y puede causar crash del sistema por agotamiento de RAM al arrancar `npm run dev`. Solución: borrar `.next/` antes de levantar el servidor. Quien tenga el proyecto localmente con la estructura anterior necesita hacer `rm -rf .next` una vez. Clones frescos no tienen este problema.

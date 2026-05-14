@@ -21,7 +21,7 @@ function ExamPage() {
         isModalOpen, openModal, closeModal,
         isExamFinished, finishMessage, finalScore,
         swipeOffset, isSwiping, slideDir,
-        handlePrev, handleNext, handleTimeUp,
+        handlePrev, handleNext, handleTimeUp, finishExam,
         onTouchStart, onTouchMove, onTouchEnd,
         handleOptionSelect, handleContestar, handleExplicacionDirecta,
         hasImage
@@ -45,11 +45,19 @@ function ExamPage() {
 
             <div className={`flex flex-col min-h-screen justify-center items-center md:justify-start gap-5 transition-all duration-300 ${isModalOpen || showOverlay || isExamFinished ? 'blur-md pointer-events-none select-none' : ''} pb-22 pt-10 md:pt-20`}>
 
-                <Timer
-                    initialMinutes={20}
-                    initialSeconds={0}
-                    onTimeUp={handleTimeUp}
-                />
+                <div className="flex items-center justify-between w-[90%] md:w-4/5">
+                    <Timer
+                        initialMinutes={20}
+                        initialSeconds={0}
+                        onTimeUp={handleTimeUp}
+                    />
+                    <button
+                        onClick={() => finishExam("manual", answers)}
+                        className="bg-base-dark text-white text-sm px-4 py-2 rounded-full font-semibold tracking-wider hover:opacity-80 transition-opacity cursor-pointer"
+                    >
+                        Finalizar
+                    </button>
+                </div>
 
                 <ExamHeader
                     examType="Examen"

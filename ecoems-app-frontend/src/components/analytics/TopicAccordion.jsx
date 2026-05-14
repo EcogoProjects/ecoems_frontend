@@ -48,14 +48,18 @@ export default function TopicAccordion({ topics = [] }) {
                     </span>
                   </button>
 
-                  {isOpen && subtopics.length > 0 && (
-                    <div className="mt-3 flex flex-col gap-2 border-t border-base-dark/10 pt-3">
-                      {subtopics.map((subtopic, subIndex) => (
-                        <div key={subtopic.subtopic_id ?? subtopic.title ?? subIndex} className="rounded-[18px] bg-base-soft p-3">
-                          <p className="font-semibold">{subtopic.name ?? subtopic.title}</p>
-                          {subtopic.description && <p className="text-sm opacity-80 mt-1">{subtopic.description}</p>}
+                  {subtopics.length > 0 && (
+                    <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] mt-3' : 'grid-rows-[0fr]'}`}>
+                      <div className="overflow-hidden">
+                        <div className="flex flex-col gap-2 border-t border-base-dark/10 pt-3">
+                          {subtopics.map((subtopic, subIndex) => (
+                            <div key={subtopic.subtopic_id ?? subtopic.title ?? subIndex} className="rounded-[18px] bg-base-soft p-3">
+                              <p className="font-semibold">{subtopic.name ?? subtopic.title}</p>
+                              {subtopic.description && <p className="text-sm opacity-80 mt-1">{subtopic.description}</p>}
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
                     </div>
                   )}
                 </div>
