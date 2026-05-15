@@ -18,6 +18,249 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+
+    {
+    slug: 'entrar-unam-ecoems-2026-guia-real',
+    title: '¿Quieres entrar a la UNAM? Esto es lo que nadie te explica (y necesitas saber en 2026)',
+    excerpt: 'Descubre cómo funciona realmente el ingreso a la UNAM en ECOEMS 2026, sus requisitos y la estrategia correcta para aumentar tus probabilidades.',
+    date: 'May 15, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: true,
+    coverImage: '/blog/Blog15.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si tu objetivo es entrar a la UNAM desde la preparatoria, necesitas entender cómo funciona realmente el proceso. No es tan simple como elegirla en el registro.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Dentro del sistema ECOEMS 2026, la UNAM es una de las pocas instituciones que no son de acceso directo. Esto significa que necesitas cumplir requisitos y aprobar un examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Las dos formas de estudiar en la UNAM'
+      },
+      {
+        type: 'paragraph',
+        text: 'La UNAM cuenta con dos sistemas de bachillerato, cada uno con un enfoque distinto.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Escuela Nacional Preparatoria (ENP): modelo más estructurado y tradicional',
+          'Colegio de Ciencias y Humanidades (CCH): modelo más autónomo y participativo'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Ambas opciones son válidas. La diferencia está en el tipo de aprendizaje que prefieres.'
+      },
+
+      {
+        type: 'heading',
+        text: 'El filtro real: el examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'Para ingresar a la UNAM debes presentar un examen en línea de 128 preguntas.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No solo importa cuánto sabes, sino qué tan bien manejas el tiempo y la estrategia durante la prueba.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Además, necesitas un promedio mínimo de 7.0 en secundaria. Si no cumples con esto, el sistema no te permitirá seleccionar la UNAM.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cuántas opciones puedes elegir'
+      },
+      {
+        type: 'paragraph',
+        text: 'Durante el registro puedes elegir hasta 5 opciones dentro de la UNAM.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Sin embargo, es importante no limitarte solo a estas opciones si no tienes un respaldo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La estrategia que pocos usan'
+      },
+      {
+        type: 'paragraph',
+        text: 'Si quieres entrar a la UNAM, tienes dos caminos dentro del sistema:'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 2: solo escuelas con examen (mayor riesgo)',
+          'Modalidad 3: combinación de opciones con y sin examen (más segura)'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'La Modalidad 3 permite intentar ingresar a la UNAM mientras mantienes opciones de respaldo, evitando quedarte sin lugar.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo te puede ayudar ECOGO'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudiantes estudian sin saber si realmente están listos. ECOGO cambia eso al darte claridad durante tu preparación.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Elegir una escuela objetivo específica',
+          'Medir tu avance real',
+          'Practicar con simulacros similares al examen',
+          'Recibir recomendaciones personalizadas'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Esto te permite dejar de estudiar a ciegas y empezar a prepararte con estrategia.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La realidad'
+      },
+      {
+        type: 'paragraph',
+        text: 'Entrar a la UNAM es posible, pero no depende de la suerte.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Depende de entender el proceso, tomar buenas decisiones y prepararte correctamente.'
+      }
+    ],
+  },
+    {
+    slug: 'como-asegurar-lugar-unam-ecoems-2026',
+    title: 'Cómo asegurar tu lugar en la UNAM (la estrategia real que sí funciona)',
+    excerpt: 'Aprende a construir un plan estratégico para aumentar tus posibilidades de entrar a la UNAM con ECOEMS 2026.',
+    date: 'May 15, 2026',
+    author: 'ECOGO',
+    category: 'Estudio',
+    featured: false,
+    coverImage: '/blog/Blog14.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Entrar a una prepa de la UNAM no es solo un sueño, es una meta compartida por miles de estudiantes.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No basta con estudiar mucho; la diferencia no está en quién estudia más, sino en quién tiene mejor estrategia.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Hoy te enseñamos cómo construir un plan real para acercarte a tu lugar en la UNAM usando ECOGO.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 1: Lo básico'
+      },
+      {
+        type: 'paragraph',
+        text: 'Asegúrate de cumplir con lo mínimo: promedio de 7.0 en secundaria y tu acceso listo para el registro.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Sin esto, no podrás seleccionar la UNAM ni entrar al proceso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 2: Deja de estudiar a ciegas'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos empiezan sin saber en qué materias van bien o mal. Con ECOGO puedes hacer un diagnóstico real.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Descubre tus fortalezas y debilidades y elige tu escuela objetivo desde el inicio.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 3: Practica como será el examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen es digital. Practicar en papel no prepara para la pantalla, el cronómetro y la presión.'
+      },
+      {
+        type: 'paragraph',
+        text: 'ECOGO ofrece simulaciones, ejercicios digitales y tiempo real para que llegues preparado.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 4: Convierte errores en puntos'
+      },
+      {
+        type: 'paragraph',
+        text: 'Cada error es una oportunidad de aprendizaje. Con ECOGO entiendes el porqué de cada fallo y mejoras constantemente.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 5: Saber si ya te alcanza'
+      },
+      {
+        type: 'paragraph',
+        text: 'Visualiza tus aciertos, lo que falta y qué debes reforzar. Esto te permite ajustar tu estrategia y no estudiar a ciegas.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 6: El simulacro'
+      },
+      {
+        type: 'paragraph',
+        text: 'Realiza simulacros completos de 128 preguntas en condiciones de examen para familiarizarte con tiempo y presión.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 7: Juega inteligente'
+      },
+      {
+        type: 'paragraph',
+        text: 'Ten siempre un plan B. Combina tus opciones y apunta alto sin arriesgar quedarte fuera.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La diferencia real'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos lo intentan, pocos lo logran. La clave no es inteligencia, es estrategia.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Empieza hoy'
+      },
+      {
+        type: 'paragraph',
+        text: 'No necesitas tener todo perfecto. Empieza con lo que tienes y construye tu preparación desde ahora.'
+      }
+    ],
+  },
   {
     slug: 'plan-real-dominar-ecoems-2026',
     title: 'Tu plan real para dominar el ECOEMS 2026 (no solo estudiar, ganar el examen)',
@@ -25,7 +268,7 @@ export const blogPosts: BlogPost[] = [
     date: 'May 13, 2026',
     author: 'ECOGO',
     category: 'Estudio',
-    featured: true,
+    featured: false,
     coverImage: '/blog/Blog13.png',
     content: [
       {
@@ -490,7 +733,7 @@ export const blogPosts: BlogPost[] = [
       "Modalidad 2 ECOEMS 2026: el camino directo a UNAM o IPN (y sus riesgos)",
     excerpt:
       "Descubre cómo funciona la Modalidad 2 del ECOEMS 2026, sus requisitos y los riesgos de elegir solo escuelas con examen.",
-    date: "Abr 17, 2026",
+    date: "Abr 28, 2026",
     author: "ECOGO",
     category: "ECOEMS",
     featured: false,
