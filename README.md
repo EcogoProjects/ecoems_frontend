@@ -20,9 +20,25 @@ Las siguientes dependecias pertenecen a las análiticas de vercel:
 npm i @vercel/analytics
 ```
 
+Las siguientes dependencias pertenecen a Google Analytics:
+```bash
+npm install @next/third-parties@latest
+```
+
 Las siguientes dependencias pertenecen a la conexión con supabase:
 ```bash
 npm install @supabase/supabase-js @supabase/ssr
+```
+
+Las siguientes dependencias pertenecen a los mapas interactivos (Leaflet):
+```bash
+npm install leaflet leaflet.markercluster
+npm install -D @types/leaflet @types/leaflet.markercluster
+```
+
+Las siguientes dependencias corresponden a el renderizado de preguntas:
+```bash
+npm install react-markdown remark-math rehype-katex katex
 ```
 
 ## Ejecución

@@ -52,6 +52,14 @@ const Footer = () => {
               </li>
               <li>
                 <Link
+                  href="/mapa-escuelas"
+                  className="hover:text-secondary-foreground transition-colors"
+                >
+                  Mapa escuelas
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/blog"
                   className="hover:text-secondary-foreground transition-colors"
                 >

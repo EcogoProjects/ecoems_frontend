@@ -1,260 +1,362 @@
 "use client"
 import NavBarDesktop from "@/components/NavBarDesktop";
 import NavBarMovile from "@/components/NavBarMovile";
-import { MdModeEdit } from "react-icons/md";
-import { LuCreditCard } from "react-icons/lu";
-import { AiTwotoneIdcard } from "react-icons/ai";
+import MarginTop from "@/components/MarginTop";
+import MarginBottom from "@/components/MarginBottom";
 import AvatarSelector from "@/components/profilepage/AvatarSelector";
+import { MdModeEdit } from "react-icons/md";
+import { LuCreditCard, LuUser, LuMapPin, LuSchool, LuClipboardList, LuLock } from "react-icons/lu";
+import { AiTwotoneIdcard } from "react-icons/ai";
 import { useState } from "react";
 import Image from "next/image";
-import MarginBottom from "@/components/MarginBottom";
+import Link from "next/link";
+import { useEstadosMunicipios } from "@/hooks/useEstadosMunicipios";
+import { useProfile } from "@/hooks/useProfile";
+import { useUpdateAvatar } from "@/hooks/useUpdateAvatar";
+import { useUpdateProfile } from "@/hooks/useUpdateProfile";
+import avatarsData from "@/lib/data/avatars.json";
+
+const AVATARS = avatarsData.avatars;
+
+function FieldRow({ label, value, empty = false, editing = false, onChange, type = "text", disabled = false, selectOptions }) {
+    return (
+        <div className={`flex flex-col gap-1.5 p-3.5 bg-base rounded-xl border border-base-hard/40${empty && !editing ? " opacity-60" : ""}${disabled ? " opacity-50" : ""}`}>
+            <span className="text-[11.5px] font-medium tracking-[0.05em] uppercase text-base-dark/60">{label}</span>
+            {editing && !disabled ? (
+                selectOptions ? (
+                    <select value={value} onChange={onChange} className="text-[15px] font-medium bg-transparent border-none outline-none w-full cursor-pointer text-base-dark">
+                        {!value && <option value="" disabled>Selecciona una opción</option>}
+                        {selectOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    </select>
+                ) : (
+                    <input type={type} value={value} onChange={onChange} className="text-[15px] font-medium bg-transparent border-none outline-none w-full placeholder:opacity-40 text-base-dark" />
+                )
+            ) : (
+                <span className={`text-[15px] font-medium break-words text-base-dark${empty && !editing ? " italic font-normal opacity-50" : ""}`}>
+                    {value || "No especificado"}
+                </span>
+            )}
+        </div>
+    );
+}
+
+function CardEditBtn({ onClick, children }) {
+    return (
+        <button
+            onClick={onClick}
+            className="flex items-center gap-1.5 text-[13px] font-medium border border-base-dark/20 px-3.5 py-1.5 rounded-full hover:bg-base-dark hover:text-base-soft hover:border-base-dark transition-all cursor-pointer"
+        >
+            {children}
+        </button>
+    );
+}
+
+function InfoField({ label, value, icon, badge }) {
+    const isBadgeField = badge !== null && badge !== undefined;
+    const isEmpty = !value && !isBadgeField;
+    return (
+        <div className="flex items-start gap-3.5 p-4 bg-base rounded-xl border border-base-hard/40">
+            <span className="w-8 h-8 rounded-lg bg-base-hard/25 flex items-center justify-center flex-shrink-0 mt-0.5 text-base-dark">
+                {icon}
+            </span>
+            <div className="flex flex-col gap-1 min-w-0">
+                <span className="text-[11px] font-medium tracking-[0.06em] uppercase text-base-dark/55">{label}</span>
+                {isBadgeField ? (
+                    <span className={`inline-flex items-center gap-1.5 text-[13px] font-semibold px-3 py-1 rounded-full w-fit mt-0.5 ${badge ? 'bg-base-dark text-base-soft' : 'bg-base-dark/15 text-base-dark/70'}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${badge ? 'bg-base-soft' : 'bg-base-dark/50'}`} />
+                        {badge ? 'Sí' : 'No'}
+                    </span>
+                ) : (
+                    <span className={`text-[14.5px] font-medium text-base-dark break-words leading-snug ${isEmpty ? 'italic font-normal opacity-50' : ''}`}>
+                        {value || "No especificado"}
+                    </span>
+                )}
+            </div>
+        </div>
+    );
+}
+
+function ProfileSkeleton() {
+    const s = "bg-base-hard/20 rounded-lg animate-pulse";
+    return (
+        <div className="flex flex-col min-h-screen text-base-dark">
+            <NavBarDesktop />
+            <MarginTop />
+            <main className="max-w-[1180px] mx-auto w-full px-8 py-8 pb-16">
+                <div className="mb-6">
+                    <div className={`h-9 w-44 mb-2 ${s}`} />
+                    <div className={`h-4 w-64 ${s}`} />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                    <div className="bg-base-hard rounded-[20px] p-8 pb-7">
+                        <div className="flex items-center gap-6">
+                            <div className={`w-28 h-28 rounded-full flex-shrink-0 ${s}`} />
+                            <div className="flex flex-col gap-3 flex-1">
+                                <div className={`h-6 w-40 ${s}`} />
+                                <div className={`h-4 w-52 ${s}`} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-base-soft to-base rounded-[20px] p-7 border border-base-dark/[0.08]">
+                        <div className={`h-5 w-36 mb-6 ${s}`} />
+                        <div className="flex flex-col items-center gap-3">
+                            <div className={`h-8 w-28 ${s}`} />
+                            <div className={`h-4 w-44 ${s}`} />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-5">
+                    <div className="bg-base-soft rounded-[20px] p-7 border border-base-dark/[0.08]">
+                        <div className={`h-5 w-40 mb-5 ${s}`} />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {Array.from({ length: 6 }).map((_, i) => (
+                                <div key={i} className={`h-[62px] rounded-xl ${s}`} />
+                            ))}
+                        </div>
+                    </div>
+                    <div className="bg-base-soft rounded-[20px] p-7 border border-base-dark/[0.08]">
+                        <div className={`h-5 w-44 mb-5 ${s}`} />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {Array.from({ length: 4 }).map((_, i) => (
+                                <div key={i} className={`h-[70px] rounded-xl ${s}`} />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <MarginBottom />
+            <NavBarMovile />
+        </div>
+    );
+}
 
 function ProfilePage() {
-    
-    const [username, setUsername] = useState("Nombre de Usuario");
-    const email = "ejemplo@gmail.com"
-    const [phone_number, setPhone_number] = useState("+1234567890");
-    const plan_start = "04/26";
-    const plan_end = "07/26"
+    const { data: profileData, isLoading } = useProfile();
+    const { isAvatarLoading, patchAvatar } = useUpdateAvatar();
+    const { patchProfile, isProfileLoading } = useUpdateProfile();
 
-    // Estados para edición del bloque principal
     const [isEditingMain, setIsEditingMain] = useState(false);
-    const [tempUsername, setTempUsername] = useState(username);
-    const [tempPhone, setTempPhone] = useState(phone_number);
+    const [form, setForm] = useState({
+        name:      profileData?.name      ?? '',
+        last_name: profileData?.last_name ?? '',
+        phone:     profileData?.phone     ?? '',
+        gender:    profileData?.gender    ?? '',
+        state:     profileData?.state     ?? '',
+        town:      profileData?.town      ?? '',
+    });
+    const [saveError, setSaveError] = useState(null);
 
-    // Estados para edición del bloque "Acerca de mi"
-    const [isEditingAbout, setIsEditingAbout] = useState(false);
-    const [school, setSchool] = useState("");
-    const [city, setCity] = useState("");
-    const [address, setAddress] = useState("");
-    const [tempSchool, setTempSchool] = useState(school);
-    const [tempCity, setTempCity] = useState(city);
-    const [tempAddress, setTempAddress] = useState(address);
+    const { estados, municipios } = useEstadosMunicipios(form.state);
 
-    //Edición de avatar
-    const avatars = ["/assets/ecogo_avatar_01.png","/assets/ecogo_avatar_02.png","/assets/ecogo_avatar_03.png","/assets/ecogo_avatar_04.png"]
-    const [image_url, setImage_url] = useState("/assets/ecogo_avatar_04.png");
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Función para guardar cambios del bloque principal
-    const handleSaveMainEdits = () => {
-        setUsername(tempUsername);
-        setPhone_number(tempPhone);
+    const validateForm = () => {
+        if (!form.name.trim())      return 'El nombre es obligatorio.';
+        if (!form.last_name.trim()) return 'Los apellidos son obligatorios.';
+        if (!form.phone.trim())     return 'El teléfono es obligatorio.';
+        if (!form.gender)           return 'El género es obligatorio.';
+        if (!form.state)            return 'El estado es obligatorio.';
+        if (!form.town)             return 'La delegación / municipio es obligatoria.';
+        return null;
+    };
+
+    const handleSave = async () => {
+        if (!hasChanges) return;
+        const validationError = validateForm();
+        if (validationError) { setSaveError(validationError); return; }
+        setSaveError(null);
+        const { error } = await patchProfile(changed);
+        if (error) { setSaveError(error); return; }
         setIsEditingMain(false);
     };
 
-    // Función para cancelar edición del bloque principal
     const handleCancelMainEdits = () => {
-        setTempUsername(username);
-        setTempPhone(phone_number);
+        setForm({
+            name:      profileData?.name      ?? '',
+            last_name: profileData?.last_name ?? '',
+            phone:     profileData?.phone     ?? '',
+            gender:    profileData?.gender    ?? '',
+            state:     profileData?.state     ?? '',
+            town:      profileData?.town      ?? '',
+        });
+        setSaveError(null);
         setIsEditingMain(false);
     };
 
-    // Función para guardar cambios del bloque "Acerca de mi"
-    const handleSaveAboutEdits = () => {
-        setSchool(tempSchool);
-        setCity(tempCity);
-        setAddress(tempAddress);
-        setIsEditingAbout(false);
-    };
+    const changed = Object.fromEntries(
+        Object.entries(form).filter(([key, value]) => value !== profileData?.[key])
+    );
+    const hasChanges = Object.keys(changed).length > 0;
 
-    // Función para cancelar edición del bloque "Acerca de mi"
-    const handleCancelAboutEdits = () => {
-        setTempSchool(school);
-        setTempCity(city);
-        setTempAddress(address);
-        setIsEditingAbout(false);
-    };
-    return ( 
-        <div className="flex flex-col min-h-screen justify-center items-center">
-            <NavBarDesktop/>
-            <div className="flex flex-col w-4/5 md:w-3/5 gap-4 md:gap-6 items-center">
-                <div className="flex flex-col md:flex-row md:justify-between bg-base-hard shadow-lg p-4 rounded-box-standard  w-full">
-                    <div className="flex flex-col sm:flex-row items-center gap-5 ">
-                        <div className="relative rounded-full overflow-hidden border-3 border-base-dark cursor-pointer group" onClick={() => setIsModalOpen(true)}>
-                            <Image 
-                            src={image_url} 
-                            alt="Profile Icon" 
-                            width={100} 
-                            height={100}/>
-                            <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center opacity-0 group-hover:opacity-30 transition-opacity">
-                                <MdModeEdit className="text-white text-2xl" />
-                            </div>
-                        </div>
-                        
-                        {!isEditingMain ? (
-                            <div className="flex flex-col items-start h-full">
-                                <p className="text-xl font-black">{username}</p>
-                                <p>{email}</p>
-                                <p>{phone_number}</p>
-                                <p className="underline cursor-pointer font-semibold" onClick={() => {
-                                    setTempUsername(username);
-                                    setTempPhone(phone_number);
-                                    setIsEditingMain(true);
-                                }}>Editar</p>
-                            </div>
-                        ) : (
-                            <div className="flex flex-col items-start md:h-max-[100px] gap-3 md:gap-1.5 w-full [&_input]:md:p-0 [&_input]:bg-base
-                            [&_input]:border-0 [&_input]:rounded-lg">
-                                <div className="flex flex-col w-full">
-                                    <label htmlFor="edit_username" className="font-semibold text-sm">Usuario:</label>
-                                    <input 
-                                        type="text" 
-                                        id="edit_username"
-                                        value={tempUsername} 
-                                        onChange={(e) => setTempUsername(e.target.value)}
-                                        className="border border-base-dark rounded px-2 py-1"
-                                    />
-                                </div>
-                                <div className="flex flex-col w-full">
-                                    <label htmlFor="edit_email" className="font-semibold text-sm">Email (No editable):</label>
-                                    <input 
-                                        type="email" 
-                                        id="edit_email"
-                                        value={email}
-                                        disabled
-                                        className="border border-base-dark rounded px-2 py-1 bg-base-dark/10 cursor-not-allowed"
-                                    />
-                                </div>
-                                <div className="flex flex-col w-full">
-                                    <label htmlFor="edit_phone" className="font-semibold text-sm">Teléfono:</label>
-                                    <input 
-                                        type="tel" 
-                                        id="edit_phone"
-                                        value={tempPhone} 
-                                        onChange={(e) => setTempPhone(e.target.value)}
-                                        className="border border-base-dark rounded px-2 py-1"
-                                    />
-                                </div>
-                                <div className="flex gap-2">
-                                    <button 
-                                        onClick={handleSaveMainEdits}
-                                        className="bg-base-dark text-base-hard px-4 py-1 rounded font-semibold hover:opacity-80 transition"
-                                    >
-                                        Guardar
-                                    </button>
-                                    <button 
-                                        onClick={handleCancelMainEdits}
-                                        className="bg-base-dark/50 text-base-hard px-4 py-1 rounded font-semibold hover:opacity-80 transition"
-                                    >
-                                        Cancelar
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                        
+    if (isLoading) return <ProfileSkeleton />;
+
+    return (
+        <div className="flex flex-col min-h-screen text-base-dark">
+            <NavBarDesktop />
+            <MarginTop />
+
+            <main className="max-w-[1180px] mx-auto w-full px-8 py-8 pb-16">
+                {/* Page head */}
+                <div className="mb-6">
+                    <h1 className="text-[clamp(26px,3vw,34px)] font-semibold tracking-tight mb-1.5">Mi perfil</h1>
+                    <p className="text-[14.5px] opacity-70">Administra tu información personal y revisa tu actividad.</p>
                 </div>
-                <div className="flex flex-col md:grid md:grid-cols-2 w-full gap-4 md:gap-6">
-                    {/*Contenedor izquierdo */}
-                    <div className="bg-base-soft flex flex-col justify-start rounded-box-standard shadow-lg p-10 pl-3.5 pr-3.5 w-full gap-1.5">
-                        <div className=" w-full flex flex-col gap-2">
-                            <div className="flex gap-1.5 items-center font-bold pl-2.5">
-                                <LuCreditCard size={30} />
-                                <h2 className="text-2xl">Mi suscripción</h2>
-                            </div>
-                            <div className="flex items-center justify-between bg-base rounded-2xl p-4">
-                                <div className="flex flex-col w-full">
-                                    <p className="text-lg font-semibold">Ecogo Pro</p>
-                                    <p>Periodo: {plan_start} - {plan_end}</p>
+
+                {/* Top grid: hero + subscription */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+                    {/* Profile hero card */}
+                    <div className="bg-base-hard rounded-[20px] p-8 pt-8 pb-7 relative overflow-hidden">
+                        <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-base-soft/[0.18] pointer-events-none" />
+                        <div className="absolute -bottom-12 -left-8 w-28 h-28 rounded-full bg-base-dark/[0.08] pointer-events-none" />
+
+                        <div className="relative z-10 flex items-center gap-6">
+                            <div
+                                className="relative w-28 h-28 flex-shrink-0 rounded-full border-3 border-base-soft shadow-[0_10px_24px_rgba(71,46,24,0.25)] overflow-hidden cursor-pointer group"
+                                onClick={() => setIsModalOpen(true)}
+                            >
+                                <Image src={profileData?.avatar_url || AVATARS[0]?.avatar_url} alt="Avatar de perfil" width={112} height={112} className="object-cover w-full h-full" />
+                                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <MdModeEdit className="text-white text-2xl" />
                                 </div>
-                                <span className="bg-base-dark text-base p-1 rounded-full font-bold pr-2 pl-2 tracking-widest">Activo</span>
+                            </div>
+
+                            <div>
+                                <h2 className="text-[22px] font-semibold tracking-tight mb-1">{profileData?.name} {profileData?.last_name}</h2>
+                                <p className="text-[14px] opacity-75">{profileData?.email ?? ""}</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {/* Subscription card */}
+                    <div className="bg-gradient-to-br from-base-soft to-base rounded-[20px] p-7 relative overflow-hidden border border-base-dark/[0.08] shadow-[0_12px_28px_-10px_rgba(71,46,24,0.18)]">
+                        <div className="absolute -top-10 -right-10 w-44 h-44 rounded-full bg-base-hard/40 pointer-events-none z-0" />
+
+                        <div className="relative z-10">
+                            <div className="flex items-center justify-between mb-5">
+                                <div className="flex items-center gap-2.5 text-[16px] font-semibold">
+                                    <span className="w-8 h-8 rounded-[10px] bg-base flex items-center justify-center flex-shrink-0">
+                                        <LuCreditCard size={16} />
+                                    </span>
+                                    Mi suscripción
+                                </div>
+                                {profileData?.active_plan?.plan_type === 'Ecogo Pro' ? (
+                                    <span className="text-[13px] font-medium text-base-dark/50 px-3.5 py-1.5">Activo</span>
+                                ) : (
+                                    <Link href="/plans">
+                                        <CardEditBtn>Mejorar plan</CardEditBtn>
+                                    </Link>
+                                )}
+                            </div>
+
+                            <div className="flex items-center justify-center">
+                                <div className="flex flex-col gap-1 items-center text-center">
+                                    <span className="text-[28px] font-semibold tracking-tight">
+                                        {profileData?.active_plan?.plan_type ?? "Sin plan"}
+                                    </span>
+                                    <span className="text-[13.5px] opacity-70">
+                                        {profileData?.plan_start && profileData?.plan_end
+                                            ? `Período: ${profileData.plan_start} — ${profileData.plan_end}`
+                                            : "Sin período activo"}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {/*Contendor derecha*/}
-                    <div className="bg-base-soft flex flex-col justify-center items-start rounded-box-standard shadow-lg p-10 pl-3.5 pr-3.5 w-full gap-1.5">
-                        <div className="flex justify-between w-full items-end pr-4">
-                            <div className="flex gap-1.5 items-center font-bold pl-2.5">
-                                <AiTwotoneIdcard size={30} />
-                                <h2 className="text-2xl">Acerca de mi</h2>
+                </div>
+
+                {/* Stack: Datos personales + Acerca de mi */}
+                <div className="flex flex-col gap-5">
+
+                    {/* Datos personales */}
+                    <div className="bg-base-soft rounded-[20px] p-7 border border-base-dark/[0.08] shadow-[0_12px_28px_-10px_rgba(71,46,24,0.18)]">
+                        <div className="flex items-center justify-between mb-5">
+                            <div className="flex items-center gap-2.5 text-[16px] font-semibold">
+                                <span className="w-8 h-8 rounded-[10px] bg-base flex items-center justify-center flex-shrink-0">
+                                    <LuUser size={16} />
+                                </span>
+                                Datos personales
                             </div>
-                            <p 
-                                className="underline cursor-pointer font-semibold hover:opacity-70 transition"
-                                onClick={() => {
-                                    setTempSchool(school);
-                                    setTempCity(city);
-                                    setTempAddress(address);
-                                    setIsEditingAbout(true);
-                                }}
-                            >
-                                Editar
-                            </p>
+                            {!isEditingMain && (
+                                <CardEditBtn onClick={() => { setForm({ name: profileData?.name ?? '', last_name: profileData?.last_name ?? '', phone: profileData?.phone ?? '', gender: profileData?.gender ?? '', state: profileData?.state ?? '', town: profileData?.town ?? '' }); setIsEditingMain(true); }}>
+                                    <MdModeEdit size={13} />
+                                    Editar
+                                </CardEditBtn>
+                            )}
                         </div>
-                        <div className="flex flex-col bg-base rounded-2xl p-4 w-full gap-1 [&_input]:w-full">
-                            {!isEditingAbout ? (
-                                <>
-                                    <div className="flex flex-col items-start">
-                                        <label className="font-semibold text-sm">Escuela a la que quiero entrar:</label>
-                                        <p className="py-1">{school || "No especificado"}</p>
-                                    </div>
-                                    <div className="flex flex-col items-start">
-                                        <label className="font-semibold text-sm">Mi ciudad:</label>
-                                        <p className="py-1">{city || "No especificado"}</p>
-                                    </div>
-                                    <div className="flex flex-col items-start">
-                                        <label className="font-semibold text-sm">Aquí es donde vivo:</label>
-                                        <p className="py-1">{address || "No especificado"}</p>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <div className="flex flex-col items-start">
-                                        <label htmlFor="txt_school" className="font-semibold text-sm">Escuela a la que quiero entrar:</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Ingresa la escuela a la que quieres entrar"
-                                            id="txt_school"
-                                            value={tempSchool}
-                                            onChange={(e) => setTempSchool(e.target.value)}
-                                        ></input>
-                                    </div>
-                                    <div className="flex flex-col items-start">
-                                        <label htmlFor="txt_city" className="font-semibold text-sm">Mi ciudad:</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Ingresa la ciudad donde vives"
-                                            id="txt_city"
-                                            value={tempCity}
-                                            onChange={(e) => setTempCity(e.target.value)}
-                                        ></input>
-                                    </div>
-                                    <div className="flex flex-col items-start">
-                                        <label htmlFor="txt_address" className="font-semibold text-sm">Aquí es donde vivo:</label>
-                                        <input
-                                            type="text"
-                                            placeholder="Ingresa tu dirección"
-                                            id="txt_address"
-                                            value={tempAddress}
-                                            onChange={(e) => setTempAddress(e.target.value)}
-                                        ></input>
-                                    </div>
-                                    <div className="flex gap-2 mt-2">
-                                        <button 
-                                            onClick={handleSaveAboutEdits}
-                                            className="bg-base-dark text-base-hard px-4 py-1 rounded font-semibold hover:opacity-80 transition"
-                                        >
-                                            Guardar
+
+                        <div className="flex flex-col gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <FieldRow label="Nombre(s)" value={isEditingMain ? form.name : profileData?.name} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value.slice(0, 100) }))} />
+                                <FieldRow label="Apellidos" value={isEditingMain ? form.last_name : profileData?.last_name} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, last_name: e.target.value.slice(0, 100) }))} />
+                                <FieldRow label="Teléfono" value={isEditingMain ? form.phone : profileData?.phone} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} type="tel" />
+                                <FieldRow label="Género" value={isEditingMain ? form.gender : profileData?.gender} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, gender: e.target.value }))} selectOptions={["Masculino", "Femenino", "Otro", "Prefiero no decir"]} />
+                                <FieldRow label="Estado" value={isEditingMain ? form.state : profileData?.state} empty={!profileData?.state} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, state: e.target.value, town: '' }))} selectOptions={estados} />
+                                <FieldRow label="Delegación / Municipio" value={isEditingMain ? form.town : profileData?.town} empty={!profileData?.town} editing={isEditingMain} onChange={(e) => setForm(prev => ({ ...prev, town: e.target.value }))} selectOptions={municipios} disabled={isEditingMain && !form.state} />
+                            </div>
+                            {isEditingMain && (
+                                <div className="flex flex-col gap-2">
+                                    <p className={`h-11 overflow-hidden text-sm transition-opacity text-red-600 ${saveError ? 'opacity-100' : 'opacity-0 select-none'}`}>
+                                        {saveError ?? ' '}
+                                    </p>
+                                    <div className="flex gap-2">
+                                        <button onClick={handleSave} disabled={!hasChanges || isProfileLoading} className="bg-base-dark text-base-soft px-5 py-2 rounded-full text-[13px] font-semibold hover:opacity-80 transition cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                                            {isProfileLoading ? 'Guardando...' : 'Guardar'}
                                         </button>
-                                        <button 
-                                            onClick={handleCancelAboutEdits}
-                                            className="bg-base-dark/50 text-base-hard px-4 py-1 rounded font-semibold hover:opacity-80 transition"
-                                        >
-                                            Cancelar
-                                        </button>
+                                        <button onClick={handleCancelMainEdits} className="bg-base-dark/20 text-base-dark px-5 py-2 rounded-full text-[13px] font-semibold hover:opacity-70 transition cursor-pointer">Cancelar</button>
                                     </div>
-                                </>
+                                </div>
                             )}
                         </div>
                     </div>
+
+                    {/* Escuela objetivo */}
+                    <div className="bg-base-soft rounded-[20px] p-7 border border-base-dark/[0.08] shadow-[0_12px_28px_-10px_rgba(71,46,24,0.18)]">
+                        <div className="flex items-center justify-between mb-5">
+                            <div className="flex items-center gap-2.5 text-[16px] font-semibold">
+                                <span className="w-8 h-8 rounded-[10px] bg-base flex items-center justify-center flex-shrink-0">
+                                    <AiTwotoneIdcard size={16} />
+                                </span>
+                                Mi escuela objetivo
+                            </div>
+                            <span className="flex items-center gap-1.5 text-[12px] text-base-dark/50 font-medium select-none">
+                                <LuLock size={12} />
+                                Solo lectura
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <InfoField label="Nombre" value={profileData?.target_school?.name ?? null} icon={<LuUser size={15} />} />
+                            <InfoField label="Institución" value={profileData?.target_school?.institution_type ?? null} icon={<LuSchool size={15} />} />
+                            <InfoField label="¿Requiere examen?" badge={profileData?.target_school?.requires_exam ?? null} icon={<LuClipboardList size={15} />} />
+                            <InfoField label="Ubicación" value={profileData?.target_school?.address ?? null} icon={<LuMapPin size={15} />} />
+                        </div>
+
+                        <p className="text-[12px] text-base-dark/45 mt-5 leading-relaxed">
+                            Esta información proviene de tu cuenta y no puede modificarse desde aquí.
+                        </p>
+                    </div>
                 </div>
-            </div>
-            {isModalOpen && <AvatarSelector avatars={avatars} onSelect={(avatar) => { setImage_url(avatar); setIsModalOpen(false); }} onClose={() => setIsModalOpen(false)} />}
-            <MarginBottom/>
-            <NavBarMovile/>
+            </main>
+
+            {isModalOpen && (
+                <AvatarSelector
+                    avatars={AVATARS}
+                    onSelect={async (avatarUrl) => {
+                        const { error } = await patchAvatar(avatarUrl);
+                        if (!error) setIsModalOpen(false);
+                    }}
+                    onClose={() => setIsModalOpen(false)}
+                    isSaving={isAvatarLoading}
+                />
+            )}
+            <MarginBottom />
+            <NavBarMovile />
         </div>
-     );
+    );
 }
 
-export default ProfilePage
-;
+export default ProfilePage;

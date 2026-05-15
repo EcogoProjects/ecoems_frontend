@@ -1,6 +1,7 @@
 import { Outfit } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
+import AppProvider from "@/components/AppProvider";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -18,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" className={`${outfit.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        {children}
+        <AppProvider>{children}</AppProvider>
         <Analytics />
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

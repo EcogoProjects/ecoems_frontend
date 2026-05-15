@@ -1,13 +1,49 @@
-export default function ExamExplanation({ correct_answer, answer_selected, explanation, blur = false }) {
-  const isCorrect = answer_selected === correct_answer;
+import { FaBookOpen } from "react-icons/fa6";
+import LatexParagraph from "./LaTexRender";
 
-  return (
-    <div className={`${isCorrect ? 'bg-green-background-soft text-green-box-text' : 'bg-red-background-soft text-red-box-text'} rounded-[18px] p-3 shadow-lg`}>
-      <p className="opacity-55">Explicación</p>
-      <div fle>
-        <p>La respuesta correcta es {correct_answer}.</p>
-        <p className={`opacity-90 ${blur ? 'blur-[3px]' : ''} select-none`}>  {explanation}</p>
-      </div>
-    </div>
-  );
+export default function ExamExplanation({
+    correct_answer,
+    answer_selected,
+    isConfirmed,
+    explanation,
+    blur = false
+}) {
+    const isForcedExplanation = answer_selected === "-";
+
+    const isCorrect = isConfirmed && !isForcedExplanation && answer_selected === correct_answer;
+
+    let colorClasses = "bg-base-soft text-base-dark";
+    let opacityClasses = "opacity-55";
+
+    if (isConfirmed) {
+        if (isForcedExplanation) {
+            colorClasses = "bg-base-soft text-base-dark";
+            opacityClasses = "opacity-90";
+        } else {
+            colorClasses = isCorrect
+                ? 'bg-[#d0f8d4] text-[#19571d]'
+                : 'bg-[#f8d0d0] text-[#971111]';
+            opacityClasses = "opacity-90";
+        }
+    }
+
+    return (
+        <div className={`${colorClasses} rounded-[18px] p-5 shadow-lg transition-all duration-300`}>
+            <div className={`flex items-center gap-2 mb-3 ${isConfirmed ? 'opacity-80' : ''}`}>
+                <FaBookOpen size={18} />
+                <p className="font-bold text-xs uppercase tracking-wider">
+                    Explicación
+                </p>
+            </div>
+
+            <div className="space-y-2 text-sm">
+                <p className="font-bold">
+                    La respuesta correcta es la {correct_answer.toUpperCase()}.
+                </p>
+                <span className={`leading-relaxed ${blur ? 'blur-[4px] select-none opacity-60' : opacityClasses}`}>
+                    <LatexParagraph content={explanation} />
+                </span>
+            </div>
+        </div>
+    );
 }
