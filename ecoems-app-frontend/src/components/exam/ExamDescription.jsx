@@ -6,7 +6,7 @@ import { MdOutlineCollectionsBookmark, MdTimer } from "react-icons/md";
 import { FaChevronLeft, FaPlay, FaHeart } from "react-icons/fa";
 import { useSyllabus } from '@/hooks/useSyllabus';
 
-export default function ExamDescription({ examTitle, description, time, n_questions, range, show_subtopic = true, onClose, examsRemaining, examsUsed }) {
+export default function ExamDescription({ examTitle, description, time, n_questions, range, show_subtopic = true, onClose, onStart, isStarting = false, examsRemaining, examsUsed }) {
     const { data: syllabus } = useSyllabus();
 
     const [selectedSubjectId, setSelectedSubjectId] = useState('');
@@ -180,12 +180,13 @@ export default function ExamDescription({ examTitle, description, time, n_questi
                     Regresar
                 </button>
                 <button
-                    disabled={!canStart}
+                    disabled={!canStart || isStarting}
+                    onClick={() => onStart?.({ subtopic_id: Number(selectedSubtopicId) })}
                     className={`flex-1 flex justify-center items-center gap-2 py-3.5 px-2 rounded-xl font-bold transition-all duration-300 text-base-dark active:translate-y-0 active:scale-[0.97]
-                        ${canStart ? 'bg-premium-box hover:bg-premium-alt-box hover:-translate-y-0.5 cursor-pointer' : 'bg-base-hard/60 cursor-not-allowed'}`}
+                        ${canStart && !isStarting ? 'bg-premium-box hover:bg-premium-alt-box hover:-translate-y-0.5 cursor-pointer' : 'bg-base-hard/60 cursor-not-allowed'}`}
                 >
-                    Comenzar
-                    <FaPlay size={12} />
+                    {isStarting ? 'Iniciando...' : 'Comenzar'}
+                    {!isStarting && <FaPlay size={12} />}
                 </button>
             </div>
         </div>

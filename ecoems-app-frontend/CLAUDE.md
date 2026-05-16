@@ -55,7 +55,14 @@ src/
 │   │   ├── ExamOption.jsx
 │   │   ├── ExamExplanation.jsx
 │   │   ├── ExamTypeButton.jsx
-│   │   └── ExamDescription.jsx  # Modal de configuración de examen: selects en cascada (materia→tema→subtema) con datos de useSyllabus, indicador de vidas (FaHeart), botón Comenzar deshabilitado hasta completar selección
+│   │   ├── ExamHeader.jsx       # Barra superior del examen: tipo, NavExam, botón Ayuda, flechas prev/next (desktop)
+│   │   ├── NavExam.jsx          # Burbuja de navegación horizontal entre preguntas; usa q.id como key
+│   │   ├── QuestionPanel.jsx    # Panel izq: muestra reading, enunciado, opciones A-D (texto o imagen), botón Contestar (muestra "Enviando..." con isSubmitting, error con submitError via patrón opacidad)
+│   │   ├── ResourcePanel.jsx    # Panel der: imagen de la pregunta, pista (revealHint), explicación (revealExplanation); recibe answerResult { isCorrect, correctAnswer, explanation } para ExamExplanation; usa useLatexScanner
+│   │   ├── HintBox.jsx          # Overlay de ayuda: opciones "Mostrar pista" y "Ver explicación directa"
+│   │   ├── FinishedExamDashboard.jsx  # Modal de resultado final: CircleAvgIndicator + mensaje según score + link a /home
+│   │   ├── Timer.jsx            # Countdown timer con persistencia en localStorage (exam_end_time). Deshabilitado en exam/page.jsx por ahora.
+│   │   └── ExamDescription.jsx  # Modal de configuración de examen: selects en cascada (materia→tema→subtema) con datos de useSyllabus, indicador de vidas (FaHeart), props onStart({subtopic_id}) e isStarting para conectar con startExamSession
 │   ├── homepage/
 │   │   ├── ExamSelector.jsx     # Botones de tipo de examen; al click en Rápido verifica canQuickExam (via useExam) y abre ExamDescription o modal de límite diario; bloquea scroll del body mientras hay modal abierto
 │   │   └── DailyLivesBar.jsx    # Barra prominente entre navbar y ExamSelector; muestra quick_exams_remaining (corazones rojos) y quick_exams_count (corazones apagados) consumiendo useExam; skeleton de puntos animados durante carga
@@ -69,14 +76,15 @@ src/
 │   ├── useUpdateAvatar.ts         # PATCH de avatar: patchAvatar(avatarUrl) con isAvatarLoading.
 │   ├── useUpdateProfile.ts        # PATCH de datos personales: patchProfile(payload) con isProfileLoading.
 │   ├── useSyllabus.ts             # Carga y cachea el temario completo (GET /syllabus). Mapea name → subject/topic para TopicAccordion. → { data: SyllabusSubject[], isLoading }.
-│   └── useExam.ts                 # Gestiona sesión de examen y uso diario. Expone startExamSession(params), isLoading, session, dailyUsage, isUsageLoading, canQuickExam. Caché de módulo (dailyUsageCache) para evitar fetches duplicados.
+│   ├── useExam.ts                 # Gestiona sesión de examen y uso diario. Expone startExamSession(params), isLoading, session, dailyUsage, isUsageLoading, canQuickExam. Cachés de módulo: dailyUsageCache y sessionCache (este último persiste la sesión durante la navegación a /exam).
+│   └── useQuickExamLogic.ts       # Lógica de UI del examen rápido: lee session de useExam, mapea ExamQuestion → MappedQuestion (snake_case→camelCase, exam_area desde ExamSession), gestiona currentIndex, answers, swipe, finish. exam_area viene de session.exam_area (nivel de sesión, no de pregunta).
 ├── lib/
 │   ├── api/                   # Toda la capa de I/O con Supabase — SIEMPRE usar esto
 │   │   ├── index.js           # Re-exporta todo: import { fn } from '@/lib/api'
 │   │   ├── auth.js            # signInWithEmail, signInWithGoogle, signUp, signOut, getUser, getSession, onAuthStateChange
 │   │   ├── client.js          # Fetcher base (solo cliente — NO usar en Route Handlers de servidor)
 │   │   ├── profile.js         # getUserMe, getUserBasicInfo, patchUserMe, getProfile, updateProfile, updateAvatar
-│   │   ├── exam.js            # startExam({ exam_type, subject_id, topic_id, subtopic_id }) → POST /exams/start; getDailyUsage() → GET /users/me/usage/daily
+│   │   ├── exam.js            # startExam, getDailyUsage, submitAnswer({ session_id, question_id, selected_answer }) → POST /exams/{session_id}/answer; submitExam(session_id) → POST /exams/{session_id}/submit
 │   │   ├── analytics.js       # getUserStats, getSubjectStats, getTopSubjects, getWeakSubjects, getProgressHistory
 │   │   ├── subscription.js    # getSubscription, isPremium
 │   │   └── syllabus.js        # getSyllabus() → GET /syllabus
@@ -182,6 +190,8 @@ const { data, error } = await api.post('/api/v1/exam-results', payload)
 | **subscription** | GET | `/api/v1/subscription` |
 | **syllabus** | GET | `/syllabus` |
 | **exams** | POST | `/exams/start` |
+| | POST | `/exams/{session_id}/answer` |
+| | POST | `/exams/{session_id}/submit` |
 
 ## Autenticación (Supabase)
 
@@ -315,15 +325,18 @@ npm run lint     # Linting con ESLint
 - **`useUpdateAvatar`**: `src/hooks/useUpdateAvatar.ts` — PATCH del avatar. Expone `patchAvatar(avatarUrl)` e `isAvatarLoading`. Llama a `updateProfileCache` y `useUserStore.getState().setUser()` al completarse.
 - **`useUpdateProfile`**: `src/hooks/useUpdateProfile.ts` — PATCH de datos personales (`name`, `last_name`, `phone`, `gender`, `state`, `town`). Expone `patchProfile(payload)` e `isProfileLoading`. Mismo patrón de cache y store que `useUpdateAvatar`.
 - **`useSyllabus`**: `src/hooks/useSyllabus.ts` — carga el temario completo (`GET /syllabus`) con caché de módulo (`let syllabusCache`). Mapea el campo `name` de la API a `subject` (materias) y `topic` (temas) para que `TopicAccordion` lo consuma sin cambios. Retorna `{ data: SyllabusSubject[] | null, isLoading }`. La home page muestra `<TopicAccordionSkeleton />` mientras `isLoading` es `true`.
-- **`useExam`**: `src/hooks/useExam.ts` — gestiona sesión de examen y uso diario. Caché de módulo `dailyUsageCache` (mismo patrón que `useSyllabus`) para que múltiples componentes puedan llamarlo sin fetches duplicados. Expone:
-  - `startExamSession({ exam_type, subject_id?, topic_id?, subtopic_id? })` → `{ data: ExamSession, error }` — llama a `POST /exams/start`
+- **`useExam`**: `src/hooks/useExam.ts` — gestiona sesión de examen y uso diario. Dos cachés de módulo: `dailyUsageCache` (evita fetches duplicados de `/users/me/usage/daily`) y `sessionCache` (persiste la `ExamSession` durante la navegación a `/exam`, ya que el estado de React no sobrevive el unmount). Expone:
+  - `startExamSession({ exam_type, subtopic_id? })` → `{ data: ExamSession, error }` — llama a `POST /exams/start`; guarda el resultado en `sessionCache` antes de resolver
   - `isLoading` — true mientras startExamSession está en curso
-  - `session: ExamSession | null` — sesión activa con `session_id`, `expires_at` y `questions[]`
+  - `session: ExamSession | null` — sesión activa con `session_id`, `expires_at`, `exam_area` y `questions[]`
   - `dailyUsage: DailyUsage | null` — `{ usage_date, quick_exams_count, hints_used_count, quick_exams_remaining, hints_remaining }`
   - `isUsageLoading` — true hasta que llegue la respuesta de `GET /users/me/usage/daily`
   - `canQuickExam: boolean` — derivado de `canTakeQuickExam(dailyUsage)` en `examLogic.ts`
+  - `timeRemaining: number` — segundos restantes calculados como `floor((expires_at - Date.now()) / 1000)`, actualizado cada segundo via `setInterval`. Se inicializa desde `sessionCache` para evitar salto en primer render.
+- **`useQuickExamLogic`**: `src/hooks/useQuickExamLogic.ts` — lógica de UI del examen rápido consumida por `exam/page.jsx`. Lee `session` y `timeRemaining` de `useExam()`. Mapea cada `ExamQuestion` a `MappedQuestion` (snake_case→camelCase). Gestiona `currentIndex`, `answers`, `selectedOption`, swipe táctil y `finishExam`. Flujo de respuesta: `handleContestar` (async) llama `submitAnswer` → guarda `{ isCorrect, correctAnswer, explanation }` en `answerResults[question_id]` → llama `saveAnswer`. `revealExplanation` se deriva de `answerResults` (se activa automáticamente al contestar). `finishExam` (async) llama `submitExam` para obtener el score real; usa `isFinishingRef` para prevenir doble llamada. Timer: `useEffect([timeRemaining])` dispara `finishExam('timeout', ...)` cuando llega a 0. Exporta además: `answerResults`, `submitError`, `isSubmitting`, `timeRemaining`.
 - **`examLogic.ts`**: `src/utils/exam/examLogic.ts` — lógica pura de elegibilidad. `DailyUsage` interface + `canTakeQuickExam(usage): boolean` (regla: `quick_exams_remaining > 0`). El hook solo llama esta función; la decisión vive aquí.
-- **`ExamDescription`**: `src/components/exam/ExamDescription.jsx` — modal de configuración previa al examen. Selects en cascada (materia → tema → subtema) con datos de `useSyllabus`. Nombres largos se truncan a 70 chars con `clip()` + atributo `title` para tooltip. Sección de vidas: `examsRemaining` corazones rojos + `examsUsed` corazones apagados. Botón Comenzar deshabilitado (`bg-base-hard/60`) hasta que los 3 selects tienen valor.
+- **`exam/page.jsx`**: usa `useQuickExamLogic`. Si `session` es null redirige a `/home`. Muestra el timer `MM:SS` (rojo al llegar a ≤60s) a la izquierda del botón Finalizar. Pasa `answerResult={answerResults[currentQ.id] ?? null}` a `ResourcePanel` y `submitError`/`isSubmitting` a `QuestionPanel`. Renderiza `ExamHeader`, `QuestionPanel`, `ResourcePanel`, `HintBox`, `FinishedExamDashboard` e `ImageModal`.
+- **`ExamDescription`**: `src/components/exam/ExamDescription.jsx` — modal de configuración previa al examen. Selects en cascada (materia → tema → subtema) con datos de `useSyllabus`. Nombres largos se truncan a 70 chars con `clip()` + atributo `title` para tooltip. Sección de vidas: `examsRemaining` corazones rojos + `examsUsed` corazones apagados. Props: `onStart({ subtopic_id })` (llamado al click de Comenzar) e `isStarting` (muestra "Iniciando..." y deshabilita el botón mientras el fetch está en curso). Botón Comenzar deshabilitado (`bg-base-hard/60`) hasta que los 3 selects tienen valor o mientras `isStarting`.
 - **`DailyLivesBar`**: `src/components/homepage/DailyLivesBar.jsx` — barra prominente en `/home` entre la AnnouncementBox y el ExamSelector. Muestra `quick_exams_remaining` (corazones rojos FaHeart) y `quick_exams_count` (corazones apagados) con el conteo `X/N`. Durante carga: 3 círculos con `animate-pulse`. Consume `useExam()`; la caché del hook evita doble fetch con ExamSelector.
 - **Animación acordeón (grid trick)**: para animar apertura/cierre de contenido sin JavaScript de medición, usar el patrón `grid-rows-[0fr]/[1fr]` con `transition-all`. El contenido **siempre está en el DOM**; el div exterior alterna entre las dos clases y el div interior lleva `overflow-hidden`. Usado en `TopicAccordion`.
 - **Caché `.next` y cambios de rutas**: Next.js 16 usa Turbopack por defecto en dev y mantiene un caché persistente en `.next/dev/cache/turbopack/`. Si se reorganiza la estructura de rutas (ej. renombrar carpetas), ese caché queda corrupto y puede causar crash del sistema por agotamiento de RAM al arrancar `npm run dev`. Solución: borrar `.next/` antes de levantar el servidor. Quien tenga el proyecto localmente con la estructura anterior necesita hacer `rm -rf .next` una vez. Clones frescos no tienen este problema.

@@ -14,7 +14,8 @@ export default function ResourcePanel({
     revealExplanation,
     selectedOption,
     answers,
-    openModal
+    openModal,
+    answerResult
 }) {
     const panelRef = useRef(null);
 
@@ -65,10 +66,10 @@ export default function ResourcePanel({
             {revealExplanation && (
                 <div className="animate-in fade-in zoom-in-95 duration-500">
                     <ExamExplanation
-                        correct_answer={currentQ.correctAnswer.toLowerCase()}
+                        correct_answer={answerResult?.correctAnswer?.toLowerCase() ?? ''}
                         answer_selected={selectedOption || ''}
                         isConfirmed={!!answers[currentQ.id]}
-                        explanation={currentQ.answerExplanation}
+                        explanation={answerResult?.explanation ?? ''}
                         blur={false}
                     />
                 </div>

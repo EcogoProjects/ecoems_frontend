@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { FaBookReader, FaHeart } from "react-icons/fa";
 import { MdOutlineDoNotDisturb } from "react-icons/md";
 import { TfiAgenda } from "react-icons/tfi";
@@ -9,7 +10,8 @@ import ExamDescription from "@/components/exam/ExamDescription";
 import { useExam } from "@/hooks/useExam";
 
 function ExamSelector() {
-    const { canQuickExam, isUsageLoading, dailyUsage } = useExam();
+    const router = useRouter();
+    const { canQuickExam, isUsageLoading, dailyUsage, startExamSession, isLoading } = useExam();
     const [showDescription, setShowDescription] = useState(false);
     const [showLimit, setShowLimit] = useState(false);
 
@@ -29,6 +31,14 @@ function ExamSelector() {
     const closeAll = () => {
         setShowDescription(false);
         setShowLimit(false);
+    };
+
+    const handleStart = async ({ subtopic_id }) => {
+        const { data } = await startExamSession({
+            exam_type: 'quick',
+            subtopic_id,
+        });
+        if (data) router.push('/exam');
     };
 
     return (
@@ -100,6 +110,8 @@ function ExamSelector() {
                             range="Subtema"
                             show_subtopic={true}
                             onClose={closeAll}
+                            onStart={handleStart}
+                            isStarting={isLoading}
                             examsRemaining={dailyUsage?.quick_exams_remaining}
                             examsUsed={dailyUsage?.quick_exams_count}
                         />

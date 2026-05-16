@@ -10,7 +10,9 @@ export default function QuestionPanel({
     answers,
     handleOptionSelect,
     handleContestar,
-    isLastQuestion
+    submitError,
+    isSubmitting,
+    // isLastQuestion
 }) {
     const hasReading = currentQ.reading !== null && currentQ.reading.trim() !== "";
 
@@ -97,19 +99,19 @@ export default function QuestionPanel({
                 })}
             </div>
 
-            <div className="flex justify-end mt-5 md:mt-4">
+            <div className="flex flex-col items-end gap-1 mt-5 md:mt-4">
+                <p className={`text-sm text-red-600 font-medium h-5 overflow-hidden transition-opacity ${submitError ? 'opacity-100' : 'opacity-0 select-none'}`}>
+                    {submitError ?? ' '}
+                </p>
                 <button
                     onClick={handleContestar}
-                    disabled={!selectedOption || !!answers[currentQ.id]}
-                    className={`p-2 pl-8 pr-8 font-bold rounded-full transition-all shadow-md ${!selectedOption || answers[currentQ.id]
+                    disabled={!selectedOption || !!answers[currentQ.id] || isSubmitting}
+                    className={`p-2 pl-8 pr-8 font-bold rounded-full transition-all shadow-md ${!selectedOption || answers[currentQ.id] || isSubmitting
                         ? 'bg-base-dark text-gray-100 opacity-60 cursor-not-allowed'
                         : 'bg-base-dark text-white hover:scale-105 active:scale-95 cursor-pointer'
                         }`}
                 >
-                    {answers[currentQ.id]
-                        ? 'Contestado'
-                        : (isLastQuestion ? 'Finalizar examen' : 'Contestar')
-                    }
+                    {answers[currentQ.id] ? 'Contestado' : isSubmitting ? 'Enviando...' : 'Contestar'}
                 </button>
             </div>
         </div>
