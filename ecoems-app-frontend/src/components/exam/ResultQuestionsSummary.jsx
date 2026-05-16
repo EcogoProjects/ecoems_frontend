@@ -4,8 +4,8 @@ export default function ResultQuestionsSummary({ summary }) {
     return (
         <section className="grid gap-5 lg:grid-cols-[220px_1fr]">
             <article className="relative flex items-center gap-7 overflow-hidden rounded-box-standard border border-base-dark/10 bg-base-hard px-7 py-6 text-center shadow-[0_12px_28px_-10px_rgba(71,46,24,.18)] lg:flex-col lg:justify-center lg:px-5">
-                <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-base-soft/20" />
-                <div className="absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-base-dark/10" />
+                {/* <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-base-soft/20" />
+                <div className="absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-base-dark/10" /> */}
 
                 <span className="relative z-10 text-[11px] font-semibold uppercase tracking-[0.1em] text-base-dark/65">
                     Calificación
@@ -14,7 +14,7 @@ export default function ResultQuestionsSummary({ summary }) {
                 <div
                     className="relative z-10 flex h-[130px] w-[130px] shrink-0 items-center justify-center rounded-full"
                     style={{
-                        background: `conic-gradient(from -90deg, var(--base-dark-color) ${scorePercent}%, rgba(71,46,24,.18) 0)`,
+                        background: `conic-gradient(from -90deg, var(--base-dark-color) ${scorePercent}%, rgba(71, 69, 24, 0.18) 0)`,
                     }}
                 >
                     <div className="flex h-24 w-24 flex-col items-center justify-center rounded-full bg-base-hard leading-none">
@@ -23,7 +23,7 @@ export default function ResultQuestionsSummary({ summary }) {
                     </div>
                 </div>
 
-                <span className="relative z-10 text-sm font-medium text-base-dark/80">{summary.verdict}</span>
+                {/* <span className="relative z-10 text-sm font-medium text-base-dark/80">{summary.verdict}</span> */}
             </article>
 
             <div className="grid gap-3.5 sm:grid-cols-3">

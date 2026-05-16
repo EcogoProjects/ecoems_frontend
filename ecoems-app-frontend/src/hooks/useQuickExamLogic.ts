@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useExam, ExamQuestion } from './useExam';
-import { submitAnswer, submitExam } from '@/lib/api/exam';
+import { getExplication, getHint, submitAnswer, submitExam } from '@/lib/api/exam';
 
 export interface AnswerResult {
     isCorrect: boolean;
     correctAnswer: string;
     explanation: string;
+}
+
+export interface HintResult {
+    hint: string;
+    countHints: string;
 }
 
 export interface MappedQuestion {
@@ -61,8 +66,12 @@ export function useQuickExamLogic() {
     const [finalScore, setFinalScore] = useState(0);
 
     const [answerResults, setAnswerResults] = useState<Record<number, AnswerResult>>({});
+    const [hintResults, setHintResults] = useState<Record<number, HintResult>>({});
+    const [showHintLimitModal, setShowHintLimitModal] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isHintLoading, setIsHintLoading] = useState(false);
+    const [isExplanationLoading, setIsExplanationLoading] = useState(false);
 
     const isFinishingRef = useRef(false);
 
@@ -77,6 +86,7 @@ export function useQuickExamLogic() {
     useEffect(() => {
         setShowOverlay(false);
         setRevealHint(false);
+        setShowHintLimitModal(false);
         setSelectedOption(currentQ ? (answers[currentQ.id] ?? null) : null);
         setSubmitError(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -154,8 +164,60 @@ export function useQuickExamLogic() {
         saveAnswer(selectedOption);
     };
 
-    const handleExplicacionDirecta = () => {
-        if (!currentQ || answers[currentQ.id]) return;
+    const handleShowHint = async () => {
+        if (!currentQ || !session || isHintLoading) return;
+        if (hintResults[currentQ.id]) {
+            setRevealHint(true);
+            setShowOverlay(false);
+            return;
+        }
+        setIsHintLoading(true);
+        setSubmitError(null);
+        const { data, error } = await getHint({ session_id: session.session_id, question_id: currentQ.id });
+        setIsHintLoading(false);
+        if (error) {
+            setShowOverlay(false);
+            setShowHintLimitModal(true);
+            return;
+        }
+        if (!data?.hint_available) {
+            setShowOverlay(false);
+            setShowHintLimitModal(true);
+            return;
+        }
+        if (!data?.hint) {
+            setSubmitError('No se pudo obtener la pista. Intenta de nuevo.');
+            return;
+        }
+        setHintResults(prev => ({
+            ...prev,
+            [currentQ.id]: {
+                hint: data.hint,
+                countHints: data?.count_hints ?? '',
+            },
+        }));
+        setRevealHint(true);
+        setShowOverlay(false);
+    };
+
+    const handleExplicacionDirecta = async () => {
+        if (!currentQ || !session || answers[currentQ.id] || isExplanationLoading) return;
+        setIsExplanationLoading(true);
+        setSubmitError(null);
+        const { data, error } = await getExplication({ session_id: session.session_id, question_id: currentQ.id });
+        setIsExplanationLoading(false);
+        if (error) {
+            setSubmitError('No se pudo obtener la explicación. Intenta de nuevo.');
+            return;
+        }
+        setAnswerResults(prev => ({
+            ...prev,
+            [currentQ.id]: {
+                isCorrect: false,
+                correctAnswer: '',
+                explanation: data?.explanation ?? '',
+            }
+        }));
         saveAnswer('-');
         setShowOverlay(false);
     };
@@ -203,6 +265,8 @@ export function useQuickExamLogic() {
         setShowOverlay,
         revealHint,
         setRevealHint,
+        showHintLimitModal,
+        setShowHintLimitModal,
         revealExplanation,
         isModalOpen,
         openModal,
@@ -222,11 +286,15 @@ export function useQuickExamLogic() {
         onTouchEnd,
         handleOptionSelect,
         handleContestar,
+        handleShowHint,
         handleExplicacionDirecta,
         hasImage,
         answerResults,
+        hintResults,
         submitError,
         isSubmitting,
+        isHintLoading,
+        isExplanationLoading,
         timeRemaining,
     };
 }

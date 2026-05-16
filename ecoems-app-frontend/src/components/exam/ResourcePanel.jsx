@@ -15,7 +15,9 @@ export default function ResourcePanel({
     selectedOption,
     answers,
     openModal,
-    answerResult
+    answerResult,
+    hint,
+    hintCount
 }) {
     const panelRef = useRef(null);
 
@@ -51,14 +53,19 @@ export default function ResourcePanel({
                 </div>
             )}
 
-            {revealHint && currentQ.hint && (
+            {revealHint && hint && (
                 <div className="bg-base-soft rounded-[18px] p-3 shadow-lg">
                     <div className="flex items-center gap-2 mb-2 text-base-dark">
                         <FaLightbulb />
                         <p className="font-bold ">Pista sugerida</p>
                     </div>
+                    {hintCount && (
+                        <p className="mb-2 text-xs font-semibold text-base-dark/70">
+                            Pistas usadas: {hintCount}
+                        </p>
+                    )}
                     <div className="opacity-55 whitespace-pre-wrap">
-                        <LatexParagraph content={currentQ.hint} />
+                        <LatexParagraph content={hint} />
                     </div>
                 </div>
             )}

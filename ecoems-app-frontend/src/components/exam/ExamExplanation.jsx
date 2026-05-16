@@ -37,9 +37,11 @@ export default function ExamExplanation({
             </div>
 
             <div className="space-y-2 text-sm">
-                <p className="font-bold">
-                    La respuesta correcta es la {correct_answer.toUpperCase()}.
-                </p>
+                {correct_answer && (
+                    <p className="font-bold">
+                        La respuesta correcta es la {correct_answer.toUpperCase()}.
+                    </p>
+                )}
                 <span className={`leading-relaxed ${blur ? 'blur-[4px] select-none opacity-60' : opacityClasses}`}>
                     <LatexParagraph content={explanation} />
                 </span>

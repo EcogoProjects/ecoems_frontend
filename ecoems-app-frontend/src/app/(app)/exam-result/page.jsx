@@ -4,9 +4,9 @@ import NavBarDesktop from "@/components/NavBarDesktop";
 import NavBarMovile from "@/components/NavBarMovile";
 import MarginBottom from "@/components/MarginBottom";
 import MarginTop from "@/components/MarginTop";
-import ResultQuestionsHeader from "@/components/exam/RESULT_QUESTIONS_HEADER";
-import ResultQuestionsSummary from "@/components/exam/RESULT_QUESTIONS_SUMMARY";
-import QuestionsBreakdown from "@/components/exam/QUESTIONS_BREAKDOWN";
+import ResultQuestionsHeader from "@/components/exam/ResultQuestionsHeader";
+import ResultQuestionsSummary from "@/components/exam/ResultQuestionsSummary";
+import QuestionsBreakdown from "@/components/exam/QuestionsBreakdown";
 
 const examResult = {
     completedAt: "15 de mayo de 2026",
@@ -14,7 +14,7 @@ const examResult = {
     summary: {
         score: 7.5,
         maxScore: 10,
-        verdict: "¡Buen trabajo!",
+        //verdict: "¡Buen trabajo!",
         correct: 7,
         incorrect: 2,
         partial: 1,
@@ -34,7 +34,7 @@ const examResult = {
             id: "q2",
             status: "incorrect",
             prompt: "¿A qué bioma corresponde el ecosistema representado en la imagen?",
-            imageLabel: "[ fotografía del ecosistema ]",
+            imageLabel: "https://generialand.com/wp-content/uploads/2024/12/generia_home1.webp",
             userAnswer: "Desierto subtropical",
             correctAnswer: "Bosque tropical húmedo",
             explanation: "El bosque tropical húmedo se caracteriza por precipitaciones altas, temperatura estable y gran biodiversidad. A diferencia del desierto, presenta cobertura vegetal densa con doseles de gran altura.",

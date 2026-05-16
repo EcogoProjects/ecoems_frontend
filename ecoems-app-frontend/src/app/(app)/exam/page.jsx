@@ -10,6 +10,7 @@ import ExamHeader from "@/components/exam/ExamHeader";
 import QuestionPanel from "@/components/exam/QuestionPanel";
 import ResourcePanel from "@/components/exam/ResourcePanel";
 import FinishedExamDashboard from "@/components/exam/FinishedExamDashboard";
+import { MdOutlineDoNotDisturb } from "react-icons/md";
 
 import { useQuickExamLogic } from "@/hooks/useQuickExamLogic";
 
@@ -21,14 +22,14 @@ function ExamPage() {
         questions, currentIndex, setCurrentIndex, currentQ,
         answers, selectedOption,
         showOverlay, setShowOverlay,
-        revealHint, setRevealHint, revealExplanation,
+        revealHint, showHintLimitModal, setShowHintLimitModal, revealExplanation,
         isModalOpen, openModal, closeModal,
         isExamFinished, finishMessage, finalScore,
         swipeOffset, isSwiping, slideDir,
         handlePrev, handleNext, handleTimeUp, finishExam,
         onTouchStart, onTouchMove, onTouchEnd,
-        handleOptionSelect, handleContestar, handleExplicacionDirecta,
-        hasImage, answerResults, submitError, isSubmitting, timeRemaining
+        handleOptionSelect, handleContestar, handleShowHint, handleExplicacionDirecta,
+        hasImage, answerResults, hintResults, submitError, isSubmitting, isHintLoading, isExplanationLoading, timeRemaining
     } = useQuickExamLogic();
 
     const minutes = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
@@ -47,16 +48,16 @@ function ExamPage() {
 
             {showOverlay && (
                 <HintBox
-                    onShowHint={() => {
-                        setRevealHint(true);
-                        setShowOverlay(false);
-                    }}
+                    onShowHint={handleShowHint}
                     onShowExplanation={handleExplicacionDirecta}
+                    isShowingHint={isHintLoading}
+                    isShowingExplanation={isExplanationLoading}
+                    error={submitError}
                     onClose={() => setShowOverlay(false)}
                 />
             )}
 
-            <div className={`flex flex-col min-h-screen justify-center items-center md:justify-start gap-5 transition-all duration-300 ${isModalOpen || showOverlay || isExamFinished ? 'blur-md pointer-events-none select-none' : ''} pb-22 pt-10 md:pt-20`}>
+            <div className={`flex flex-col min-h-screen justify-center items-center md:justify-start gap-5 transition-all duration-300 ${isModalOpen || showOverlay || showHintLimitModal || isExamFinished ? 'blur-md pointer-events-none select-none' : ''} pb-22 pt-10 md:pt-20`}>
 
                 <div className="flex items-center justify-between w-[90%] md:w-4/5">
                     <span className={`font-mono font-bold text-lg tabular-nums transition-colors ${timeRemaining <= 60 ? 'text-red-500' : 'text-base-dark'}`}>
@@ -117,6 +118,8 @@ function ExamPage() {
                         answers={answers}
                         openModal={openModal}
                         answerResult={answerResults[currentQ.id] ?? null}
+                        hint={hintResults[currentQ.id]?.hint ?? currentQ.hint}
+                        hintCount={hintResults[currentQ.id]?.countHints ?? ''}
                     />
                 </div>
             </div>
@@ -126,6 +129,30 @@ function ExamPage() {
             {isExamFinished && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-500">
                     <FinishedExamDashboard closeActionMessage={finishMessage} score={finalScore} />
+                </div>
+            )}
+
+            {showHintLimitModal && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    onClick={() => setShowHintLimitModal(false)}
+                >
+                    <div
+                        className="bg-base-dark text-base-soft rounded-[28px] p-8 flex flex-col items-center gap-5 w-full max-w-[380px] shadow-2xl"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <MdOutlineDoNotDisturb size={48} className="text-base-hard" />
+                        <h2 className="text-xl font-extrabold text-center tracking-tight">Límite diario alcanzado</h2>
+                        <p className="text-sm text-center leading-relaxed text-base-soft/80">
+                            Se ha alcanzado el límite diario de pistas (5/día en la versión gratuita).
+                        </p>
+                        <button
+                            onClick={() => setShowHintLimitModal(false)}
+                            className="mt-2 w-full py-3 rounded-xl font-bold bg-base-hard text-base-dark hover:opacity-80 transition-opacity cursor-pointer"
+                        >
+                            Entendido
+                        </button>
+                    </div>
                 </div>
             )}
 

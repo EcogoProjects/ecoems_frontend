@@ -15,3 +15,11 @@ export async function submitAnswer({ session_id, question_id, selected_answer })
 export async function submitExam(session_id) {
     return api.post(`/exams/${session_id}/submit`, {})
 }
+
+export async function getExplication({ session_id, question_id }) {
+    return api.post(`/exams/${session_id}/explanation`, { question_id })
+}
+
+export async function getHint({ session_id, question_id }) {
+    return api.post(`/exams/${session_id}/hint`, { question_id })
+}
