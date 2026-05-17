@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { startExam, getDailyUsage } from '@/lib/api';
+import { useState, useEffect } from 'react';
+import { startExam, getCurrentSession, getDailyUsage } from '@/lib/api';
 import { DailyUsage, canTakeQuickExam } from '@/utils/exam/examLogic';
 
 export type ExamType = 'quick' | 'seguimiento' | 'simulacro' | 'diagnostic';
@@ -25,16 +25,24 @@ export interface ExamQuestion {
     options: ExamOption;
 }
 
+export interface SavedAnswer {
+    question_id: number;
+    selected_answer: string;
+}
+
 export interface ExamSession {
     session_id: string;
+    exam_type?: string;
     expires_at: string;
-    exam_area: string;
+    exam_area?: string;
     questions: ExamQuestion[];
+    answers_saved?: SavedAnswer[];
 }
 
 interface StartExamResult {
     data: ExamSession | null;
     error: string | null;
+    status?: number | null;
 }
 
 let dailyUsageCache: DailyUsage | null = null;
@@ -51,6 +59,7 @@ export function useExam(): {
     canQuickExam: boolean;
     timeRemaining: number;
     startExamSession: (params: StartExamParams) => Promise<StartExamResult>;
+    continueCurrentSession: () => Promise<StartExamResult>;
 } {
     const [isLoading, setIsLoading] = useState(false);
     const [session, setSession] = useState<ExamSession | null>(sessionCache);
@@ -81,14 +90,26 @@ export function useExam(): {
 
     const startExamSession = async (params: StartExamParams): Promise<StartExamResult> => {
         setIsLoading(true);
-        const { data, error } = await startExam(params);
+        const { data, error, status } = await startExam(params);
         setIsLoading(false);
 
-        if (error || !data) return { data: null, error: error ?? 'Error al iniciar el examen' };
+        if (error || !data) return { data: null, error: error ?? 'Error al iniciar el examen', status };
 
         sessionCache = data;
         setSession(data);
-        return { data, error: null };
+        return { data, error: null, status };
+    };
+
+    const continueCurrentSession = async (): Promise<StartExamResult> => {
+        setIsLoading(true);
+        const { data, error, status } = await getCurrentSession();
+        setIsLoading(false);
+
+        if (error || !data) return { data: null, error: error ?? 'Error al continuar el examen', status };
+
+        sessionCache = data;
+        setSession(data);
+        return { data, error: null, status };
     };
 
     return {
@@ -99,5 +120,6 @@ export function useExam(): {
         canQuickExam: canTakeQuickExam(dailyUsage),
         timeRemaining,
         startExamSession,
+        continueCurrentSession,
     };
 }

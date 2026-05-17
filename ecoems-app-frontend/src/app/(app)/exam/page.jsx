@@ -4,13 +4,12 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ImageModal from "@/components/exam/ImageModal";
 import HintBox from "@/components/exam/HintBox";
-import NavBarDesktop from "@/components/NavBarDesktop";
-import NavBarMovile from "@/components/NavBarMovile";
 import ExamHeader from "@/components/exam/ExamHeader";
 import QuestionPanel from "@/components/exam/QuestionPanel";
 import ResourcePanel from "@/components/exam/ResourcePanel";
 import FinishedExamDashboard from "@/components/exam/FinishedExamDashboard";
 import { MdOutlineDoNotDisturb } from "react-icons/md";
+import { LuArrowLeft } from "react-icons/lu";
 
 import { useQuickExamLogic } from "@/hooks/useQuickExamLogic";
 
@@ -34,18 +33,32 @@ function ExamPage() {
 
     const minutes = Math.floor(timeRemaining / 60).toString().padStart(2, '0');
     const seconds = (timeRemaining % 60).toString().padStart(2, '0');
+    const hasActiveExam = !!session && !isExamFinished;
 
     useEffect(() => {
         if (!session) router.replace('/home');
     }, [session, router]);
 
+    useEffect(() => {
+        if (!hasActiveExam) return;
+
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+            event.returnValue = '';
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [hasActiveExam]);
+
+    const handleLeaveExam = () => {
+        window.location.href = '/home';
+    };
+
     if (!currentQ) return null;
 
     return (
         <>
-            <NavBarDesktop />
-            <NavBarMovile />
-
             {showOverlay && (
                 <HintBox
                     onShowHint={handleShowHint}
@@ -59,10 +72,21 @@ function ExamPage() {
 
             <div className={`flex flex-col min-h-screen justify-center items-center md:justify-start gap-5 transition-all duration-300 ${isModalOpen || showOverlay || showHintLimitModal || isExamFinished ? 'blur-md pointer-events-none select-none' : ''} pb-22 pt-10 md:pt-20`}>
 
-                <div className="flex items-center justify-between w-[90%] md:w-4/5">
-                    <span className={`font-mono font-bold text-lg tabular-nums transition-colors ${timeRemaining <= 60 ? 'text-red-500' : 'text-base-dark'}`}>
+                <div className="flex justify-center w-[90%] md:w-4/5">
+                    <span className={`font-mono font-bold text-2xl tabular-nums transition-colors ${timeRemaining <= 60 ? 'text-red-500' : 'text-base-dark'}`}>
                         {minutes}:{seconds}
                     </span>
+                </div>
+
+                <div className="flex items-center justify-between w-[90%] md:w-4/5">
+                    <button
+                        type="button"
+                        onClick={handleLeaveExam}
+                        className="inline-flex items-center gap-2 text-base-dark/70 text-sm px-4 py-2 rounded-full font-semibold tracking-wider hover:text-base-dark hover:bg-base-dark/5 transition-colors cursor-pointer"
+                    >
+                        <LuArrowLeft size={16} strokeWidth={2.2} />
+                        Salir del examen
+                    </button>
                     <button
                         onClick={() => finishExam("manual", answers)}
                         className="bg-base-dark text-white text-sm px-4 py-2 rounded-full font-semibold tracking-wider hover:opacity-80 transition-opacity cursor-pointer"
@@ -78,6 +102,7 @@ function ExamPage() {
                     answers={answers}
                     setCurrentIndex={setCurrentIndex}
                     setShowOverlay={setShowOverlay}
+                    isHelpDisabled={!!answers[currentQ.id]}
                     handlePrev={handlePrev}
                     handleNext={handleNext}
                 />

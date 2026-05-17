@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useExam, ExamQuestion } from './useExam';
+import { useExam, ExamQuestion, ExamSession } from './useExam';
 import { getExplication, getHint, submitAnswer, submitExam } from '@/lib/api/exam';
 
 export interface AnswerResult {
@@ -45,17 +45,33 @@ function mapQuestion(q: ExamQuestion, examArea: string): MappedQuestion {
     };
 }
 
+function mapSavedAnswers(session: ExamSession | null): Record<number, string> {
+    return Object.fromEntries(
+        (session?.answers_saved ?? []).map(answer => [answer.question_id, answer.selected_answer])
+    );
+}
+
+function getFirstUnansweredIndex(questions: MappedQuestion[], answers: Record<number, string>) {
+    const index = questions.findIndex(question => !answers[question.id]);
+    return index === -1 ? 0 : index;
+}
+
 export function useQuickExamLogic() {
     const { session, timeRemaining } = useExam();
 
     const questions: MappedQuestion[] = (session?.questions ?? [])
         .slice()
         .sort((a, b) => a.position - b.position)
-        .map(q => mapQuestion(q, session?.exam_area ?? ''));
+        .map(q => mapQuestion(q, session?.exam_area ?? session?.exam_type ?? ''));
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [answers, setAnswers] = useState<Record<number, string>>({});
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const initialAnswers = mapSavedAnswers(session);
+
+    const [currentIndex, setCurrentIndex] = useState(() => getFirstUnansweredIndex(questions, initialAnswers));
+    const [answers, setAnswers] = useState<Record<number, string>>(() => initialAnswers);
+    const [selectedOption, setSelectedOption] = useState<string | null>(() => {
+        const initialQuestion = questions[getFirstUnansweredIndex(questions, initialAnswers)];
+        return initialQuestion ? (initialAnswers[initialQuestion.id] ?? null) : null;
+    });
 
     const [showOverlay, setShowOverlay] = useState(false);
     const [revealHint, setRevealHint] = useState(false);
