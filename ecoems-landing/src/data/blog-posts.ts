@@ -26,7 +26,7 @@ export const blogPosts: BlogPost[] = [
     author: 'ECOGO',
     category: 'ECOEMS',
     featured: true,
-    coverImage: '/blog/blog17.png',
+    coverImage: '/blog/Blog17.png',
     content: [
       {
         type: 'paragraph',
