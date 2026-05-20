@@ -18,7 +18,336 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+    {
+    slug: 'toma-fotografia-ecoems-2026',
+    title: 'Toma de fotografía ECOEMS 2026: todo lo que necesitas saber para tu trámite presencial',
+    excerpt: 'Guía completa sobre la toma de fotografía ECOEMS 2026: fechas, requisitos, documentos y errores que debes evitar.',
+    date: 'May 20, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: true,
+    coverImage: '/blog/blog17.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si elegiste la Modalidad 2 o 3 para competir por un lugar en la UNAM o el IPN, hay un paso presencial obligatorio: la toma de fotografía. Este requisito valida tu identidad y es indispensable para poder presentar el examen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Aquí tienes una guía clara para evitar errores y completar este trámite correctamente.'
+      },
 
+      {
+        type: 'heading',
+        text: 'Quiénes deben acudir'
+      },
+      {
+        type: 'paragraph',
+        text: 'Este trámite es obligatorio únicamente para aspirantes que eligieron escuelas con examen.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 2: obligatorio',
+          'Modalidad 3: obligatorio si incluiste UNAM o IPN',
+          'Modalidad 1: no aplica'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Si solo elegiste escuelas sin examen, no necesitas realizar este paso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Fechas clave'
+      },
+      {
+        type: 'list',
+        items: [
+          'Periodo: del 18 al 22 de mayo de 2026',
+          'Debes consultar tu cita en el portal oficial',
+          'Ahí verás sede, fecha y hora exacta'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Es importante que revises el portal personalmente, ya que no recibirás notificaciones por correo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Documento obligatorio'
+      },
+      {
+        type: 'paragraph',
+        text: 'Debes descargar tu Solicitud de Registro (Documento A) desde el portal oficial.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Contiene tu cita',
+          'Funciona como pase de entrada',
+          'Debe llevarse impreso'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Sin este documento no podrás realizar el trámite.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Requisitos el día de la cita'
+      },
+      {
+        type: 'list',
+        items: [
+          'Documento A impreso',
+          'Asistencia del aspirante',
+          'Identificación escolar (recomendado)',
+          'Llegar al menos 15 minutos antes'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'El trámite es personal. Nadie puede acudir en tu lugar.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Qué pasa si no asistes'
+      },
+      {
+        type: 'list',
+        items: [
+          'Pierdes tu registro al examen',
+          'No podrás presentar la prueba',
+          'No hay reprogramación ni prórrogas'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'No asistir implica quedar fuera del proceso con examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Consejos para la fotografía'
+      },
+      {
+        type: 'list',
+        items: [
+          'Usa ropa de colores neutros',
+          'Evita gorras, lentes oscuros o accesorios llamativos',
+          'Mantén el rostro despejado'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'La imagen puede utilizarse en documentos oficiales, por lo que es importante cuidar tu presentación.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Ten lista tu cuenta'
+      },
+      {
+        type: 'paragraph',
+        text: 'Para descargar tu documento necesitas acceder con tu cuenta.'
+      },
+      {
+        type: 'list',
+        items: [
+          'CURP correcta',
+          'Correo activo',
+          'Contraseña accesible'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Planea tu traslado'
+      },
+      {
+        type: 'list',
+        items: [
+          'Revisa la ubicación con anticipación',
+          'Calcula tiempos de traslado',
+          'Evita llegar tarde'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'En resumen'
+      },
+      {
+        type: 'paragraph',
+        text: 'La toma de fotografía es un paso obligatorio si vas por UNAM o IPN. No es un trámite menor, ya que valida tu participación en el examen.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Periodo: 18 al 22 de mayo de 2026',
+          'Lleva tu Documento A impreso',
+          'Preséntate puntual'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Un error en este paso puede dejarte fuera del proceso. Completa el trámite correctamente para avanzar al siguiente paso: el examen.'
+      }
+    ],
+  },
+    {
+    slug: 'entrar-ipn-ecoems-2026-guia-real',
+    title: '¿Quieres entrar al IPN? Esto es lo que necesitas saber (antes de regarla en el registro)',
+    excerpt: 'Conoce cómo funciona el ingreso al IPN en ECOEMS 2026, sus requisitos y la estrategia correcta para aumentar tus probabilidades.',
+    date: 'May 20, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog16.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si tu meta es estudiar en el IPN, necesitas entender algo desde el inicio: entrar no es cuestión de suerte, es estrategia.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Dentro del proceso ECOEMS 2026, el Instituto Politécnico Nacional es una de las instituciones más demandadas, por lo que tiene reglas claras que debes conocer.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Qué escuelas del IPN puedes elegir'
+      },
+      {
+        type: 'paragraph',
+        text: 'El IPN participa con dos tipos de escuelas dentro del sistema:'
+      },
+      {
+        type: 'list',
+        items: [
+          'CECyT (vocacionales): bachillerato con carrera técnica',
+          'CET: formación tecnológica orientada a habilidades prácticas'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Estas opciones no solo te preparan académicamente, también te dan herramientas para el mundo laboral o para continuar en ingeniería.'
+      },
+
+      {
+        type: 'heading',
+        text: 'El requisito que no puedes ignorar'
+      },
+      {
+        type: 'paragraph',
+        text: 'Para poder elegir el IPN, necesitas un promedio mínimo de 7.0 en secundaria.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Si no cumples con este requisito, el sistema no te permitirá seleccionar estas opciones.'
+      },
+
+      {
+        type: 'heading',
+        text: 'El examen: donde se decide todo'
+      },
+      {
+        type: 'paragraph',
+        text: 'El ingreso al IPN depende de un examen en línea de 128 preguntas que evalúa 10 áreas de conocimiento.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No solo necesitas conocimientos, también velocidad, precisión y estrategia para resolver bajo presión.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Tu resultado depende de tus aciertos, el orden de tus opciones y la disponibilidad de lugares.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cuántas opciones puedes elegir'
+      },
+      {
+        type: 'paragraph',
+        text: 'Puedes registrar hasta 5 opciones dentro del IPN.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Elegir correctamente estas opciones es clave para aumentar tus probabilidades.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La decisión clave: modalidad'
+      },
+      {
+        type: 'paragraph',
+        text: 'Si quieres entrar al IPN, puedes elegir entre dos modalidades:'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 2: solo escuelas con examen (mayor riesgo)',
+          'Modalidad 3: combinación con opciones sin examen (más segura)'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'La Modalidad 3 permite intentar ingresar al IPN mientras mantienes opciones de respaldo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo aumentar tus probabilidades'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudiantes estudian, pero no se preparan de forma estratégica.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Practicar en formato digital',
+          'Medir tu progreso constantemente',
+          'Realizar simulacros completos',
+          'Ajustar tu estrategia según resultados'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo te puede ayudar ECOGO'
+      },
+      {
+        type: 'paragraph',
+        text: 'ECOGO te permite prepararte con una estrategia clara y enfocada.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Elegir una vocacional objetivo',
+          'Ver cuánto te falta para entrar',
+          'Practicar con simulacros reales',
+          'Recibir recomendaciones específicas de mejora'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'La realidad'
+      },
+      {
+        type: 'paragraph',
+        text: 'Entrar al IPN es posible, pero depende de cumplir requisitos, tomar buenas decisiones y prepararte correctamente.'
+      }
+    ],
+  },
     {
     slug: 'entrar-unam-ecoems-2026-guia-real',
     title: '¿Quieres entrar a la UNAM? Esto es lo que nadie te explica (y necesitas saber en 2026)',
@@ -26,7 +355,7 @@ export const blogPosts: BlogPost[] = [
     date: 'May 15, 2026',
     author: 'ECOGO',
     category: 'ECOEMS',
-    featured: true,
+    featured: false,
     coverImage: '/blog/Blog15.png',
     content: [
       {
