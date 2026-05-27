@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import avatarsData from '@/lib/data/avatars.json';
 import { useEstadosMunicipios } from '@/hooks/useEstadosMunicipios';
-import { api, patchUserMe } from '@/lib/api';
+import { api, patchUserMe, getUserBasicInfo } from '@/lib/api';
 import { useUserStore } from '@/store/userStore';
 import { setOnboardingCookie } from '@/utils/onboardingCookie';
 
@@ -115,11 +115,10 @@ function StepAvatar({ avatar, setAvatar, onNext, onBack }) {
       <div className="flex items-center gap-3 mb-4">
         <button
           type="button"
-          className={`flex-shrink-0 w-9 h-9 rounded-full border-[1.5px] flex items-center justify-center transition-all duration-150 ${
-            page === 0
-              ? 'border-base-dark/20 opacity-30 cursor-not-allowed'
-              : 'border-base-dark hover:bg-base cursor-pointer'
-          }`}
+          className={`flex-shrink-0 w-9 h-9 rounded-full border-[1.5px] flex items-center justify-center transition-all duration-150 ${page === 0
+            ? 'border-base-dark/20 opacity-30 cursor-not-allowed'
+            : 'border-base-dark hover:bg-base cursor-pointer'
+            }`}
           onClick={() => setPage((p) => Math.max(0, p - 1))}
           disabled={page === 0}
           aria-label="Avatares anteriores"
@@ -139,11 +138,10 @@ function StepAvatar({ avatar, setAvatar, onNext, onBack }) {
               aria-pressed={avatar === a.id}
             >
               <span
-                className={`block w-[88px] h-[88px] rounded-full border-2 transition-all duration-150 overflow-hidden ${
-                  avatar === a.id
-                    ? 'border-base-dark shadow-[0_0_0_3px_var(--base-soft-color),0_0_0_5px_var(--base-dark-color),0_8px_18px_rgba(71,46,24,0.2)]'
-                    : 'border-transparent'
-                }`}
+                className={`block w-[88px] h-[88px] rounded-full border-2 transition-all duration-150 overflow-hidden ${avatar === a.id
+                  ? 'border-base-dark shadow-[0_0_0_3px_var(--base-soft-color),0_0_0_5px_var(--base-dark-color),0_8px_18px_rgba(71,46,24,0.2)]'
+                  : 'border-transparent'
+                  }`}
               >
                 <img src={a.avatar_url} alt={a.name} className="w-full h-full object-cover" />
               </span>
@@ -163,11 +161,10 @@ function StepAvatar({ avatar, setAvatar, onNext, onBack }) {
 
         <button
           type="button"
-          className={`flex-shrink-0 w-9 h-9 rounded-full border-[1.5px] flex items-center justify-center transition-all duration-150 ${
-            page === totalPages - 1
-              ? 'border-base-dark/20 opacity-30 cursor-not-allowed'
-              : 'border-base-dark hover:bg-base cursor-pointer'
-          }`}
+          className={`flex-shrink-0 w-9 h-9 rounded-full border-[1.5px] flex items-center justify-center transition-all duration-150 ${page === totalPages - 1
+            ? 'border-base-dark/20 opacity-30 cursor-not-allowed'
+            : 'border-base-dark hover:bg-base cursor-pointer'
+            }`}
           onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
           disabled={page === totalPages - 1}
           aria-label="Siguientes avatares"
@@ -185,9 +182,8 @@ function StepAvatar({ avatar, setAvatar, onNext, onBack }) {
             type="button"
             onClick={() => setPage(i)}
             aria-label={`Página ${i + 1}`}
-            className={`h-2 rounded-full transition-all duration-200 cursor-pointer ${
-              i === page ? 'w-5 bg-base-dark' : 'w-2 bg-base-dark/30 hover:bg-base-dark/50'
-            }`}
+            className={`h-2 rounded-full transition-all duration-200 cursor-pointer ${i === page ? 'w-5 bg-base-dark' : 'w-2 bg-base-dark/30 hover:bg-base-dark/50'
+              }`}
           />
         ))}
       </div>
@@ -214,10 +210,11 @@ function StepAvatar({ avatar, setAvatar, onNext, onBack }) {
   );
 }
 
-// ─── Select personalizado ─────────────────────────────────────────────────────
+// ─── Selector de Escuelas con búsqueda ─────────────────────────────────────────────────────
 
-function Select({ label, value, onChange, options, placeholder, disabled }) {
+function Select({ label, value, onChange, options, placeholder, disabled, searchable }) {
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const ref = useRef(null);
 
   useEffect(() => {
@@ -228,44 +225,76 @@ function Select({ label, value, onChange, options, placeholder, disabled }) {
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
+  useEffect(() => {
+    if (!open) {
+      setSearchQuery("");
+    }
+  }, [open]);
+
+  const normalizeText = (text) =>
+    text
+      ? text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+      : "";
+
+  const filteredOptions = searchQuery
+    ? options.filter((opt) =>
+      normalizeText(opt).includes(normalizeText(searchQuery))
+    )
+    : options;
+
+  const Trigger = open && searchable ? 'div' : 'button';
+
   return (
     <div className={`flex flex-col gap-1.5 relative ${disabled ? 'opacity-55' : ''}`} ref={ref}>
       <label className="text-[13px] font-medium text-base-dark tracking-[0.01em]">{label}</label>
-      <button
-        type="button"
-        className={`flex items-center justify-between gap-2 w-full border-[1.5px] rounded-[12px] px-3.5 py-3 text-[14.5px] text-base-dark text-left transition-all duration-150 ${
-          open
-            ? 'border-base-dark bg-base-soft'
-            : `border-transparent bg-base-extra-light ${!disabled ? 'hover:bg-base' : ''}`
-        } ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-        onClick={() => !disabled && setOpen((v) => !v)}
-        disabled={disabled}
+      <Trigger
+        type={Trigger === 'button' ? 'button' : undefined}
+        className={`flex items-center justify-between gap-2 w-full border-[1.5px] rounded-[12px] px-3.5 py-3 text-[14.5px] text-base-dark text-left transition-all duration-150 ${open
+          ? 'border-base-dark bg-base-soft'
+          : `border-transparent bg-base-extra-light ${!disabled ? 'hover:bg-base' : ''}`
+          } ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        onClick={Trigger === 'button' ? (() => !disabled && setOpen((v) => !v)) : undefined}
+        disabled={Trigger === 'button' ? disabled : undefined}
       >
-        <span className={`flex-1 whitespace-nowrap overflow-hidden text-ellipsis ${!value ? 'opacity-50' : ''}`}>
-          {value || placeholder}
-        </span>
+        {open && searchable ? (
+          <input
+            type="text"
+            className="flex-1 bg-transparent border-none text-[14.5px] text-base-dark outline-none min-w-0 p-0 m-0 placeholder:text-base-dark/40"
+            placeholder={value || placeholder}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            autoFocus
+          />
+        ) : (
+          <span className={`flex-1 whitespace-nowrap overflow-hidden text-ellipsis ${!value ? 'opacity-50' : ''}`}>
+            {value || placeholder}
+          </span>
+        )}
         <svg
           className={`flex-shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
           width="14" height="14" viewBox="0 0 24 24" fill="none"
+          onClick={Trigger === 'div' ? (e) => { e.stopPropagation(); setOpen(false); } : undefined}
         >
           <path d="M6 9 L12 15 L18 9" stroke="#472E18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </button>
+      </Trigger>
       {open && (
         <div
           className="absolute top-[calc(100%+6px)] left-0 right-0 bg-base-soft border border-base-dark/15 rounded-[12px] p-1.5 max-h-60 overflow-y-auto z-50 shadow-[0_12px_32px_-8px_rgba(71,46,24,0.25)]"
           role="listbox"
         >
-          {options.length === 0 ? (
-            <div className="p-3.5 text-[13px] opacity-60 text-center">Sin opciones disponibles</div>
+          {filteredOptions.length === 0 ? (
+            <div className="p-3 text-[14px] text-base-dark opacity-60 text-center">
+              {searchQuery ? "No se encontraron similiudes" : "Sin opciones disponibles"}
+            </div>
           ) : (
-            options.map((opt) => (
+            filteredOptions.map((opt) => (
               <button
                 key={opt}
                 type="button"
-                className={`flex items-center justify-between w-full border-none px-3 py-2.5 rounded-lg text-[14px] text-base-dark cursor-pointer text-left transition-colors ${
-                  opt === value ? 'bg-base font-medium' : 'bg-transparent hover:bg-base'
-                }`}
+                className={`flex items-center justify-between w-full border-none px-3 py-2.5 rounded-lg text-[14px] text-base-dark cursor-pointer text-left transition-colors ${opt === value ? 'bg-base font-medium' : 'bg-transparent hover:bg-base'
+                  }`}
                 onClick={() => { onChange(opt); setOpen(false); }}
                 role="option"
                 aria-selected={opt === value}
@@ -382,6 +411,7 @@ function StepForm({ form, setForm, schools, schoolsLoading, submitLoading, submi
             options={schoolOptions}
             placeholder={schoolsLoading ? "Cargando escuelas…" : "Selecciona tu escuela"}
             disabled={schoolsLoading}
+            searchable={true}
           />
         </div>
       </div>
