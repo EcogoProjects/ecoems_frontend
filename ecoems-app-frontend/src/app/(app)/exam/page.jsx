@@ -7,7 +7,6 @@ import HintBox from "@/components/exam/HintBox";
 import ExamHeader from "@/components/exam/ExamHeader";
 import QuestionPanel from "@/components/exam/QuestionPanel";
 import ResourcePanel from "@/components/exam/ResourcePanel";
-import FinishedExamDashboard from "@/components/exam/FinishedExamDashboard";
 import { MdOutlineDoNotDisturb } from "react-icons/md";
 import { LuArrowLeft } from "react-icons/lu";
 
@@ -23,7 +22,7 @@ function ExamPage() {
         showOverlay, setShowOverlay,
         revealHint, showHintLimitModal, setShowHintLimitModal, revealExplanation,
         isModalOpen, openModal, closeModal,
-        isExamFinished, finishMessage, finalScore,
+        isExamFinished,
         swipeOffset, isSwiping, slideDir,
         handlePrev, handleNext, handleTimeUp, finishExam,
         onTouchStart, onTouchMove, onTouchEnd,
@@ -150,12 +149,6 @@ function ExamPage() {
             </div>
 
             <br />
-
-            {isExamFinished && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-500">
-                    <FinishedExamDashboard closeActionMessage={finishMessage} score={finalScore} />
-                </div>
-            )}
 
             {showHintLimitModal && (
                 <div

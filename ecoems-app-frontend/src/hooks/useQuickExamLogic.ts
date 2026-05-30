@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useExam, ExamQuestion, ExamSession } from './useExam';
+import { ExamResultData, setExamResult } from './useExamResult';
 import { getExplication, getHint, submitAnswer, submitExam } from '@/lib/api/exam';
 
 export interface AnswerResult {
@@ -57,6 +59,7 @@ function getFirstUnansweredIndex(questions: MappedQuestion[], answers: Record<nu
 }
 
 export function useQuickExamLogic() {
+    const router = useRouter();
     const { session, timeRemaining } = useExam();
 
     const questions: MappedQuestion[] = (session?.questions ?? [])
@@ -128,9 +131,21 @@ export function useQuickExamLogic() {
     const finishExam = async (reason: string, currentAnswers: Record<number, string>) => {
         if (isFinishingRef.current) return;
         isFinishingRef.current = true;
-        setFinishMessage(reason === 'timeout' ? 'Se acabó el tiempo' : 'Terminaste a tiempo');
+        const message = reason === 'timeout' ? 'Se acabó el tiempo' : 'Terminaste a tiempo';
+        setFinishMessage(message);
         const { data } = await submitExam(session!.session_id);
-        setFinalScore(data ? parseFloat(data.score) : 0);
+        const result = data as ExamResultData | null;
+        setFinalScore(result ? parseFloat(String(result.score)) : 0);
+        if (result) {
+            setExamResult({
+                result,
+                message,
+                session_id: session!.session_id,
+                finished_at: new Date().toISOString(),
+            });
+            router.push('/exam-result');
+            return;
+        }
         setIsExamFinished(true);
     };
 

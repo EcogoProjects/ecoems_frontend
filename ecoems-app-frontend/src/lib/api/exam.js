@@ -17,7 +17,7 @@ export async function submitAnswer({ session_id, question_id, selected_answer })
 }
 
 export async function submitExam(session_id) {
-    return api.post(`/exams/${session_id}/submit`, {})
+    return api.post(`/exams/${session_id}/submit`)
 }
 
 export async function closeExam() {
