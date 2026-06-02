@@ -30,6 +30,7 @@ src/
 │       ├── login/page.jsx     # → /login
 │       ├── signup/page.jsx    # → /signup
 │       ├── email-confirmation/page.jsx  # → /email-confirmation
+│       ├── initial-registration/page.jsx  # → /initial-registration (onboarding inicial tras confirmar email)
 │       ├── home/page.jsx      # → /home  (dashboard con selector de examen)
 │       ├── exam/page.jsx      # → /exam
 │       ├── analytics/page.jsx # → /analytics
@@ -217,14 +218,36 @@ El archivo `proxy.ts` (equivalente al `middleware.ts` de Next.js ≤15 — renom
 
 | Ruta | Sin sesión | Con sesión |
 |---|---|---|
-| `/home`, `/exam`, `/analytics`, `/profile`, `/program`, `/coming-soon` | → `/login?redirect=<ruta>` | pasa |
-| `/login`, `/signup` | pasa | → `/home` |
-| Todo lo demás (`/`, `/plans`, `/auth/callback`, estáticos) | pasa | pasa |
+| `/home`, `/exam`, `/analytics`, `/profile`, `/program`, `/coming-soon`, `/initial-registration` (`PROTECTED_ROUTES`) | → `/login?redirect=<ruta>` | pasa (sujeto a la compuerta de onboarding) |
+| `/login`, `/signup` (`AUTH_ROUTES`) | pasa | → `/home` |
+| Todo lo demás (`/`, `/plans`, `/auth/callback`, estáticos) | pasa | pasa (sujeto a la compuerta de onboarding) |
+
+**Compuerta de onboarding** (solo aplica si hay sesión): se basa en la cookie `onboarding` (`'done'` = onboarding completado).
+- **Regla A** — sin cookie `onboarding` y la ruta NO es `/initial-registration` → redirige a `/initial-registration`. Fuerza a todo usuario nuevo a completar el registro inicial antes de usar la app.
+- **Regla B** — con cookie `onboarding=done` e intento de volver a `/initial-registration` → redirige a `/home`. Evita re-hacer el onboarding ya completado.
+
+La cookie `onboarding=done` la setean: el login (`setOnboardingCookie()`), el callback de `/auth/callback` (`redirectAfterProfile`), y se borra en el signOut (`clearOnboardingCookie()`).
+
+#### Convención de atributos de la cookie `onboarding`
+
+Todas las escrituras de esta cookie (cliente y servidor) usan los mismos atributos:
+
+| Atributo | Valor | Por qué |
+|---|---|---|
+| `path` | `/` | Disponible en toda la app |
+| `sameSite` | `'lax'` (NO `'strict'`) | El link de confirmación de email llega **cross-site** desde el cliente de correo → `'strict'` bloquearía la cookie en esa primera navegación y rompería la compuerta de onboarding |
+| `secure` | **condicional** según entorno (NO `true` fijo) | `localhost` corre sobre **HTTP**; con `secure: true` fijo el navegador descarta la cookie en dev y el usuario queda atrapado en bucle hacia `/initial-registration` |
+
+Cómo se evalúa el entorno para `secure` según dónde se escribe la cookie:
+- **Cliente** (`utils/onboardingCookie.ts`): `hostname === 'localhost' \|\| '127.0.0.1'` → omite `Secure`
+- **Servidor** (`auth/callback/route.js`): `process.env.NODE_ENV === 'production'` → `secure: true`
+
+**Regla:** nunca usar `secure: true` fijo ni `sameSite: 'strict'` en cookies que participen en flujos cross-site (email) o que deban funcionar en dev.
 
 Reglas críticas al modificar `proxy.ts`:
 - Usar **`getUser()`** — nunca `getSession()` (getSession no verifica contra servidores de Supabase)
 - Siempre devolver `supabaseResponse` (no un `NextResponse.next()` nuevo) para no romper el refresco de tokens
-- Al redirigir, copiar cookies de `supabaseResponse` al redirect para preservar el token
+- Al redirigir, copiar cookies de `supabaseResponse` al redirect para preservar el token (helper `withCookies()`)
 
 ### Store de usuario y AppProvider
 

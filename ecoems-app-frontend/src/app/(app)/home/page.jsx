@@ -15,12 +15,11 @@ import DailyLivesBar from "@/components/homepage/DailyLivesBar";
 function HomePage() {
     const avg_value = 73;
     const { data: syllabus, isLoading: isSyllabusLoading } = useSyllabus();
-
     return (
-    <div className="flex flex-col min-h-screen justify-center items-center gap-3.5">
-        <MarginTop/>
-        <NavBarDesktop/>
-        <AnnouncementBox
+        <div className="flex flex-col min-h-screen justify-center items-center gap-3.5">
+            <MarginTop />
+            <NavBarDesktop />
+            {/*<AnnouncementBox
             title="¡Bienvenido!"
             content_text="Estamos muy felices de tenerte aquí. Prepárate para mejorar tus habilidades y alcanzar un lugar en la escuela que quires con nosotros."
             background="base"
@@ -42,14 +41,20 @@ function HomePage() {
                     <h2 className="text-xl font-bold text-base-dark">Progreso General</h2>
                     <CircleAvgIndicator value={avg_value} background="--base-hard-alt-color" label={"Respuestas correctas"}/>
                 </div>
-                <div className="bg-white flex flex-col justify-center items-center rounded-box-standard shadow-lg p-10 pl-3.5 pr-3.5 w-full gap-1.5 h-[100px]">
+                {/*Contenedor derecho grid */}
+                <div className="flex flex-col w-full md:col-span-1 items-center gap-2">
+                    <div className="bg-white flex flex-col justify-center items-center rounded-box-standard shadow-lg p-10 pl-3.5 pr-3.5 w-full gap-1.5">
+                        <h2 className="text-xl font-bold text-base-dark">Progreso General</h2>
+                        <CircleAvgIndicator value={avg_value} background="--base-hard-alt-color" label={"Respuestas correctas"} />
+                    </div>
+                    <div className="bg-white flex flex-col justify-center items-center rounded-box-standard shadow-lg p-10 pl-3.5 pr-3.5 w-full gap-1.5 h-[100px]">
 
+                    </div>
                 </div>
             </div>
+            <NavBarMovile />
+            <MarginBottom />
         </div>
-        <NavBarMovile/>
-        <MarginBottom/>
-    </div>
     );
 }
 

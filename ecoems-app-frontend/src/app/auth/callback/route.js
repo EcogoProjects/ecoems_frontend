@@ -57,7 +57,7 @@ async function createBackendProfile(session, origin) {
 
     // 201 = perfil creado | 409 = perfil ya existía (confirmación repetida o dispositivo distinto)
     if (res.status === 201 || res.status === 409) {
-      return NextResponse.redirect(`${origin}/coming-soon`)
+      return await redirectAfterProfile(session.access_token, origin)
     }
 
     return NextResponse.redirect(`${origin}/signup?error=profile_creation_failed`)
@@ -77,8 +77,8 @@ async function redirectAfterProfile(accessToken, origin) {
         const response = NextResponse.redirect(`${origin}/home`)
         response.cookies.set('onboarding', 'done', {
           path: '/',
-          secure: true,
-          sameSite: 'strict',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
         })
         return response
       }

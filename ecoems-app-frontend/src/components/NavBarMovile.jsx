@@ -9,6 +9,7 @@ import { signOut } from "@/lib/api";
 import { useUserStore } from "@/store/userStore";
 import { clearOnboardingCookie } from "@/utils/onboardingCookie";
 import { clearProfileCache } from "@/hooks/useProfile";
+import { FaThList } from "react-icons/fa";
 
 function NavBarMovile() {
     const image_url = "/assets/ecogo_avatar_04.png";
@@ -45,12 +46,12 @@ function NavBarMovile() {
 
                     {/* Analytics */}
                     <Link href="/analytics" className={`p-2 transition-transform active:scale-90 hover:opacity-80 ${pathname === '/analytics' ? 'bg-white/10 rounded-2xl' : ''}`}>
-                        <ChartBarBigColumns height="28px" width="28px" pack="filled"/>
+                        <ChartBarBigColumns height="28px" width="28px" pack="filled" />
                     </Link>
 
                     {/* Home - Icono central un poco más grande */}
                     <Link href="/home" className={`p-3 rounded-2xl transition-all active:scale-90 shadow-inner ${pathname === '/home' ? 'bg-white/10' : ''}`}>
-                        <FaHome size={28}/>
+                        <FaHome size={28} />
                     </Link>
 
                     {/* Profile — abre el menú desplegable */}
@@ -69,6 +70,11 @@ function NavBarMovile() {
                                     </div>
                                     <p className="text-sm font-semibold text-white truncate">{name}</p>
                                 </div>
+                                <div className="border-t border-white/10 mx-3" />
+                                <Link href="/program" className="flex items-center gap-2.5 px-5 py-3.5">
+                                    <FaThList size={14} />
+                                    <p className="text-sm font-semibold text-white truncate">Temario</p>
+                                </Link>
                                 <div className="border-t border-white/10 mx-3" />
                                 <button
                                     onClick={handleSignOut}

@@ -19,13 +19,1395 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'errores-pago-ecoems-2026',
+    title: 'No pierdas tu lugar por un error de pago: guía ECOGO para completar tu registro sin contratiempos',
+    excerpt: 'Evita los errores más comunes al pagar el examen ECOEMS 2026 y asegura tu registro correctamente desde el inicio.',
+    date: 'May 24, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: true,
+    coverImage: '/blog/Blog22.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Muchos aspirantes se preparan para el examen, investigan escuelas y definen su estrategia, pero cometen errores administrativos durante el pago que los dejan fuera del proceso.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Evitar estos errores es tan importante como estudiar. Aquí tienes una guía clara para completar tu pago correctamente.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Quiénes deben pagar'
+      },
+      {
+        type: 'paragraph',
+        text: 'El pago aplica únicamente para quienes eligieron escuelas con examen.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 2: obligatorio',
+          'Modalidad 3: obligatorio si incluye UNAM o IPN',
+          'Modalidad 1: no requiere pago'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Costo del examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'El costo aproximado es de 450 pesos mexicanos.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Es importante confirmar el monto exacto en el portal oficial al generar tu ficha de pago.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Error 1: no guardar el comprobante'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos aspirantes realizan el pago y no conservan evidencia.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Tomar foto del comprobante',
+          'Guardar copia digital',
+          'Conservar el original'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'El comprobante es tu respaldo ante cualquier aclaración.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Error 2: esperar al último día'
+      },
+      {
+        type: 'paragraph',
+        text: 'Dejar el pago para el final puede generar problemas como saturación del sistema o errores por presión.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Lo recomendable es pagar lo antes posible dentro del periodo establecido.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Error 3: capturar datos incorrectos'
+      },
+      {
+        type: 'paragraph',
+        text: 'Un dato mal capturado puede impedir que el pago se registre correctamente.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Verificar referencia',
+          'Confirmar monto',
+          'Revisar nombre del aspirante',
+          'Validar CURP'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Revisión antes de pagar'
+      },
+      {
+        type: 'list',
+        items: [
+          'Cuenta activa y funcional',
+          'Datos correctos del aspirante',
+          'Correo actualizado',
+          'Modalidad seleccionada correctamente',
+          'Opciones revisadas antes de generar pago'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Qué sigue después del pago'
+      },
+      {
+        type: 'list',
+        items: [
+          'Descargar documentos oficiales',
+          'Consultar toma de fotografía',
+          'Prepararse para el examen'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Completar el pago no garantiza un buen resultado, solo te permite participar en el proceso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Consejo importante'
+      },
+      {
+        type: 'paragraph',
+        text: 'Mientras se valida tu trámite, aprovecha el tiempo para comenzar tu preparación.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Realizar un diagnóstico',
+          'Practicar en formato digital',
+          'Entrenar manejo del tiempo',
+          'Identificar materias débiles'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Conclusión'
+      },
+      {
+        type: 'paragraph',
+        text: 'Un error en el pago puede dejarte fuera del proceso, sin importar tu nivel académico.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Completa el trámite correctamente, guarda tus comprobantes y prepárate con estrategia para acercarte a tu objetivo.'
+      }
+    ],
+  },
+  {
+    slug: 'reapertura-registro-ecoems-2026',
+    title: 'Segunda oportunidad ECOEMS 2026: reapertura de registro y qué hacer para no quedarte fuera',
+    excerpt: 'Todo lo que necesitas saber sobre la reapertura del registro ECOEMS 2026, fechas, requisitos y cómo aprovechar esta segunda oportunidad.',
+    date: 'May 24, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog21.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si no completaste tu registro en el proceso ECOEMS 2026, hay una nueva oportunidad. Se abrirá una ventana extraordinaria para que más aspirantes puedan finalizar su trámite y participar en la asignación.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Es una segunda oportunidad real, pero limitada. Aprovecharla correctamente puede marcar la diferencia.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Fechas de reapertura'
+      },
+      {
+        type: 'list',
+        items: [
+          'Del 23 al 25 de mayo de 2026',
+          'Solo tres días disponibles',
+          'No habrá extensiones'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Durante este periodo la plataforma estará habilitada nuevamente. Es recomendable no dejar el trámite para el último momento.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Quiénes deben aprovechar esta oportunidad'
+      },
+      {
+        type: 'paragraph',
+        text: 'La reapertura está dirigida a distintos tipos de aspirantes.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Personas que iniciaron el registro pero no lo terminaron',
+          'Aspirantes que detectaron errores en sus datos',
+          'Quienes no realizaron registro en el periodo anterior'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Revisión de datos importantes'
+      },
+      {
+        type: 'paragraph',
+        text: 'Antes de completar el registro, revisa cuidadosamente tu información.'
+      },
+      {
+        type: 'list',
+        items: [
+          'CURP',
+          'Correo electrónico',
+          'Número telefónico',
+          'Domicilio',
+          'Datos escolares'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Errores en estos datos pueden generar problemas en etapas posteriores del proceso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Revisa tu cuenta antes del registro'
+      },
+      {
+        type: 'paragraph',
+        text: 'Antes del 23 de mayo, asegúrate de poder acceder correctamente a tu cuenta.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Puedes iniciar sesión',
+          'Tu correo está activo',
+          'Tus datos personales son correctos',
+          'Tu contraseña funciona correctamente'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'La cuenta debe estar registrada a nombre del aspirante. Usar datos de otra persona puede causar problemas más adelante.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Qué pasa después del registro'
+      },
+      {
+        type: 'paragraph',
+        text: 'El siguiente paso depende de la modalidad que hayas elegido.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 1: continúas con el proceso de asignación directa',
+          'Modalidad 2 o 3: deberás descargar Documento A, revisar cita y acudir a la toma de fotografía'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'No confundas registro con preparación'
+      },
+      {
+        type: 'paragraph',
+        text: 'Completar el registro no garantiza un buen resultado. Solo te permite participar en el proceso.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Tu resultado final dependerá de tu preparación para el examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Consejo importante'
+      },
+      {
+        type: 'paragraph',
+        text: 'Si aprovechas esta segunda oportunidad, también es momento de comenzar a prepararte.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Realiza un diagnóstico de tu nivel',
+          'Practica en formato digital',
+          'Entrena el manejo del tiempo',
+          'Mide tu avance constantemente'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Conclusión'
+      },
+      {
+        type: 'paragraph',
+        text: 'Esta reapertura es una segunda oportunidad, pero también una última llamada para entrar al proceso.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Completa tu registro correctamente, verifica tus datos y prepárate con estrategia para aumentar tus probabilidades.'
+      }
+    ],
+  },
+  {
+    slug: 'navegador-seguro-ecoems-2026',
+    title: '¿Cómo descargar el navegador seguro para el examen ECOEMS 2026? Guía clara y sin errores',
+    excerpt: 'Aprende cómo descargar, instalar y usar el navegador seguro ECOEMS 2026 para evitar errores el día del examen.',
+    date: 'May 24, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog20.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si vas a presentar el examen para la UNAM o el IPN, hay algo fundamental que debes saber: no podrás hacerlo desde un navegador normal.'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen se realizará en un navegador seguro o software especial, y descargarlo correctamente es clave para poder presentar la prueba.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La fecha más importante'
+      },
+      {
+        type: 'list',
+        items: [
+          'Periodo: del 18 al 22 de mayo de 2026',
+          'Ahí se publicará el navegador oficial',
+          'También estarán las instrucciones y requisitos técnicos'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Antes de esas fechas no existe ningún archivo oficial. Evita descargar programas de páginas externas o no verificadas.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo será la descarga'
+      },
+      {
+        type: 'paragraph',
+        text: 'El proceso general seguirá estos pasos:'
+      },
+      {
+        type: 'list',
+        items: [
+          'Iniciar sesión con tu cuenta',
+          'Entrar a tu panel de aspirante',
+          'Descargar el navegador seguro',
+          'Instalar el programa en tu computadora',
+          'Realizar la prueba técnica'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Instalación y prueba técnica'
+      },
+      {
+        type: 'paragraph',
+        text: 'Después de descargar el software, deberás instalarlo y validar que tu equipo cumple con los requisitos.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Activar cámara',
+          'Activar micrófono',
+          'Verificar conexión a internet',
+          'Confirmar compatibilidad del equipo'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Esta validación es obligatoria para poder presentar el examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Por qué se usa un navegador seguro'
+      },
+      {
+        type: 'list',
+        items: [
+          'Evitar copiar o hacer trampa',
+          'Bloquear otras aplicaciones o páginas',
+          'Supervisar el examen',
+          'Garantizar condiciones iguales para todos'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'El sistema convierte tu computadora en un entorno controlado para el examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Errores comunes'
+      },
+      {
+        type: 'list',
+        items: [
+          'Esperar al último día para descargar',
+          'Usar una computadora lenta o incompatible',
+          'No probar cámara o micrófono',
+          'Cambiar de equipo a última hora'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Evitar estos errores puede ahorrarte problemas el día del examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Prepárate desde antes'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudiantes llegan sin experiencia en exámenes digitales.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Practicar en computadora',
+          'Leer y resolver en pantalla',
+          'Simular exámenes largos'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Acostumbrarte al formato digital te dará una ventaja importante.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Checklist final'
+      },
+      {
+        type: 'list',
+        items: [
+          'Navegador seguro instalado',
+          'Computadora funcionando correctamente',
+          'Internet estable',
+          'Cámara y micrófono activos',
+          'Prueba técnica completada',
+          'Documento A listo'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Conclusión'
+      },
+      {
+        type: 'paragraph',
+        text: 'El navegador seguro no es solo un requisito técnico, es parte del examen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Dominar este entorno antes del día de la prueba te dará mayor seguridad, reducirá errores y te permitirá enfocarte en responder correctamente.'
+      }
+    ],
+  },
+  {
+    slug: 'estructura-examen-ecoems-2026',
+    title: 'Desglosando el ECOEMS 2026: así es realmente el examen que define tu ingreso',
+    excerpt: 'Conoce la estructura real del examen ECOEMS 2026: formato, materias, tiempo y la estrategia necesaria para obtener un buen resultado.',
+    date: 'May 24, 2026',
+    author: 'ECOGO',
+    category: 'Estudio',
+    featured: false,
+    coverImage: '/blog/Blog19.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si quieres entrar a la UNAM o al IPN, necesitas entender algo desde el inicio: el ECOEMS no es un examen cualquiera.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Está diseñado para medir no solo lo que sabes, sino cómo piensas, analizas y administras tu tiempo en un entorno digital.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Formato del examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen se aplica completamente en línea, lo que cambia la forma en la que debes prepararte.'
+      },
+      {
+        type: 'list',
+        items: [
+          'No hay uso de papel ni lápiz',
+          'Todas las respuestas se registran en pantalla',
+          'La navegación es similar a una plataforma digital'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Esto implica que necesitas sentirte cómodo resolviendo bajo presión frente a una computadora.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Estructura general'
+      },
+      {
+        type: 'list',
+        items: [
+          '128 preguntas de opción múltiple',
+          'Duración: 3 horas',
+          'Tiempo promedio: aproximadamente 1.4 minutos por pregunta'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'El tiempo es limitado, por lo que es importante mantener un ritmo constante durante toda la prueba.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Áreas del examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen está dividido en 10 áreas específicas.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Razonamiento matemático',
+          'Matemáticas',
+          'Razonamiento verbal',
+          'Español',
+          'Historia',
+          'Formación cívica y ética',
+          'Física',
+          'Biología',
+          'Química',
+          'Geografía'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Cada materia se evalúa de forma independiente, por lo que descuidar alguna puede afectar tu resultado final.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Requisitos para validar tu examen'
+      },
+      {
+        type: 'list',
+        items: [
+          'Promedio mínimo de 7.0 en secundaria',
+          'Pago del examen',
+          'Registro completo en tiempo y forma'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Si no cumples con estos requisitos, tu resultado no será considerado, sin importar tu puntaje.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo se gana este examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen no se trata solo de memorizar contenidos.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Administrar correctamente el tiempo',
+          'Pensar rápido en formato digital',
+          'Resolver bajo presión'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'La práctica en condiciones reales es clave para mejorar tu desempeño.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Estrategia de preparación'
+      },
+      {
+        type: 'list',
+        items: [
+          'Realizar simulacros completos de 3 horas',
+          'Practicar con 128 preguntas',
+          'Analizar errores por materia',
+          'Mejorar progresivamente tu tiempo por pregunta'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Entrenar en condiciones similares al examen real te da una ventaja importante.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Conclusión'
+      },
+      {
+        type: 'paragraph',
+        text: 'El ECOEMS no premia a quien más estudia, sino a quien mejor se prepara.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Entender la estructura, practicar en formato real y controlar tu tiempo son factores clave para obtener un buen resultado.'
+      }
+    ],
+  },
+  {
+    slug: 'pago-ecoems-2026-guia-completa',
+    title: 'Guía completa de pago ECOEMS 2026: evita errores y asegura tu registro',
+    excerpt: 'Aprende cómo pagar correctamente el examen ECOEMS 2026, fechas clave, requisitos y errores que debes evitar.',
+    date: 'May 24, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog18.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si estás decidido a competir por un lugar en la UNAM o el IPN, hay un paso clave que no puedes ignorar: el pago del examen de admisión.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Aunque parece sencillo, muchos aspirantes cometen errores en esta etapa y terminan quedando fuera del proceso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Quiénes deben pagar'
+      },
+      {
+        type: 'paragraph',
+        text: 'El pago aplica únicamente para quienes eligieron escuelas con examen.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 2: obligatorio',
+          'Modalidad 3: obligatorio si incluye UNAM o IPN',
+          'Modalidad 1: no aplica'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Si elegiste solo acceso directo, tu registro es gratuito.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Costo del examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'El costo aproximado es de 450 pesos mexicanos.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Este monto puede variar ligeramente, por lo que debes confirmarlo en el portal oficial al generar tu ficha de pago.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Fechas de pago'
+      },
+      {
+        type: 'list',
+        items: [
+          'Periodo: del 17 de marzo al 14 de abril de 2026'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'No hay prórrogas ni pagos tardíos. Si no pagas en este periodo, quedas fuera del proceso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo realizar el pago'
+      },
+      {
+        type: 'list',
+        items: [
+          'Ingresar al portal oficial',
+          'Acceder con tu cuenta',
+          'Completar el registro',
+          'Seleccionar Modalidad 2 o 3',
+          'Generar formato de pago',
+          'Pagar en banco o en línea',
+          'Guardar el comprobante'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'No dejes el pago para el último día, ya que los sistemas pueden saturarse.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Qué sigue después del pago'
+      },
+      {
+        type: 'list',
+        items: [
+          'Del 18 al 22 de mayo: descarga Documento A',
+          'Consulta tu cita',
+          'Acude a la toma de fotografía'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Si no completas estos pasos, no podrás presentar el examen aunque ya hayas pagado.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Errores comunes'
+      },
+      {
+        type: 'list',
+        items: [
+          'Pensar que el pago puede hacerse después',
+          'No verificar que el pago se reflejó',
+          'Perder el comprobante',
+          'No descargar Documento A en mayo',
+          'Confiarse con las fechas'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Consejo importante'
+      },
+      {
+        type: 'paragraph',
+        text: 'Pagar el examen no garantiza un lugar. Lo que realmente importa es tu desempeño en la prueba.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Practicar en formato digital',
+          'Medir tu progreso',
+          'Identificar áreas débiles'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Resumen'
+      },
+      {
+        type: 'list',
+        items: [
+          'Costo: aproximadamente 450 pesos',
+          'Fecha límite: 14 de abril de 2026',
+          'Aplica para Modalidad 2 y 3',
+          'Incluye toma de fotografía en mayo',
+          'La preparación es clave'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Conclusión'
+      },
+      {
+        type: 'paragraph',
+        text: 'El pago es solo el primer filtro del proceso. Muchos aspirantes quedan fuera por errores administrativos o falta de preparación.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Cumple con cada paso correctamente, guarda tus comprobantes y prepárate con estrategia para aumentar tus probabilidades.'
+      }
+    ],
+  },
+  {
+    slug: 'toma-fotografia-ecoems-2026',
+    title: 'Toma de fotografía ECOEMS 2026: todo lo que necesitas saber para tu trámite presencial',
+    excerpt: 'Guía completa sobre la toma de fotografía ECOEMS 2026: fechas, requisitos, documentos y errores que debes evitar.',
+    date: 'May 20, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog17.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si elegiste la Modalidad 2 o 3 para competir por un lugar en la UNAM o el IPN, hay un paso presencial obligatorio: la toma de fotografía. Este requisito valida tu identidad y es indispensable para poder presentar el examen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Aquí tienes una guía clara para evitar errores y completar este trámite correctamente.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Quiénes deben acudir'
+      },
+      {
+        type: 'paragraph',
+        text: 'Este trámite es obligatorio únicamente para aspirantes que eligieron escuelas con examen.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 2: obligatorio',
+          'Modalidad 3: obligatorio si incluiste UNAM o IPN',
+          'Modalidad 1: no aplica'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Si solo elegiste escuelas sin examen, no necesitas realizar este paso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Fechas clave'
+      },
+      {
+        type: 'list',
+        items: [
+          'Periodo: del 18 al 22 de mayo de 2026',
+          'Debes consultar tu cita en el portal oficial',
+          'Ahí verás sede, fecha y hora exacta'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Es importante que revises el portal personalmente, ya que no recibirás notificaciones por correo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Documento obligatorio'
+      },
+      {
+        type: 'paragraph',
+        text: 'Debes descargar tu Solicitud de Registro (Documento A) desde el portal oficial.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Contiene tu cita',
+          'Funciona como pase de entrada',
+          'Debe llevarse impreso'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Sin este documento no podrás realizar el trámite.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Requisitos el día de la cita'
+      },
+      {
+        type: 'list',
+        items: [
+          'Documento A impreso',
+          'Asistencia del aspirante',
+          'Identificación escolar (recomendado)',
+          'Llegar al menos 15 minutos antes'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'El trámite es personal. Nadie puede acudir en tu lugar.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Qué pasa si no asistes'
+      },
+      {
+        type: 'list',
+        items: [
+          'Pierdes tu registro al examen',
+          'No podrás presentar la prueba',
+          'No hay reprogramación ni prórrogas'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'No asistir implica quedar fuera del proceso con examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Consejos para la fotografía'
+      },
+      {
+        type: 'list',
+        items: [
+          'Usa ropa de colores neutros',
+          'Evita gorras, lentes oscuros o accesorios llamativos',
+          'Mantén el rostro despejado'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'La imagen puede utilizarse en documentos oficiales, por lo que es importante cuidar tu presentación.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Ten lista tu cuenta'
+      },
+      {
+        type: 'paragraph',
+        text: 'Para descargar tu documento necesitas acceder con tu cuenta.'
+      },
+      {
+        type: 'list',
+        items: [
+          'CURP correcta',
+          'Correo activo',
+          'Contraseña accesible'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Planea tu traslado'
+      },
+      {
+        type: 'list',
+        items: [
+          'Revisa la ubicación con anticipación',
+          'Calcula tiempos de traslado',
+          'Evita llegar tarde'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'En resumen'
+      },
+      {
+        type: 'paragraph',
+        text: 'La toma de fotografía es un paso obligatorio si vas por UNAM o IPN. No es un trámite menor, ya que valida tu participación en el examen.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Periodo: 18 al 22 de mayo de 2026',
+          'Lleva tu Documento A impreso',
+          'Preséntate puntual'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Un error en este paso puede dejarte fuera del proceso. Completa el trámite correctamente para avanzar al siguiente paso: el examen.'
+      }
+    ],
+  },
+  {
+    slug: 'entrar-ipn-ecoems-2026-guia-real',
+    title: '¿Quieres entrar al IPN? Esto es lo que necesitas saber (antes de regarla en el registro)',
+    excerpt: 'Conoce cómo funciona el ingreso al IPN en ECOEMS 2026, sus requisitos y la estrategia correcta para aumentar tus probabilidades.',
+    date: 'May 20, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog16.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si tu meta es estudiar en el IPN, necesitas entender algo desde el inicio: entrar no es cuestión de suerte, es estrategia.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Dentro del proceso ECOEMS 2026, el Instituto Politécnico Nacional es una de las instituciones más demandadas, por lo que tiene reglas claras que debes conocer.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Qué escuelas del IPN puedes elegir'
+      },
+      {
+        type: 'paragraph',
+        text: 'El IPN participa con dos tipos de escuelas dentro del sistema:'
+      },
+      {
+        type: 'list',
+        items: [
+          'CECyT (vocacionales): bachillerato con carrera técnica',
+          'CET: formación tecnológica orientada a habilidades prácticas'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Estas opciones no solo te preparan académicamente, también te dan herramientas para el mundo laboral o para continuar en ingeniería.'
+      },
+
+      {
+        type: 'heading',
+        text: 'El requisito que no puedes ignorar'
+      },
+      {
+        type: 'paragraph',
+        text: 'Para poder elegir el IPN, necesitas un promedio mínimo de 7.0 en secundaria.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Si no cumples con este requisito, el sistema no te permitirá seleccionar estas opciones.'
+      },
+
+      {
+        type: 'heading',
+        text: 'El examen: donde se decide todo'
+      },
+      {
+        type: 'paragraph',
+        text: 'El ingreso al IPN depende de un examen en línea de 128 preguntas que evalúa 10 áreas de conocimiento.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No solo necesitas conocimientos, también velocidad, precisión y estrategia para resolver bajo presión.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Tu resultado depende de tus aciertos, el orden de tus opciones y la disponibilidad de lugares.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cuántas opciones puedes elegir'
+      },
+      {
+        type: 'paragraph',
+        text: 'Puedes registrar hasta 5 opciones dentro del IPN.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Elegir correctamente estas opciones es clave para aumentar tus probabilidades.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La decisión clave: modalidad'
+      },
+      {
+        type: 'paragraph',
+        text: 'Si quieres entrar al IPN, puedes elegir entre dos modalidades:'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 2: solo escuelas con examen (mayor riesgo)',
+          'Modalidad 3: combinación con opciones sin examen (más segura)'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'La Modalidad 3 permite intentar ingresar al IPN mientras mantienes opciones de respaldo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo aumentar tus probabilidades'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudiantes estudian, pero no se preparan de forma estratégica.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Practicar en formato digital',
+          'Medir tu progreso constantemente',
+          'Realizar simulacros completos',
+          'Ajustar tu estrategia según resultados'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo te puede ayudar ECOGO'
+      },
+      {
+        type: 'paragraph',
+        text: 'ECOGO te permite prepararte con una estrategia clara y enfocada.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Elegir una vocacional objetivo',
+          'Ver cuánto te falta para entrar',
+          'Practicar con simulacros reales',
+          'Recibir recomendaciones específicas de mejora'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'La realidad'
+      },
+      {
+        type: 'paragraph',
+        text: 'Entrar al IPN es posible, pero depende de cumplir requisitos, tomar buenas decisiones y prepararte correctamente.'
+      }
+    ],
+  },
+  {
+    slug: 'entrar-unam-ecoems-2026-guia-real',
+    title: '¿Quieres entrar a la UNAM? Esto es lo que nadie te explica (y necesitas saber en 2026)',
+    excerpt: 'Descubre cómo funciona realmente el ingreso a la UNAM en ECOEMS 2026, sus requisitos y la estrategia correcta para aumentar tus probabilidades.',
+    date: 'May 15, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog15.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si tu objetivo es entrar a la UNAM desde la preparatoria, necesitas entender cómo funciona realmente el proceso. No es tan simple como elegirla en el registro.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Dentro del sistema ECOEMS 2026, la UNAM es una de las pocas instituciones que no son de acceso directo. Esto significa que necesitas cumplir requisitos y aprobar un examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Las dos formas de estudiar en la UNAM'
+      },
+      {
+        type: 'paragraph',
+        text: 'La UNAM cuenta con dos sistemas de bachillerato, cada uno con un enfoque distinto.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Escuela Nacional Preparatoria (ENP): modelo más estructurado y tradicional',
+          'Colegio de Ciencias y Humanidades (CCH): modelo más autónomo y participativo'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Ambas opciones son válidas. La diferencia está en el tipo de aprendizaje que prefieres.'
+      },
+
+      {
+        type: 'heading',
+        text: 'El filtro real: el examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'Para ingresar a la UNAM debes presentar un examen en línea de 128 preguntas.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No solo importa cuánto sabes, sino qué tan bien manejas el tiempo y la estrategia durante la prueba.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Además, necesitas un promedio mínimo de 7.0 en secundaria. Si no cumples con esto, el sistema no te permitirá seleccionar la UNAM.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cuántas opciones puedes elegir'
+      },
+      {
+        type: 'paragraph',
+        text: 'Durante el registro puedes elegir hasta 5 opciones dentro de la UNAM.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Sin embargo, es importante no limitarte solo a estas opciones si no tienes un respaldo.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La estrategia que pocos usan'
+      },
+      {
+        type: 'paragraph',
+        text: 'Si quieres entrar a la UNAM, tienes dos caminos dentro del sistema:'
+      },
+      {
+        type: 'list',
+        items: [
+          'Modalidad 2: solo escuelas con examen (mayor riesgo)',
+          'Modalidad 3: combinación de opciones con y sin examen (más segura)'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'La Modalidad 3 permite intentar ingresar a la UNAM mientras mantienes opciones de respaldo, evitando quedarte sin lugar.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo te puede ayudar ECOGO'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudiantes estudian sin saber si realmente están listos. ECOGO cambia eso al darte claridad durante tu preparación.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Elegir una escuela objetivo específica',
+          'Medir tu avance real',
+          'Practicar con simulacros similares al examen',
+          'Recibir recomendaciones personalizadas'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Esto te permite dejar de estudiar a ciegas y empezar a prepararte con estrategia.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La realidad'
+      },
+      {
+        type: 'paragraph',
+        text: 'Entrar a la UNAM es posible, pero no depende de la suerte.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Depende de entender el proceso, tomar buenas decisiones y prepararte correctamente.'
+      }
+    ],
+  },
+  {
+    slug: 'como-asegurar-lugar-unam-ecoems-2026',
+    title: 'Cómo asegurar tu lugar en la UNAM (la estrategia real que sí funciona)',
+    excerpt: 'Aprende a construir un plan estratégico para aumentar tus posibilidades de entrar a la UNAM con ECOEMS 2026.',
+    date: 'May 15, 2026',
+    author: 'ECOGO',
+    category: 'Estudio',
+    featured: false,
+    coverImage: '/blog/Blog14.png',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Entrar a una prepa de la UNAM no es solo un sueño, es una meta compartida por miles de estudiantes.'
+      },
+      {
+        type: 'paragraph',
+        text: 'No basta con estudiar mucho; la diferencia no está en quién estudia más, sino en quién tiene mejor estrategia.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Hoy te enseñamos cómo construir un plan real para acercarte a tu lugar en la UNAM usando ECOGO.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 1: Lo básico'
+      },
+      {
+        type: 'paragraph',
+        text: 'Asegúrate de cumplir con lo mínimo: promedio de 7.0 en secundaria y tu acceso listo para el registro.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Sin esto, no podrás seleccionar la UNAM ni entrar al proceso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 2: Deja de estudiar a ciegas'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos empiezan sin saber en qué materias van bien o mal. Con ECOGO puedes hacer un diagnóstico real.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Descubre tus fortalezas y debilidades y elige tu escuela objetivo desde el inicio.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 3: Practica como será el examen'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen es digital. Practicar en papel no prepara para la pantalla, el cronómetro y la presión.'
+      },
+      {
+        type: 'paragraph',
+        text: 'ECOGO ofrece simulaciones, ejercicios digitales y tiempo real para que llegues preparado.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 4: Convierte errores en puntos'
+      },
+      {
+        type: 'paragraph',
+        text: 'Cada error es una oportunidad de aprendizaje. Con ECOGO entiendes el porqué de cada fallo y mejoras constantemente.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 5: Saber si ya te alcanza'
+      },
+      {
+        type: 'paragraph',
+        text: 'Visualiza tus aciertos, lo que falta y qué debes reforzar. Esto te permite ajustar tu estrategia y no estudiar a ciegas.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 6: El simulacro'
+      },
+      {
+        type: 'paragraph',
+        text: 'Realiza simulacros completos de 128 preguntas en condiciones de examen para familiarizarte con tiempo y presión.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso 7: Juega inteligente'
+      },
+      {
+        type: 'paragraph',
+        text: 'Ten siempre un plan B. Combina tus opciones y apunta alto sin arriesgar quedarte fuera.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La diferencia real'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos lo intentan, pocos lo logran. La clave no es inteligencia, es estrategia.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Empieza hoy'
+      },
+      {
+        type: 'paragraph',
+        text: 'No necesitas tener todo perfecto. Empieza con lo que tienes y construye tu preparación desde ahora.'
+      }
+    ],
+  },
+  {
     slug: 'plan-real-dominar-ecoems-2026',
     title: 'Tu plan real para dominar el ECOEMS 2026 (no solo estudiar, ganar el examen)',
     excerpt: 'Aprende una estrategia inteligente para prepararte para el ECOEMS 2026, medir tu avance y aumentar tus posibilidades de entrar a la UNAM o al IPN.',
     date: 'May 13, 2026',
     author: 'ECOGO',
     category: 'Estudio',
-    featured: true,
+    featured: false,
     coverImage: '/blog/Blog13.png',
     content: [
       {
@@ -490,7 +1872,7 @@ export const blogPosts: BlogPost[] = [
       "Modalidad 2 ECOEMS 2026: el camino directo a UNAM o IPN (y sus riesgos)",
     excerpt:
       "Descubre cómo funciona la Modalidad 2 del ECOEMS 2026, sus requisitos y los riesgos de elegir solo escuelas con examen.",
-    date: "Abr 17, 2026",
+    date: "Abr 28, 2026",
     author: "ECOGO",
     category: "ECOEMS",
     featured: false,
