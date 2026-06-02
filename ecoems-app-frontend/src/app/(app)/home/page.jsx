@@ -1,17 +1,28 @@
 "use client"
 
+import Link from "next/link";
 import NavBarMovile from "@/components/NavBarMovile";
 import NavBarDesktop from "@/components/NavBarDesktop";
 import ExamSelector from "@/components/homepage/ExamSelector";
 import AnnouncementBox from "@/components/Announcement_box";
-import CircleAvgIndicator from "@/components/analytics/CircleAvgIndicator";
+import DashboardSummary from "@/components/dashboard/DashboardSummary";
 import SyllabusAccordion from "@/components/analytics/SyllabusAccordion";
 import MarginTop from "@/components/MarginTop";
 import MarginBottom from "@/components/MarginBottom";
 import DailyLivesBar from "@/components/homepage/DailyLivesBar";
 
 function HomePage() {
-    const avg_value = 73;
+    const value = 80;
+    const top_subjects_scores = [
+        { subject: "Matemáticas", score: 85 },
+        { subject: "Ciencias", score: 78 },
+        { subject: "Historia", score: 72 }
+    ];
+    const last_subjects_scores = [
+        { subject: "Literatura", score: 55 },
+        { subject: "Geografía", score: 48 },
+        { subject: "Arte", score: 40 }
+    ];
     return (
         <div className="flex flex-col min-h-screen justify-center items-center gap-3.5">
             <MarginTop />
@@ -34,12 +45,17 @@ function HomePage() {
                 </div>
                 {/* Contenedor derecho grid */}
                 <div className="flex flex-col w-full md:col-span-1 items-center gap-2">
-                    <div className="bg-white flex flex-col justify-center items-center rounded-box-standard shadow-lg p-10 pl-3.5 pr-3.5 w-full gap-1.5">
-                        <h2 className="text-xl font-bold text-base-dark">Progreso General</h2>
-                        <CircleAvgIndicator value={avg_value} background="--base-hard-alt-color" label={"Respuestas correctas"} />
-                    </div>
-                    <div className="bg-white flex flex-col justify-center items-center rounded-box-standard shadow-lg p-10 pl-3.5 pr-3.5 w-full gap-1.5 h-[100px]">
-                    </div>
+                    <DashboardSummary
+                        value={value}
+                        topSubjectsScores={top_subjects_scores}
+                        lastSubjectsScores={last_subjects_scores}
+                    />
+                    <Link
+                        href="/analytics"
+                        className="w-full bg-base-dark text-base rounded-box-standard p-3 text-center font-bold shadow-lg transition-opacity hover:opacity-90"
+                    >
+                        Ver dashboard completo
+                    </Link>
                 </div>
             </div>
             <NavBarMovile />

@@ -1,6 +1,6 @@
 
 import Link from "next/link";
-import CircleAvgIndicator from "../analytics/CircleAvgIndicator";
+import CircleAvgIndicator from "../dashboard/CircleAvgIndicator";
 
 function FinishedExamDashboard({ closeActionMessage, score }) {
     return (

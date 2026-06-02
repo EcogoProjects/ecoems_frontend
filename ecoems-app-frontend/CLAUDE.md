@@ -35,7 +35,7 @@ src/
 │       ├── exam/page.jsx      # → /exam
 │       ├── analytics/page.jsx # → /analytics
 │       ├── profile/page.jsx   # → /profile
-│       ├── program/page.jsx   # → /program
+│       ├── program/page.jsx   # → /program (Server Component; temario dinámico vía SyllabusAccordion)
 │       └── coming-soon/page.jsx  # → /coming-soon
 ├── components/
 │   ├── AppProvider.tsx        # Puebla el store de Zustand en page refresh / navegación directa con sesión existente
@@ -51,7 +51,8 @@ src/
 │   │   ├── ExamProgressChart.jsx
 │   │   ├── SubjectScoreItem.jsx
 │   │   ├── TopicAccordion.jsx
-│   │   └── TopicAccordionSkeleton.jsx  # Skeleton de carga para TopicAccordion
+│   │   ├── TopicAccordionSkeleton.jsx  # Skeleton de carga para TopicAccordion
+│   │   └── SyllabusAccordion.jsx  # Encapsula useSyllabus + skeleton + TopicAccordion; reutilizado por /home y /program
 │   ├── exam/                  # Componentes específicos de examen
 │   │   ├── ExamOption.jsx
 │   │   ├── ExamExplanation.jsx
@@ -334,7 +335,7 @@ npm run lint     # Linting con ESLint
 ## Datos mock actuales
 
 - `src/utils/questions_examples.js` — preguntas de examen de ejemplo (hardcoded)
-- `src/utils/ecoems_program.js` — estructura completa del programa ECOEMS
+- `src/utils/ecoems_program.js` — estructura del programa ECOEMS (mock). **Ya no se usa**: `/home` y `/program` consumen el temario dinámico vía `useSyllabus`/`SyllabusAccordion`. Candidato a eliminar.
 - Datos de analytics en los componentes están hardcoded (pendiente integrar con Supabase)
 
 ## Notas importantes
@@ -351,7 +352,8 @@ npm run lint     # Linting con ESLint
   - `useProfile()` → `{ data, isLoading }` — el hook se registra como suscriptor al montarse y se da de baja al desmontarse.
 - **`useUpdateAvatar`**: `src/hooks/useUpdateAvatar.ts` — PATCH del avatar. Expone `patchAvatar(avatarUrl)` e `isAvatarLoading`. Llama a `updateProfileCache` y `useUserStore.getState().setUser()` al completarse.
 - **`useUpdateProfile`**: `src/hooks/useUpdateProfile.ts` — PATCH de datos personales (`name`, `last_name`, `phone`, `gender`, `state`, `town`). Expone `patchProfile(payload)` e `isProfileLoading`. Mismo patrón de cache y store que `useUpdateAvatar`.
-- **`useSyllabus`**: `src/hooks/useSyllabus.ts` — carga el temario completo (`GET /syllabus`) con caché de módulo (`let syllabusCache`). Mapea el campo `name` de la API a `subject` (materias) y `topic` (temas) para que `TopicAccordion` lo consuma sin cambios. Retorna `{ data: SyllabusSubject[] | null, isLoading }`. La home page muestra `<TopicAccordionSkeleton />` mientras `isLoading` es `true`.
+- **`useSyllabus`**: `src/hooks/useSyllabus.ts` — carga el temario completo (`GET /syllabus`) con caché de módulo (`let syllabusCache`). Mapea el campo `name` de la API a `subject` (materias) y `topic` (temas) para que `TopicAccordion` lo consuma sin cambios. Retorna `{ data: SyllabusSubject[] | null, isLoading }`. El caché de módulo dedupea el fetch entre páginas: montar el hook en `/home` y `/program` solo dispara una petición compartida.
+- **`SyllabusAccordion`**: `src/components/analytics/SyllabusAccordion.jsx` — componente cliente que encapsula el patrón `useSyllabus` + `TopicAccordionSkeleton` (mientras `isLoading`) + `TopicAccordion` (con los datos). Centraliza esa lógica para no repetirla; lo usan `/home` (panel izquierdo del grid, `hidden md:block`) y `/program` (página dedicada, visible en todos los tamaños). `/program` lo renderiza siendo Server Component sin volverse cliente.
 - **`useExam`**: `src/hooks/useExam.ts` — gestiona sesión de examen y uso diario. Dos cachés de módulo: `dailyUsageCache` (evita fetches duplicados de `/users/me/usage/daily`) y `sessionCache` (persiste la `ExamSession` durante la navegación a `/exam`, ya que el estado de React no sobrevive el unmount). Expone:
   - `startExamSession({ exam_type, subtopic_id? })` → `{ data: ExamSession, error, status }` — llama a `POST /exams/start`; guarda el resultado en `sessionCache` antes de resolver
   - `continueCurrentSession()` → `{ data: ExamSession, error, status }` — llama a `GET /exams/active`; guarda la sesión activa en `sessionCache`. El backend devuelve `answers_saved[]` con `{ question_id, selected_answer }`.
