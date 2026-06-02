@@ -17,14 +17,14 @@ export default function TopicAccordion({ topics = [] }) {
   };
 
   return (
-    <div className="bg-base p-4 rounded-[18px] flex flex-col gap-4">
+    <div className="bg-base p-4 rounded-[18px] flex flex-col gap-4 w-full">
       <h2 className="w-full text-base bg-base-dark rounded-[11px] p-1.5 text-center tracking-wider font-bold">
-        Temas por revisar
+        Temario
       </h2>
 
       {subjects.map((subject, subjectIndex) => (
         <div key={subject.subject ?? subject.title ?? subjectIndex} className="bg-base-soft rounded-[18px] p-4">
-          <p className="font-semibold text-lg mb-3">{subject.subject ?? subject.title}</p>
+          <p className="font-semibold text-md md:text-lg mb-3">{subject.subject ?? subject.title}</p>
           <div className="flex flex-col gap-3">
             {(subject.topics ?? []).map((topic, topicIndex) => {
               const isOpen = openTopics[subjectIndex] === topicIndex;
