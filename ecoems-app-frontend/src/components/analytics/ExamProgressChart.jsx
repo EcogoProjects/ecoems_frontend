@@ -12,7 +12,7 @@ const dataMock = [
 export default function ExamProgressChart() {
   return (
     // Reemplazamos el style inline por clases de Tailwind
-    <div className="w-full bg-[#FFF9E4] p-6 rounded-xl border border-yellow-100">
+    <div className="w-4/5 bg-[#FFF9E4] p-6 rounded-xl border border-yellow-100">
       <h3 className="text-xl font-bold mb-6 text-[#472E18] flex items-center gap-2">
         <p>Tu Progreso Académico</p>
       </h3>

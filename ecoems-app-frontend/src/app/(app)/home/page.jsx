@@ -4,7 +4,6 @@ import Link from "next/link";
 import NavBarMovile from "@/components/NavBarMovile";
 import NavBarDesktop from "@/components/NavBarDesktop";
 import ExamSelector from "@/components/homepage/ExamSelector";
-import AnnouncementBox from "@/components/Announcement_box";
 import DashboardSummary from "@/components/dashboard/DashboardSummary";
 import SyllabusAccordion from "@/components/analytics/SyllabusAccordion";
 import MarginTop from "@/components/MarginTop";
@@ -49,6 +48,9 @@ function HomePage() {
                         value={value}
                         topSubjectsScores={top_subjects_scores}
                         lastSubjectsScores={last_subjects_scores}
+                        subjectsLayout="stacked"
+                        containerWidth="w-full"
+                        summaryLayout="stacked"
                     />
                     <Link
                         href="/analytics"

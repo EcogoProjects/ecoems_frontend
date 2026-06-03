@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 
-export default function CircleAvgIndicator({ value = 0, size = 160, strokeWidth = 30, label, background='--base-dark-color' }) {
+export default function CircleAvgIndicator({ value = 0, size = 160, strokeWidth = 30, label, background='--base-dark-color', showValue = true }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const [animatedValue, setAnimatedValue] = useState(0);
@@ -40,17 +40,20 @@ export default function CircleAvgIndicator({ value = 0, size = 160, strokeWidth 
         />
       </svg>
 
-      {/* Contenedor del texto: Centrado absoluto */}
-      <div className="flex flex-col items-center justify-center z-10 pointer-events-no w-[60px]">
-        <span className="text-2xl font-black leading-none text-base-dark">
-          {value}%
-        </span>
-        {label && (
-          <span className="text-sm mt-1 text-base-dark/70 text-center ">
-            {label}
-          </span>
-        )}
-      </div>
+      {(showValue || label) && (
+        <div className="flex flex-col items-center justify-center z-10 pointer-events-no w-[60px]">
+          {showValue && (
+            <span className="text-2xl font-black leading-none text-base-dark">
+              {value}%
+            </span>
+          )}
+          {label && (
+            <span className="text-sm mt-1 text-base-dark/70 text-center ">
+              {label}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

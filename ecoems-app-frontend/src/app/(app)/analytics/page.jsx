@@ -22,15 +22,14 @@ function AnalyticsPage() {
         <div className="flex flex-col min-h-screen justify-center items-center">
             <MarginTop/>
             <NavBarDesktop/>
-            <div className="flex flex-col md:grid md:grid-cols-3 w-4/5 gap-6">
-                <DashboardSummary
-                    value={value}
-                    topSubjectsScores={top_subjects_scores}
-                    lastSubjectsScores={last_subjects_scores}
-                />
-                <div className="flex flex-col bg-base p-4 rounded-box-standard pt-12 pb-12 md:col-span-2 shadow-lg">
-                    <ExamProgressChart/>   
-                </div>
+            
+            <DashboardSummary
+                value={value}
+                topSubjectsScores={top_subjects_scores}
+                lastSubjectsScores={last_subjects_scores}
+            />
+            <div className="mt-10 flex justify-center items-center w-full">
+                <ExamProgressChart/>
             </div>
             
             <NavBarMovile/>
