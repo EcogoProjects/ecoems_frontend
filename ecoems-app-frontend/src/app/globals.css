@@ -19,37 +19,75 @@
 }
 
 @keyframes floaty {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 @keyframes pulse-dot {
-  0% { transform: scale(1); opacity: 0.3; }
-  100% { transform: scale(2.2); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes spin-slow {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes bob {
-  0%, 100% { transform: translateY(0) rotate(-3deg); }
-  50% { transform: translateY(-8px) rotate(3deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(3deg);
+  }
 }
 
 @keyframes progress-shimmer {
-  0%, 100% { width: 78%; }
-  50% { width: 86%; }
+
+  0%,
+  100% {
+    width: 78%;
+  }
+
+  50% {
+    width: 86%;
+  }
 }
 
 @theme inline {
   /* Fuentes */
-  --font-outfit: var(--font-outfit); /* Enlaza la variable de Next.js */
+  --font-outfit: var(--font-outfit);
+  /* Enlaza la variable de Next.js */
 
   /* Si quieres que sea la fuente por defecto de todo el sitio: */
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
@@ -81,6 +119,7 @@
   --radius-box-standard: 18px;
   --text-standard: 15px;
 }
+
 /*
 @media (prefers-color-scheme: dark) {
   :root {
@@ -89,6 +128,21 @@
   }
 }
 */
+@layer utilities {
+
+  /* Oculta la barra en Chrome, Safari y Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Oculta la barra en IE, Edge y Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE y Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}
 
 body {
   background: var(--background);

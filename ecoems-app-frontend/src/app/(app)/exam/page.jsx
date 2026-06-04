@@ -9,6 +9,7 @@ import QuestionPanel from "@/components/exam/QuestionPanel";
 import ResourcePanel from "@/components/exam/ResourcePanel";
 import { MdOutlineDoNotDisturb } from "react-icons/md";
 import { LuArrowLeft } from "react-icons/lu";
+import Timer from "@/components/Timer";
 
 import { useQuickExamLogic } from "@/hooks/useQuickExamLogic";
 
@@ -69,19 +70,17 @@ function ExamPage() {
                 />
             )}
 
-            <div className={`flex flex-col min-h-screen justify-center items-center md:justify-start gap-5 transition-all duration-300 ${isModalOpen || showOverlay || showHintLimitModal || isExamFinished ? 'blur-md pointer-events-none select-none' : ''} pb-22 pt-10 md:pt-20`}>
+            <div className={`flex flex-col min-h-screen justify-center items-center md:justify-start gap-5 transition-all duration-300 ${isModalOpen || showOverlay || showHintLimitModal || isExamFinished ? 'blur-md pointer-events-none select-none' : ''} pb-22 pt-10 `}>
 
-                <div className="flex justify-center w-[90%] md:w-4/5">
-                    <span className={`font-mono font-bold text-2xl tabular-nums transition-colors ${timeRemaining <= 60 ? 'text-red-500' : 'text-base-dark'}`}>
-                        {minutes}:{seconds}
-                    </span>
+                <div className={`flex justify-center w-[90%] md:w-4/5 tabular-nums transition-colors ${timeRemaining <= 60 ? 'text-red-500' : 'text-base-dark'}`}>
+                    <Timer minutes={minutes} seconds={seconds} />
                 </div>
 
                 <div className="flex items-center justify-between w-[90%] md:w-4/5">
                     <button
                         type="button"
                         onClick={handleLeaveExam}
-                        className="inline-flex items-center gap-2 text-base-dark/70 text-sm px-4 py-2 rounded-full font-semibold tracking-wider hover:text-base-dark hover:bg-base-dark/5 transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-2 text-base-dark/70 text-sm  px-4 py-2 rounded-full font-semibold tracking-wider hover:text-base-dark hover:bg-base-dark/5 transition-colors cursor-pointer"
                     >
                         <LuArrowLeft size={16} strokeWidth={2.2} />
                         Salir del examen

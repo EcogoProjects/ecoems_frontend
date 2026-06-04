@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { IoMdBookmarks, IoMdClose } from 'react-icons/io';
 import { MdOutlineCollectionsBookmark, MdTimer } from "react-icons/md";
 import { FaChevronLeft, FaPlay, FaHeart } from "react-icons/fa";
-import { useSyllabus } from '@/hooks/useSyllabus';
+import { PiPawPrintFill } from 'react-icons/pi';
+import { useAvailableSyllabus } from '@/hooks/useSyllabus';
 
 export default function ExamDescription({ examTitle, description, time, n_questions, range, show_subtopic = true, onClose, onStart, isStarting = false, examsRemaining, examsUsed }) {
-    const { data: syllabus } = useSyllabus();
+    const { data: syllabus } = useAvailableSyllabus();
 
     const [selectedSubjectId, setSelectedSubjectId] = useState('');
     const [selectedTopicId, setSelectedTopicId] = useState('');
@@ -80,15 +81,15 @@ export default function ExamDescription({ examTitle, description, time, n_questi
                 {examsRemaining !== undefined && examsUsed !== undefined && (
                     <div className="bg-base-dark/10 rounded-xl p-3 flex items-center justify-between gap-3">
                         <div className="flex items-center gap-2 shrink-0">
-                            <FaHeart size={13} className="text-base-dark/50" />
+                            <FaHeart size={13} className="text-base-dark/80" />
                             <span className="text-[13px] font-semibold text-base-dark">Tus intentos de hoy</span>
                         </div>
                         <div className="flex items-center gap-1">
                             {Array.from({ length: examsRemaining }).map((_, i) => (
-                                <FaHeart key={`r-${i}`} size={13} className="text-[#c0392b]" />
+                                <PiPawPrintFill key={`r-${i}`} size={13} className="text-base-dark" />
                             ))}
                             {Array.from({ length: examsUsed }).map((_, i) => (
-                                <FaHeart key={`u-${i}`} size={13} className="text-base-dark/20" />
+                                <PiPawPrintFill key={`u-${i}`} size={13} className="text-base-dark/40" />
                             ))}
                             <span className="text-base-dark font-bold text-sm ml-1.5">
                                 {examsRemaining}/{examsRemaining + examsUsed}
