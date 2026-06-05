@@ -8,3 +8,11 @@ import { api } from './client'
 export async function getSyllabus() {
     return api.get('/syllabus')
 }
+
+/**
+ * Devuelve el temario disponible con materias, temas y subtemas que cumplen el mínimo de preguntas.
+ * GET /syllabus/available-syllabus
+ */
+export async function getAvailableSyllabus() {
+    return api.get('/syllabus/available-syllabus')
+}

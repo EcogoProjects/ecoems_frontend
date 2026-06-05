@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getSyllabus } from '@/lib/api';
+import { getSyllabus, getAvailableSyllabus } from '@/lib/api';
 
 export interface Subtopic {
     subtopic_id: number;
@@ -22,6 +22,7 @@ export interface SyllabusSubject {
 }
 
 let syllabusCache: SyllabusSubject[] | null = null;
+let availableSyllabusCache: SyllabusSubject[] | null = null;
 
 export function useSyllabus(): { data: SyllabusSubject[] | null; isLoading: boolean } {
     const [data, setData] = useState<SyllabusSubject[] | null>(syllabusCache);
@@ -45,6 +46,36 @@ export function useSyllabus(): { data: SyllabusSubject[] | null; isLoading: bool
                     })),
                 }));
                 syllabusCache = mapped;
+                setData(mapped);
+            })
+            .finally(() => setIsLoading(false));
+    }, []);
+
+    return { data, isLoading };
+}
+
+export function useAvailableSyllabus(): { data: SyllabusSubject[] | null; isLoading: boolean } {
+    const [data, setData] = useState<SyllabusSubject[] | null>(availableSyllabusCache);
+    const [isLoading, setIsLoading] = useState<boolean>(availableSyllabusCache === null);
+
+    useEffect(() => {
+        if (availableSyllabusCache !== null) return;
+
+        getAvailableSyllabus()
+            .then(({ data: raw }: { data: any[] | null; error: string | null }) => {
+                if (!raw) return;
+                const mapped: SyllabusSubject[] = raw.map(subject => ({
+                    subject_id: subject.subject_id,
+                    subject: subject.name,
+                    display_order: subject.display_order,
+                    topics: subject.topics.map((topic: any) => ({
+                        topic_id: topic.topic_id,
+                        topic: topic.name,
+                        topic_order: topic.topic_order,
+                        subtopics: topic.subtopics,
+                    })),
+                }));
+                availableSyllabusCache = mapped;
                 setData(mapped);
             })
             .finally(() => setIsLoading(false));

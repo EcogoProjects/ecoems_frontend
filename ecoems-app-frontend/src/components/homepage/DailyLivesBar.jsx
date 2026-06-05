@@ -1,5 +1,5 @@
 'use client'
-
+import { PiPawPrintFill } from 'react-icons/pi';
 import { FaHeart } from 'react-icons/fa';
 import { useExam } from '@/hooks/useExam';
 
@@ -13,8 +13,8 @@ export default function DailyLivesBar() {
     return (
         <div className="bg-base-dark rounded-box-standard shadow-lg w-4/5 px-5 py-4 flex items-center gap-4">
             <div className="flex items-center gap-3 flex-1">
-                <div className="bg-[#c0392b]/20 rounded-xl p-2">
-                    <FaHeart size={20} className="text-[#c0392b]" />
+                <div className="bg-base-hard-alt/20 rounded-xl p-2">
+                    <FaHeart size={20} className="text-base-hard-alt" />
                 </div>
                 <div>
                     <p className="text-base-soft font-extrabold text-sm tracking-wide">Exámenes rápidos</p>
@@ -26,10 +26,10 @@ export default function DailyLivesBar() {
                 <div className="flex items-center gap-2.5">
                     <div className="flex items-center gap-1.5">
                         {Array.from({ length: remaining }).map((_, i) => (
-                            <FaHeart key={`r-${i}`} size={18} className="text-[#c0392b]" />
+                            <PiPawPrintFill key={`r-${i}`} size={18} className="text-base-hard-alt" />
                         ))}
                         {Array.from({ length: used }).map((_, i) => (
-                            <FaHeart key={`u-${i}`} size={18} className="text-base-soft/20" />
+                            <PiPawPrintFill key={`u-${i}`} size={18} className="text-base-soft/20" />
                         ))}
                     </div>
                     <span className="text-base-soft font-extrabold text-lg min-w-[36px] text-right">
