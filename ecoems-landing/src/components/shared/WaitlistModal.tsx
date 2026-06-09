@@ -18,7 +18,7 @@ export default function WaitlistModal({ onClose }: WaitlistModalProps) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
 
       <div
-        className="relative max-h-[calc(100vh-2rem)] w-full max-w-sm overflow-y-auto rounded-[1.5rem] bg-background px-4 py-6 text-center shadow-2xl sm:max-h-[calc(100vh-3rem)] sm:rounded-2xl sm:px-6 sm:py-8 md:rounded-3xl md:px-8 md:py-10 flex flex-col items-center gap-4 sm:gap-6"
+        className="relative max-h-[calc(100vh-2rem)] w-full max-w-sm overflow-y-auto scrollbar-hide rounded-[1.5rem] bg-background px-4 py-6 text-center shadow-2xl sm:max-h-[calc(100vh-3rem)] sm:rounded-2xl sm:px-6 sm:py-8 md:rounded-3xl md:px-8 md:py-10 flex flex-col items-center gap-4 sm:gap-6"
         onClick={(e) => e.stopPropagation()}
       >
         <button

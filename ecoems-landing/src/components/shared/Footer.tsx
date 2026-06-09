@@ -180,6 +180,14 @@ const Footer = () => {
                   Aviso de Privacidad
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/terminos"
+                  className="hover:text-secondary-foreground transition-colors"
+                >
+                  Términos y Condiciones
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
