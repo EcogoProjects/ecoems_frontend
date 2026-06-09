@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaBookReader, FaHeart } from "react-icons/fa";
-import { MdOutlineDoNotDisturb } from "react-icons/md";
+import { MdOutlineDoNotDisturb, MdOutlineAccessTime } from "react-icons/md";
 import { TfiAgenda } from "react-icons/tfi";
 import ExamTypeButton from "@/components/exam/ExamTypeButton";
 import ExamDescription from "@/components/exam/ExamDescription";
+import ExamDescriptionSimulacro from "@/components/exam/ExamDescriptionSimulacro";
 import { useExam } from "@/hooks/useExam";
 import { closeExam } from "@/lib/api";
 
@@ -16,11 +17,13 @@ function ExamSelector() {
     const [showDescription, setShowDescription] = useState(false);
     const [showLimit, setShowLimit] = useState(false);
     const [showActiveSession, setShowActiveSession] = useState(false);
+    const [showComingSoon, setShowComingSoon] = useState(false);
+    const [showSimulacro, setShowSimulacro] = useState(false);
     const [isClosingActiveSession, setIsClosingActiveSession] = useState(false);
     const [isContinuingActiveSession, setIsContinuingActiveSession] = useState(false);
     const [activeSessionError, setActiveSessionError] = useState(null);
 
-    const modalOpen = showDescription || showLimit || showActiveSession;
+    const modalOpen = showDescription || showLimit || showActiveSession || showComingSoon || showSimulacro;
 
     useEffect(() => {
         document.body.style.overflow = modalOpen ? 'hidden' : '';
@@ -34,10 +37,25 @@ function ExamSelector() {
         else setShowLimit(true);
     };
 
+    const handleComingSoon = () => {
+        setShowComingSoon(true);
+    };
+
+    const handleSimulacro = () => {
+        setShowSimulacro(true);
+    };
+
+    const handleSelectSimulacro = (examId) => {
+        // Solo UI por ahora — pendiente conectar con el backend de simulacros
+        console.log('Simulacro seleccionado:', examId);
+    };
+
     const closeAll = () => {
         setShowDescription(false);
         setShowLimit(false);
         setShowActiveSession(false);
+        setShowComingSoon(false);
+        setShowSimulacro(false);
     };
 
     const handleStartNewExam = async () => {
@@ -94,13 +112,10 @@ function ExamSelector() {
                     <p className="opacity-60 text-center  mb-1.5">Elige el tipo de evaluación para comenzar</p>
                     <div className="text-white flex flex-col gap-2 tracking-wide md:flex-row justify-center w-full">
                         <ExamTypeButton type="rapido" title="Examen Rápido" icon="speed" onClick={handleQuickExam} />
-                        <ExamTypeButton type="seguimiento" title="Examen de seguimiento" icon="calendar" />
-                        <ExamTypeButton type="libre" title="Examen Libre" icon="unlock" />
-                        <div className="bg-base-dark rounded-[15px] p-1.5 font-semibold flex items-center justify-center opacity-70 w-full">
-                            <h3 className="text-center">Próximamente</h3>
-                        </div>
+                        <ExamTypeButton type="seguimiento" title="Examen de seguimiento" icon="calendar" onClick={handleComingSoon} />
+                        <ExamTypeButton type="libre" title="Examen Libre" icon="unlock" description="Próximamente" onClick={handleComingSoon}/>
                     </div>
-                    <div className="bg-base-hard-alt p-1.5 rounded-[15px] text-base-dark flex flex-col items-center cursor-pointer
+                    <div onClick={handleSimulacro} className="bg-base-hard-alt p-1.5 rounded-[15px] text-base-dark flex flex-col items-center cursor-pointer
                             transition-all duration-200 hover:opacity-70 ">
                         <h3 className="font-semibold text-xl">Examen Simulacro</h3>
                         <div className="flex items-center justify-center w-10 h-10">
@@ -121,7 +136,7 @@ function ExamSelector() {
                             <p className="opacity-60">Elige el tipo de evaluación para comenzar</p>
                         </div>
                     </div>
-                    <div className="flex gap-4 rounded-[15px] justify-start items-center p-2 pl-4 w-[300px]
+                    <div onClick={handleSimulacro} className="flex gap-4 rounded-[15px] justify-start items-center p-2 pl-4 w-[300px]
                         border-base-hard-alt cursor-pointer hover:opacity-70 bg-base-hard-alt">
                         <div className="p-1.5 bg-base-hard-alt w-fit h-fit rounded-[10px] text-base-dark">
                             <FaBookReader size={30}/>
@@ -134,8 +149,8 @@ function ExamSelector() {
                 </div>
                 <div className="flex gap-2.5">
                     <ExamTypeButton type="rapido" title="Examen Rápido" icon="speed" description="Realiza un examen de un solo subtema." onClick={handleQuickExam} />
-                    <ExamTypeButton type="seguimiento" title="Examen de seguimiento" icon="calendar" description="Evalúa tu avance por materia."/>
-                    <ExamTypeButton type="libre" title="Examen Libre" icon="unlock" description="Tomas tu la elección." />
+                    <ExamTypeButton type="seguimiento" title="Examen de seguimiento" icon="calendar" description="Próximamente" onClick={handleComingSoon}/>
+                    <ExamTypeButton type="libre" title="Examen Libre" icon="unlock" description="Próximamente" onClick={handleComingSoon} />
                 </div>
             </div>
 
@@ -167,6 +182,21 @@ function ExamSelector() {
                 </div>
             )}
 
+            {/* Modal: selector de examen simulacro */}
+            {showSimulacro && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    onClick={closeAll}
+                >
+                    <div className="w-full max-w-[460px] mx-auto" onClick={e => e.stopPropagation()}>
+                        <ExamDescriptionSimulacro
+                            onClose={closeAll}
+                            onSelect={handleSelectSimulacro}
+                        />
+                    </div>
+                </div>
+            )}
+
             {/* Modal: límite diario alcanzado */}
             {showLimit && (
                 <div
@@ -181,6 +211,31 @@ function ExamSelector() {
                         <h2 className="text-xl font-extrabold text-center tracking-tight">Límite diario alcanzado</h2>
                         <p className="text-sm text-center leading-relaxed text-base-soft/80">
                             Has utilizado todos tus exámenes rápidos de hoy. Vuelve mañana para seguir practicando.
+                        </p>
+                        <button
+                            onClick={closeAll}
+                            className="mt-2 w-full py-3 rounded-xl font-bold bg-base-hard text-base-dark hover:opacity-80 transition-opacity cursor-pointer"
+                        >
+                            Entendido
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal: recurso próximamente */}
+            {showComingSoon && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    onClick={closeAll}
+                >
+                    <div
+                        className="bg-base-dark text-base-soft rounded-[28px] p-8 flex flex-col items-center gap-5 w-full max-w-[360px] shadow-2xl"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <MdOutlineAccessTime size={48} className="text-base-hard" />
+                        <h2 className="text-xl font-extrabold text-center tracking-tight">Recurso disponible próximamente</h2>
+                        <p className="text-sm text-center leading-relaxed text-base-soft/80">
+                            Estamos preparando este tipo de examen. Muy pronto podrás usarlo para seguir practicando.
                         </p>
                         <button
                             onClick={closeAll}
