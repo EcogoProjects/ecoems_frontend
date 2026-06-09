@@ -49,10 +49,13 @@ src/
 │   ├── analytics/             # Componentes específicos de analytics
 │   │   ├── CircleAvgIndicator.jsx
 │   │   ├── ExamProgressChart.jsx
-│   │   ├── SubjectScoreItem.jsx
+│   │   ├── SubjectScoreItem.jsx  # Item de materia; puede renderizar como botón seleccionable si se activa desde DashboardSummary
 │   │   ├── TopicAccordion.jsx
 │   │   ├── TopicAccordionSkeleton.jsx  # Skeleton de carga para TopicAccordion
 │   │   └── SyllabusAccordion.jsx  # Encapsula useSyllabus + skeleton + TopicAccordion; reutilizado por /home y /program
+│   ├── dashboard/
+│   │   ├── CircleAvgIndicator.jsx
+│   │   └── DashboardSummary.jsx  # Resumen compartido por /home y /analytics; props para layout y selección de materias
 │   ├── exam/                  # Componentes específicos de examen
 │   │   ├── ExamOption.jsx
 │   │   ├── ExamExplanation.jsx
@@ -350,6 +353,8 @@ npm run lint     # Linting con ESLint
   - `updateProfileCache(updates)` — muta campos concretos del caché y notifica a todas las instancias activas del hook vía un `Set<setData>` de suscriptores, provocando re-render inmediato sin recargar.
   - `clearProfileCache()` — resetea el caché a `null`. **Debe llamarse en el signOut** para evitar que el siguiente usuario vea datos del anterior.
   - `useProfile()` → `{ data, isLoading }` — el hook se registra como suscriptor al montarse y se da de baja al desmontarse.
+- **`DashboardSummary`**: `src/components/dashboard/DashboardSummary.jsx` — componente compartido por `/home` y `/analytics`. Props de layout: `subjectsLayout="stacked"` apila las columnas de materias (usado en `/home`), `containerWidth="w-full"` permite ocupar el ancho de la columna en Home, y `summaryLayout="stacked"` apila el bloque de promedio y el mensaje superior (también usado en `/home`). En `/analytics` se usa el layout responsive por defecto y se pasa `subjectItemsSelectable` para que cada `SubjectScoreItem` se renderice como botón seleccionable con estado visual interno. No activar `subjectItemsSelectable` en `/home`.
+- **`SubjectScoreItem`**: `src/components/analytics/SubjectScoreItem.jsx` — por defecto es un item estático (`div`). Si recibe `isSelectable`, renderiza un `<button type="button">` con `aria-pressed`, hover/focus y estado seleccionado (`isSelected`). La selección actual la controla `DashboardSummary` con `selectedSubjectId`.
 - **`useUpdateAvatar`**: `src/hooks/useUpdateAvatar.ts` — PATCH del avatar. Expone `patchAvatar(avatarUrl)` e `isAvatarLoading`. Llama a `updateProfileCache` y `useUserStore.getState().setUser()` al completarse.
 - **`useUpdateProfile`**: `src/hooks/useUpdateProfile.ts` — PATCH de datos personales (`name`, `last_name`, `phone`, `gender`, `state`, `town`). Expone `patchProfile(payload)` e `isProfileLoading`. Mismo patrón de cache y store que `useUpdateAvatar`.
 - **`useSyllabus`**: `src/hooks/useSyllabus.ts` — carga el temario completo (`GET /syllabus`) con caché de módulo (`let syllabusCache`). Mapea el campo `name` de la API a `subject` (materias) y `topic` (temas) para que `TopicAccordion` lo consuma sin cambios. Retorna `{ data: SyllabusSubject[] | null, isLoading }`. El caché de módulo dedupea el fetch entre páginas: montar el hook en `/home` y `/program` solo dispara una petición compartida.

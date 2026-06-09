@@ -27,6 +27,7 @@ function AnalyticsPage() {
                 value={value}
                 topSubjectsScores={top_subjects_scores}
                 lastSubjectsScores={last_subjects_scores}
+                subjectItemsSelectable
             />
             <div className="mt-10 flex justify-center items-center w-full">
                 <ExamProgressChart/>

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react";
 import SubjectScoreItem from "@/components/analytics/SubjectScoreItem";
 import CircleAvgIndicator from "@/components/dashboard/CircleAvgIndicator";
 
@@ -10,7 +11,10 @@ export default function DashboardSummary({
   subjectsLayout = "responsive",
   containerWidth = "w-4/5",
   summaryLayout = "responsive",
+  subjectItemsSelectable = false,
 }) {
+  const [selectedSubjectId, setSelectedSubjectId] = useState(null);
+
   const summaryWrapperClass =
     summaryLayout === "stacked"
       ? "flex w-full flex-col gap-5 pl-6 pr-6"
@@ -25,6 +29,22 @@ export default function DashboardSummary({
     subjectsLayout === "stacked"
       ? "w-full min-w-0"
       : "w-full min-w-0 xl:flex-1 xl:basis-0";
+
+  const renderSubjectScoreItem = (item, index, group) => {
+    const subjectId = `${group}-${item.subject}-${index}`;
+
+    return (
+      <SubjectScoreItem
+        key={subjectId}
+        position={index + 1}
+        subject={item.subject}
+        score={item.score}
+        isSelectable={subjectItemsSelectable}
+        isSelected={selectedSubjectId === subjectId}
+        onSelect={() => setSelectedSubjectId(subjectId)}
+      />
+    );
+  };
 
   return (
     <div className={`bg-base p-4 rounded-box-standard pt-12 ${containerWidth} pb-12 flex flex-col gap-9 shadow-lg md:col-span-1`}>
@@ -55,14 +75,9 @@ export default function DashboardSummary({
             Materias que más dominas
           </h2>
           <div className="flex flex-col pl-2 pr-2 gap-2">
-            {topSubjectsScores.map((item, index) => (
-              <SubjectScoreItem
-                key={`${item.subject}-${index}`}
-                position={index + 1}
-                subject={item.subject}
-                score={item.score}
-              />
-            ))}
+            {topSubjectsScores.map((item, index) =>
+              renderSubjectScoreItem(item, index, "top")
+            )}
           </div>
         </div>
 
@@ -71,14 +86,9 @@ export default function DashboardSummary({
             Materias que debes repasar
           </h2>
           <div className="flex flex-col pl-2 pr-2 gap-2">
-            {lastSubjectsScores.map((item, index) => (
-              <SubjectScoreItem
-                key={`${item.subject}-${index}`}
-                position={index + 1}
-                subject={item.subject}
-                score={item.score}
-              />
-            ))}
+            {lastSubjectsScores.map((item, index) =>
+              renderSubjectScoreItem(item, index, "review")
+            )}
           </div>
         </div>
 
@@ -87,14 +97,9 @@ export default function DashboardSummary({
             Materias sin repasar
           </h2>
           <div className="flex flex-col pl-2 pr-2 gap-2">
-            {lastSubjectsScores.map((item, index) => (
-              <SubjectScoreItem
-                key={`${item.subject}-${index}`}
-                position={index + 1}
-                subject={item.subject}
-                score={item.score}
-              />
-            ))}
+            {lastSubjectsScores.map((item, index) =>
+              renderSubjectScoreItem(item, index, "pending")
+            )}
           </div>
         </div>
       </div>
