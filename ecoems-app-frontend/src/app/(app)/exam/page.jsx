@@ -132,6 +132,7 @@ function ExamPage() {
                         isLastQuestion={currentIndex === questions.length - 1}
                         submitError={submitError}
                         isSubmitting={isSubmitting}
+                        sessionId={session?.session_id}
                     />
 
                     <ResourcePanel
@@ -145,6 +146,7 @@ function ExamPage() {
                         answerResult={answerResults[currentQ.id] ?? null}
                         hint={hintResults[currentQ.id]?.hint ?? currentQ.hint}
                         hintCount={hintResults[currentQ.id]?.countHints ?? ''}
+                        isSimulacro={isSimulacro}
                     />
                 </div>
             </div>

@@ -1,11 +1,12 @@
 "use client"
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { useLatexScanner } from "@/utils/exam/useLatexScanner";
 import { FaLightbulb } from "react-icons/fa6";
 import ExamExplanation from "@/components/exam/ExamExplanation";
 import LatexParagraph from "./LaTexRender";
+import { frasesEcoems } from "@/utils/exam/frasesSimulacro";
 
 export default function ResourcePanel({
     currentQ,
@@ -17,11 +18,39 @@ export default function ResourcePanel({
     openModal,
     answerResult,
     hint,
-    hintCount
+    hintCount,
+    isSimulacro
 }) {
     const panelRef = useRef(null);
+    const [randomPhrase, setRandomPhrase] = useState(null);
+    const [isFading, setIsFading] = useState(false);
 
     useLatexScanner(panelRef, currentQ.id);
+
+    useEffect(() => {
+        if (!isSimulacro) return;
+
+        let timeoutId;
+        const setInitialPhrase = () => {
+            const randomIndex = Math.floor(Math.random() * frasesEcoems.length);
+            setRandomPhrase(frasesEcoems[randomIndex]);
+            setIsFading(false);
+        };
+
+        setInitialPhrase();
+
+        const intervalId = setInterval(() => {
+            setIsFading(true);
+            timeoutId = setTimeout(() => {
+                setInitialPhrase();
+            }, 500); // 500ms duration for the fade out
+        }, 10000); // changes every 10 seconds
+
+        return () => {
+            clearInterval(intervalId);
+            clearTimeout(timeoutId);
+        };
+    }, [currentQ.id, isSimulacro]);
 
     return (
         <div ref={panelRef} className="w-full flex flex-col gap-5 h-full md:col-span-1">
@@ -40,16 +69,29 @@ export default function ResourcePanel({
             )}
 
             {!revealHint && !revealExplanation && (
-                <div className="flex flex-col items-center text-center justify-center opacity-70 border-2 p-5 border-dashed rounded-[22px] border-base-dark bg-white/30">
-                    <p className="text-sm mb-3 font-semibold text-base-dark leading-tight">
-                        ¿Te quedaste bloqueado? <br /> ¡Usa el botón de ayuda arriba!
-                    </p>
-                    <Image
-                            src="/assets/ecogo_hint.png"
-                            alt="ecogo hint"
-                            width={100}
-                            height={180}
-                        />
+                <div className="flex flex-col items-center text-center justify-center opacity-70 border-2 p-5 border-dashed rounded-[22px] border-base-dark bg-white/30 min-h-[150px]">
+                    {isSimulacro && randomPhrase ? (
+                        <div className={`flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out ${isFading ? 'opacity-0' : 'opacity-100'}`}>
+                            <p className="text-sm mb-3 font-semibold text-base-dark leading-relaxed italic px-2">
+                                "{randomPhrase.texto}"
+                            </p>
+                            <span className="text-xs text-base-dark font-bold uppercase tracking-widest opacity-60">
+                                {randomPhrase.tipo}
+                            </span>
+                        </div>
+                    ) : (
+                        <>
+                            <p className="text-sm mb-3 font-semibold text-base-dark leading-tight">
+                                ¿Te quedaste bloqueado? <br /> ¡Usa el botón de ayuda arriba!
+                            </p>
+                            <Image
+                                src="/assets/ecogo_hint.png"
+                                alt="ecogo hint"
+                                width={100}
+                                height={180}
+                            />
+                        </>
+                    )}
                 </div>
             )}
 
