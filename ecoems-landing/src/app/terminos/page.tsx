@@ -62,7 +62,7 @@ export default function TerminosPage() {
             <SubSection title="2.2 Plan Pro (De Pago)">
               <BulletList items={[
                 'Acceso ilimitado a material de estudio.',
-                'Un imulacro semanal similar al examen ECOEMS real.',
+                'Hasta 3 exámenes simulacro.',
                 'Pistas y explicaciones detalladas para todas las preguntas.'
               ]} />
             </SubSection>

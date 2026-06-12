@@ -25,7 +25,7 @@ const PLAN_FEATURES: Record<string, Feature[]> = {
         { text: <>Acceso a exámenes de seguimiento <strong>(Ilímitados)</strong>.</>, included: true },
         { text: <>Pistas <strong>ilimitadas</strong>.</>, included: true },
         { text: <>Explicaciones <strong>ilimitadas</strong>.</>, included: true },
-        { text: <>Acceso a exámenes simulacro <strong>(Uno por semana)</strong>.</>, included: true },
+        { text: <>Acceso a  3 exámenes simulacro</>, included: true },
         //{ text: <>Acceso a los exámenes personalizados.</>, included: true },
         //{ text: <>Es posible repetir exámenes anteriores.</>, included: true },
     ]
@@ -80,7 +80,7 @@ function PlansTable() {
                     <p className="text-3xl ">${ecogoProPrice}</p>
                     <p className="text-sm">mx / periodo</p>
                 </div>
-                <button 
+                <button
                     onClick={() => setTransferModalOpen(true)}
                     className="bg-[#3D281F] text-white rounded-full py-3 px-8 cursor-pointer font-semibold shadow-md hover:-translate-y-1 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#3D281F]/30 transition-all duration-300"
                 >
