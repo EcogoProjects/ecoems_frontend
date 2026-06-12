@@ -1,6 +1,6 @@
 'use client'
 
-import Link from "next/link";
+import AppLink from "@/components/AppLink";
 import { useState } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { signUp } from "@/lib/api";
@@ -173,9 +173,9 @@ function SignUp() {
                 <div className="flex gap-0.5">
                     <p className="text-text-bottom-soft lg:text-base-dark">
                         ¿Ya tienes una cuenta?
-                        <Link href="/login" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
+                        <AppLink href="/login" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
                             Inicia sesión
-                        </Link>
+                        </AppLink>
                     </p>
                 </div> 
             </form>

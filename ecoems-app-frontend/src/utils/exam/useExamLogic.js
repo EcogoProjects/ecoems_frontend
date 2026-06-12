@@ -179,7 +179,7 @@ export function useExamLogic() {
         isModalOpen, openModal, closeModal,
         isExamFinished, finishMessage, finalScore,
         swipeOffset, isSwiping, slideDir,
-        handlePrev, handleNext, handleTimeUp,
+        handlePrev, handleNext, handleTimeUp, finishExam,
         onTouchStart, onTouchMove, onTouchEnd,
         handleOptionSelect, handleContestar, handleExplicacionDirecta,
         hasImage

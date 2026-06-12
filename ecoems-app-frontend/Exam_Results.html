@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ecogo · Resultados del examen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --base-soft:      #FFF9E4;
+      --base:           #EEE4C1;
+      --base-hard:      #CDAD75;
+      --base-dark:      #472E18;
+      --base-extra:     #EEE7DD;
+      --shadow-sm:      0 2px 8px rgba(71,46,24,.06);
+      --shadow-md:      0 12px 28px -10px rgba(71,46,24,.18);
+      --green:          #2c7a4a;
+      --green-bg:       #e8f5ee;
+      --red:            #a83030;
+      --red-bg:         #fbeaea;
+      --amber:          #a06000;
+      --amber-bg:       #fef5e4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--base-extra);
+      color: var(--base-dark);
+      -webkit-font-smoothing: antialiased;
+    }
+    p { text-wrap: pretty; }
+    button { font-family: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Topbar ── */
+    .topbar {
+      background: var(--base-dark);
+      color: var(--base-soft);
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600; font-size: 17px;
+    }
+    .topbar-brand .mark {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--base); overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .topbar-brand .mark img { width: 110%; height: 110%; object-fit: cover; }
+    .topbar-nav { display: flex; align-items: center; gap: 24px; font-size: 14px; }
+    .topbar-nav a { opacity: .85; }
+    .topbar-nav a:hover { opacity: 1; }
+    .topbar-nav .nav-active { font-weight: 500; opacity: 1; }
+    .topbar-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--base);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    /* ── Page ── */
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 32px 72px;
+    }
+
+    /* ── Page header ── */
+    .page-head {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; gap: 24px; margin-bottom: 28px;
+    }
+    .page-eyebrow {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500; opacity: .6;
+      margin-bottom: 10px; letter-spacing: .01em;
+    }
+    .page-eyebrow a:hover { opacity: 1.5; text-decoration: underline; }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 11.5px; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      background: var(--green-bg); color: var(--green);
+      margin-bottom: 10px;
+    }
+    .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+    .page-head h1 {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 600; letter-spacing: -.02em; margin-bottom: 6px;
+    }
+    .page-head p { font-size: 14px; opacity: .65; }
+    .page-actions { display: flex; gap: 10px; flex-shrink: 0; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 999px;
+      font-size: 14px; font-weight: 500;
+      border: 1.5px solid transparent; transition: all .15s;
+    }
+    .btn-primary { background: var(--base-dark); color: var(--base-soft); border: none; }
+    .btn-primary:hover { background: #5a3a1f; }
+    .btn-ghost { background: transparent; color: var(--base-dark); border-color: rgba(71,46,24,.25); }
+    .btn-ghost:hover { border-color: var(--base-dark); background: var(--base-soft); }
+
+    /* ── Summary layout ── */
+    .summary {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      margin-bottom: 28px;
+      align-items: stretch;
+    }
+
+    /* ── Score card ── */
+    .score-card {
+      background: var(--base-hard);
+      border-radius: 20px;
+      border: 1px solid rgba(71,46,24,.08);
+      box-shadow: var(--shadow-md);
+      padding: 28px 22px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .score-card::before {
+      content: "";
+      position: absolute; top: -40px; right: -40px;
+      width: 140px; height: 140px; border-radius: 50%;
+      background: rgba(255,249,228,.22);
+    }
+    .score-card::after {
+      content: "";
+      position: absolute; bottom: -50px; left: -30px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(71,46,24,.08);
+    }
+    .score-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; opacity: .65;
+      position: relative; z-index: 1;
+    }
+    .score-ring {
+      position: relative; z-index: 1;
+      width: 130px; height: 130px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .score-inner {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: var(--base-hard);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; line-height: 1;
+    }
+    .score-num { font-size: 30px; font-weight: 700; letter-spacing: -.03em; }
+    .score-of  { font-size: 12px; opacity: .6; font-weight: 500; margin-top: 2px; }
+    .score-verdict {
+      position: relative; z-index: 1;
+      font-size: 13.5px; font-weight: 500; opacity: .8;
+    }
+
+    /* ── Stats grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .stat {
+      background: var(--base-soft);
+      border-radius: 16px; padding: 18px 20px;
+      border: 1px solid rgba(71,46,24,.08);
+      box-shadow: var(--shadow-sm);
+    }
+    .stat .lbl {
+      font-size: 11px; font-weight: 600; letter-spacing: .07em;
+      text-transform: uppercase; opacity: .6; margin-bottom: 6px;
+    }
+    .stat .val {
+      font-size: 28px; font-weight: 700;
+      letter-spacing: -.02em; line-height: 1;
+    }
+    .stat .unit { font-size: 13px; font-weight: 400; opacity: .55; margin-left: 3px; }
+    .stat .sub  { font-size: 12px; opacity: .55; margin-top: 5px; }
+    .stat.s-correct   .val { color: var(--green); }
+    .stat.s-incorrect .val { color: var(--red); }
+    .stat.s-time {
+      grid-column: 1 / -1;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+    .stat.s-time .right { text-align: right; }
+
+    /* ── Breakdown header ── */
+    .breakdown-head {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .breakdown-head h2 { font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
+    .breakdown-count {
+      font-size: 12px; font-weight: 500;
+      background: var(--base); padding: 3px 10px;
+      border-radius: 999px; opacity: .8;
+    }
+
+    /* ── Question list ── */
+    .q-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .q-item {
+      background: var(--base-soft);
+      border-radius: 18px;
+      border: 1px solid rgba(71,46,24,.08);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: box-shadow .15s;
+    }
+    .q-item:hover { box-shadow: var(--shadow-md); }
+
+    .q-body {
+      padding: 20px 22px 20px 26px;
+      border-left: 4px solid transparent;
+    }
+    .q-item.correct   .q-body { border-left-color: var(--green); }
+    .q-item.incorrect .q-body { border-left-color: var(--red); }
+    .q-item.partial   .q-body { border-left-color: var(--amber); }
+
+    /* Question top row */
+    .q-top {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .q-num {
+      flex-shrink: 0;
+      width: 26px; height: 26px; border-radius: 7px;
+      background: var(--base);
+      font-size: 11.5px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px; opacity: .75;
+    }
+    .q-text { flex: 1; font-size: 15px; font-weight: 500; line-height: 1.5; }
+    .q-pts {
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 11px; border-radius: 999px;
+      font-size: 12px; font-weight: 600; white-space: nowrap;
+    }
+    .q-pts.correct   { background: var(--green-bg); color: var(--green); }
+    .q-pts.incorrect { background: var(--red-bg);   color: var(--red); }
+    .q-pts.partial   { background: var(--amber-bg); color: var(--amber); }
+
+    /* Image placeholder */
+    .q-img {
+      height: 130px; margin-bottom: 16px; border-radius: 12px;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--base-extra) 0, var(--base-extra) 8px,
+        var(--base) 8px, var(--base) 16px
+      );
+      display: flex; align-items: center; justify-content: center;
+      font-family: monospace; font-size: 11.5px;
+      opacity: .6; letter-spacing: .04em;
+    }
+
+    /* Reading */
+    .q-reading {
+      margin-bottom: 16px;
+      padding: 12px 16px;
+      background: var(--base-extra);
+      border-radius: 12px;
+      border-left: 3px solid var(--base-hard);
+    }
+    .q-reading-lbl {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; opacity: .5; margin-bottom: 6px;
+    }
+    .q-reading p { font-size: 13.5px; line-height: 1.65; opacity: .85; }
+
+    /* Answers */
+    .q-answers { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .q-ans-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .q-ans-lbl {
+      font-size: 11px; font-weight: 600; letter-spacing: .05em;
+      text-transform: uppercase; opacity: .5;
+      min-width: 132px; flex-shrink: 0;
+    }
+    .q-ans-val {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 8px;
+      font-size: 14px; font-weight: 500;
+      background: var(--base-extra);
+    }
+    .q-ans-val.u-ok      { background: var(--green-bg); color: var(--green); }
+    .q-ans-val.u-bad     { background: var(--red-bg);   color: var(--red); }
+    .q-ans-val.u-partial { background: var(--amber-bg); color: var(--amber); }
+    .q-ans-val.is-ok     { background: var(--green-bg); color: var(--green); }
+
+    /* Explanation */
+    .q-explain-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: transparent;
+      border: 1.5px solid rgba(71,46,24,.2);
+      color: var(--base-dark);
+      padding: 7px 14px; border-radius: 999px;
+      font-size: 13px; font-weight: 500;
+      transition: all .15s;
+    }
+    .q-explain-btn:hover {
+      background: var(--base-dark); color: var(--base-soft);
+      border-color: var(--base-dark);
+    }
+    .q-explain-btn .chevron { transition: transform .2s; flex-shrink: 0; }
+    .q-explain-btn.open .chevron { transform: rotate(180deg); }
+
+    .q-explain-body {
+      display: none;
+      margin-top: 14px; padding: 14px 16px;
+      background: var(--base-extra); border-radius: 12px;
+    }
+    .q-explain-body.show { display: block; }
+    .q-explain-lbl {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; opacity: .5; margin-bottom: 8px;
+    }
+    .q-explain-body p { font-size: 14px; line-height: 1.68; opacity: .9; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .summary { grid-template-columns: 1fr; }
+      .score-card { flex-direction: row; padding: 22px 28px; gap: 28px; justify-content: flex-start; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .topbar { padding: 12px 18px; }
+      .topbar-nav a:not(.nav-active) { display: none; }
+      .page { padding: 22px 18px 56px; }
+      .page-head { flex-direction: column; align-items: flex-start; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat.s-time { grid-template-columns: 1fr; gap: 12px; }
+      .stat.s-time .right { text-align: left; }
+      .q-ans-lbl { min-width: 100px; }
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+
+  <!----------------------------------- ── SECCION 1 "RESULT_QUESTIONS_HEADER.jsx" ── ----------------------------------->
+  <div class="page-head">
+    <div>
+      <h1>Resultados del examen</h1>
+      <p>Completado el 15 de mayo de 2026 &nbsp;·&nbsp; 18 min 42 seg</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary">
+        Continuar
+      </button>
+    </div>
+  </div>
+
+  <!----------------------------------- ── SECCION 2 "RESULT_QUESTIONS_SUMMARY.jsx" ── ----------------------------------->
+  <div class="summary">
+
+    <!-- Score ring -->
+    <div class="score-card">
+      <span class="score-label">Calificación</span>
+      <div class="score-ring" style="background: conic-gradient(from -90deg, #472E18 75%, rgba(71,46,24,.18) 0);">
+        <div class="score-inner">
+          <span class="score-num">7.5</span>
+          <span class="score-of">/ 10</span>
+        </div>
+      </div>
+      <span class="score-verdict">¡Buen trabajo!</span>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat s-correct">
+        <div class="lbl">Correctas</div>
+        <div class="val">7<span class="unit">preg.</span></div>
+        <div class="sub">de 10 preguntas</div>
+      </div>
+      <div class="stat s-incorrect">
+        <div class="lbl">Incorrectas</div>
+        <div class="val">2<span class="unit">preg.</span></div>
+        <div class="sub">de 10 preguntas</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">Parciales</div>
+        <div class="val">1<span class="unit">preg.</span></div>
+        <div class="sub">de 10 preguntas</div>
+      </div>
+      <div class="stat s-time">
+        <div>
+          <div class="lbl">Tiempo total</div>
+          <div class="val" style="font-size:22px;">18:42</div>
+        </div>
+        <div class="right">
+          <div class="lbl">Promedio por pregunta</div>
+          <div class="val" style="font-size:22px;">1:52</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!----------------------------------- ── SECCION 3 "QUESTIONS_BREAKDOWN.jsx" ── ----------------------------------->
+  <div class="breakdown-head">
+    <h2>Desglose por pregunta</h2>
+    <span class="breakdown-count">10 preguntas</span>
+  </div>
+
+  <div class="q-list">
+
+    <!-- Q1 · Correcta, sin imagen, sin lectura -->
+    <div class="q-item correct">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">1</span>
+          <span class="q-text">¿Cuál es el principal gas de efecto invernadero emitido por las actividades humanas?</span>
+          <span class="q-pts correct">✓ 1 pto.</span>
+        </div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Dióxido de carbono (CO₂)
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>El CO₂ representa alrededor del 76 % de las emisiones globales de gases de efecto invernadero de origen humano, principalmente a través de la quema de combustibles fósiles, la deforestación y los procesos industriales.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 · Incorrecta + imagen -->
+    <div class="q-item incorrect">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">2</span>
+          <span class="q-text">¿A qué bioma corresponde el ecosistema representado en la imagen?</span>
+          <span class="q-pts incorrect">✗ 0 pts.</span>
+        </div>
+        <div class="q-img">[ fotografía del ecosistema ]</div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-bad">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Desierto subtropical
+            </span>
+          </div>
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Respuesta correcta</span>
+            <span class="q-ans-val is-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Bosque tropical húmedo
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>El bosque tropical húmedo se caracteriza por precipitaciones anuales superiores a 2 000 mm, temperatura estable entre 20–28 °C y alta biodiversidad. A diferencia del desierto, presenta cobertura vegetal densa con doseles de más de 30 m de altura.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 · Parcial + lectura -->
+    <div class="q-item partial">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">3</span>
+          <span class="q-text">Según el texto, ¿cuáles son las dos principales amenazas para la biodiversidad marina que menciona el autor?</span>
+          <span class="q-pts partial">~ 0.5 pts.</span>
+        </div>
+        <div class="q-reading">
+          <div class="q-reading-lbl">Lectura de apoyo</div>
+          <p>Los océanos enfrentan una crisis sin precedentes. La sobrepesca ha diezmado poblaciones de peces en más del 60 % de las zonas marítimas evaluadas. Paralelamente, la acidificación producto del CO₂ disuelto destruye arrecifes de coral, hábitat del 25 % de las especies marinas conocidas. La contaminación plástica y el calentamiento global agravan aún más esta situación…</p>
+        </div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-partial">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+              Sobrepesca y contaminación plástica
+            </span>
+          </div>
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Respuesta correcta</span>
+            <span class="q-ans-val is-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Sobrepesca y acidificación oceánica
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>El texto presenta la sobrepesca y la acidificación oceánica como las amenazas principales. La contaminación plástica y el calentamiento global son mencionados como factores que "agravan aún más" la situación, no como los principales. Identificaste correctamente la sobrepesca, de ahí el puntaje parcial.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 · Correcta -->
+    <div class="q-item correct">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">4</span>
+          <span class="q-text">La fotosíntesis se lleva a cabo principalmente en...</span>
+          <span class="q-pts correct">✓ 1 pto.</span>
+        </div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Los cloroplastos
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>Los cloroplastos son los orgánulos donde ocurren ambas etapas de la fotosíntesis: la fase luminosa (membranas tilacoidales) y el ciclo de Calvin (estroma). Contienen clorofila, el pigmento que capta la energía lumínica para transformarla en energía química.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 · Incorrecta + imagen -->
+    <div class="q-item incorrect">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">5</span>
+          <span class="q-text">¿Qué porcentaje del agua total de la Tierra corresponde a agua dulce accesible para el consumo humano?</span>
+          <span class="q-pts incorrect">✗ 0 pts.</span>
+        </div>
+        <div class="q-img">[ infografía: distribución del agua en la Tierra ]</div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-bad">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Aproximadamente 30 %
+            </span>
+          </div>
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Respuesta correcta</span>
+            <span class="q-ans-val is-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Menos del 1 %
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>Aunque el agua dulce representa ~2.5 % del total, la mayor parte está inmovilizada en glaciares (~69 %) y acuíferos profundos. Solo un 0.3–1 % del agua dulce total está disponible en ríos, lagos y acuíferos superficiales accesibles para el ser humano.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 · Correcta -->
+    <div class="q-item correct">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">6</span>
+          <span class="q-text">¿Cuál de los siguientes gases NO es considerado un gas de efecto invernadero?</span>
+          <span class="q-pts correct">✓ 1 pto.</span>
+        </div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Nitrógeno (N₂)
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>El N₂ es el gas más abundante de la atmósfera (~78 %) pero, al ser una molécula diatómica simétrica, no absorbe radiación infrarroja y por tanto no tiene propiedades de gas de efecto invernadero. Los principales GEI son CO₂, CH₄, N₂O, vapor de agua y gases fluorados.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q7 · Correcta -->
+    <div class="q-item correct">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">7</span>
+          <span class="q-text">La cadena alimentaria siempre comienza con organismos...</span>
+          <span class="q-pts correct">✓ 1 pto.</span>
+        </div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Productores (autótrofos)
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>Los productores o autótrofos (plantas, algas, cianobacterias) son el primer eslabón de toda cadena alimentaria porque sintetizan materia orgánica a partir de fuentes inorgánicas mediante fotosíntesis o quimiosíntesis. Sin ellos no habría energía disponible para los consumidores.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q8 · Correcta -->
+    <div class="q-item correct">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">8</span>
+          <span class="q-text">¿Cuál es la principal causa de pérdida de biodiversidad a nivel global, según la IPBES?</span>
+          <span class="q-pts correct">✓ 1 pto.</span>
+        </div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Destrucción y fragmentación de hábitats
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>La IPBES identifica la pérdida y degradación de hábitat como la principal amenaza para la biodiversidad, seguida de la explotación directa de organismos, el cambio climático, la contaminación y las especies invasoras.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q9 · Correcta -->
+    <div class="q-item correct">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">9</span>
+          <span class="q-text">¿Cuál es la unidad funcional básica de estudio en ecología?</span>
+          <span class="q-pts correct">✓ 1 pto.</span>
+        </div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              El ecosistema
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>El ecosistema integra tanto los componentes bióticos (seres vivos y sus interacciones) como los abióticos (factores físicos y químicos), permitiendo estudiar los flujos de energía y los ciclos de materia de forma conjunta.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q10 · Correcta -->
+    <div class="q-item correct">
+      <div class="q-body">
+        <div class="q-top">
+          <span class="q-num">10</span>
+          <span class="q-text">¿Qué acuerdo internacional adoptado en 2015 establece el objetivo de limitar el calentamiento global a 1.5 °C?</span>
+          <span class="q-pts correct">✓ 1 pto.</span>
+        </div>
+        <div class="q-answers">
+          <div class="q-ans-row">
+            <span class="q-ans-lbl">Tu respuesta</span>
+            <span class="q-ans-val u-ok">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Acuerdo de París
+            </span>
+          </div>
+        </div>
+        <button class="q-explain-btn" onclick="toggleExplain(this)">
+          <span class="btn-text">Ver explicación</span>
+          <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="q-explain-body">
+          <div class="q-explain-lbl">Explicación</div>
+          <p>El Acuerdo de París (COP21, 2015) es un tratado vinculante para 196 países que compromete a mantener el aumento de temperatura muy por debajo de 2 °C respecto a niveles preindustriales, aspirando a no superar 1.5 °C.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /q-list -->
+</main>
+
+<script>
+  function toggleExplain(btn) {
+    var body = btn.nextElementSibling;
+    var open = btn.classList.contains('open');
+    btn.classList.toggle('open', !open);
+    body.classList.toggle('show', !open);
+    btn.querySelector('.btn-text').textContent = open ? 'Ver explicación' : 'Ocultar explicación';
+  }
+</script>
+
+</body>
+</html>

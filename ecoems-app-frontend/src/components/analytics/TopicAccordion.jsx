@@ -17,14 +17,14 @@ export default function TopicAccordion({ topics = [] }) {
   };
 
   return (
-    <div className="bg-base p-4 rounded-[18px] flex flex-col gap-4">
+    <div className="bg-base p-4 rounded-[18px] flex flex-col gap-4 w-full">
       <h2 className="w-full text-base bg-base-dark rounded-[11px] p-1.5 text-center tracking-wider font-bold">
-        Temas por revisar
+        Temario
       </h2>
 
       {subjects.map((subject, subjectIndex) => (
         <div key={subject.subject ?? subject.title ?? subjectIndex} className="bg-base-soft rounded-[18px] p-4">
-          <p className="font-semibold text-lg mb-3">{subject.subject ?? subject.title}</p>
+          <p className="font-semibold text-md md:text-lg mb-3">{subject.subject ?? subject.title}</p>
           <div className="flex flex-col gap-3">
             {(subject.topics ?? []).map((topic, topicIndex) => {
               const isOpen = openTopics[subjectIndex] === topicIndex;
@@ -48,14 +48,18 @@ export default function TopicAccordion({ topics = [] }) {
                     </span>
                   </button>
 
-                  {isOpen && subtopics.length > 0 && (
-                    <div className="mt-3 flex flex-col gap-2 border-t border-base-dark/10 pt-3">
-                      {subtopics.map((subtopic, subIndex) => (
-                        <div key={subtopic.subtopic_id ?? subtopic.title ?? subIndex} className="rounded-[18px] bg-base-soft p-3">
-                          <p className="font-semibold">{subtopic.name ?? subtopic.title}</p>
-                          {subtopic.description && <p className="text-sm opacity-80 mt-1">{subtopic.description}</p>}
+                  {subtopics.length > 0 && (
+                    <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] mt-3' : 'grid-rows-[0fr]'}`}>
+                      <div className="overflow-hidden">
+                        <div className="flex flex-col gap-2 border-t border-base-dark/10 pt-3">
+                          {subtopics.map((subtopic, subIndex) => (
+                            <div key={subtopic.subtopic_id ?? subtopic.title ?? subIndex} className="rounded-[18px] bg-base-soft p-3">
+                              <p className="font-semibold">{subtopic.name ?? subtopic.title}</p>
+                              {subtopic.description && <p className="text-sm opacity-80 mt-1">{subtopic.description}</p>}
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
                     </div>
                   )}
                 </div>

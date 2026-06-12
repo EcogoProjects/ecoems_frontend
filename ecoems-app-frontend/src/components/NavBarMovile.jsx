@@ -1,7 +1,7 @@
 "use client"
 import { ChartBarBigColumns } from "@boxicons/react";
 import { FaHome, FaSignOutAlt } from "react-icons/fa";
-import Link from "next/link";
+import AppLink from "@/components/AppLink";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { signOut } from "@/lib/api";
 import { useUserStore } from "@/store/userStore";
 import { clearOnboardingCookie } from "@/utils/onboardingCookie";
 import { clearProfileCache } from "@/hooks/useProfile";
+import { FaThList } from "react-icons/fa";
 
 function NavBarMovile() {
     const image_url = "/assets/ecogo_avatar_04.png";
@@ -44,14 +45,14 @@ function NavBarMovile() {
                 <div className="bg-base-dark/90 backdrop-blur-md border border-white/10 flex items-center justify-around py-3 px-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-white">
 
                     {/* Analytics */}
-                    <Link href="/analytics" className={`p-2 transition-transform active:scale-90 hover:opacity-80 ${pathname === '/analytics' ? 'bg-white/10 rounded-2xl' : ''}`}>
-                        <ChartBarBigColumns height="28px" width="28px" pack="filled"/>
-                    </Link>
+                    {/* <AppLink href="/analytics" className={`p-2 transition-transform active:scale-90 hover:opacity-80 ${pathname === '/analytics' ? 'bg-white/10 rounded-2xl' : ''}`}>
+                        <ChartBarBigColumns height="28px" width="28px" pack="filled" />
+                    </AppLink> */}
 
                     {/* Home - Icono central un poco más grande */}
-                    <Link href="/home" className={`p-3 rounded-2xl transition-all active:scale-90 shadow-inner ${pathname === '/home' ? 'bg-white/10' : ''}`}>
-                        <FaHome size={28}/>
-                    </Link>
+                    <AppLink href="/home" className={`p-3 rounded-2xl transition-all active:scale-90 shadow-inner ${pathname === '/home' ? 'bg-white/10' : ''}`}>
+                        <FaHome size={28} />
+                    </AppLink>
 
                     {/* Profile — abre el menú desplegable */}
                     <div className="relative">
@@ -69,6 +70,11 @@ function NavBarMovile() {
                                     </div>
                                     <p className="text-sm font-semibold text-white truncate">{name}</p>
                                 </div>
+                                <div className="border-t border-white/10 mx-3" />
+                                <AppLink href="/program" className="flex items-center gap-2.5 px-5 py-3.5">
+                                    <FaThList size={14} />
+                                    <p className="text-sm font-semibold text-white truncate">Temario</p>
+                                </AppLink>
                                 <div className="border-t border-white/10 mx-3" />
                                 <button
                                     onClick={handleSignOut}

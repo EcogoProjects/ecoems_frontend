@@ -11,6 +11,8 @@ export default function ExamHeader({
     answers,
     setCurrentIndex,
     setShowOverlay,
+    isHelpDisabled = false,
+    showHelp = true,
     handlePrev,
     handleNext
 }) {
@@ -30,13 +32,19 @@ export default function ExamHeader({
             </div>
 
             <div className="flex gap-2 md:gap-3 items-center">
-                <div
-                    onClick={() => setShowOverlay(true)}
-                    className="flex items-center justify-center gap-3 bg-base-hard p-2 rounded-full pl-4 pr-4 sm:pl-5 sm:pr-7 hover:cursor-pointer hover:opacity-70 transition-opacity"
-                >
-                    <FaLightbulb size={20} />
-                    <p className="tracking-wider font-semibold hidden lg:block">Ayuda</p>
-                </div>
+                {showHelp && (
+                    <button
+                        type="button"
+                        disabled={isHelpDisabled}
+                        onClick={() => setShowOverlay(true)}
+                        className={`flex items-center justify-center gap-3 bg-base-hard p-2 rounded-full pl-4 pr-4 sm:pl-5 sm:pr-7 transition-opacity ${
+                            isHelpDisabled ? 'opacity-40 cursor-not-allowed' : 'hover:cursor-pointer hover:opacity-70'
+                        }`}
+                    >
+                        <FaLightbulb size={20} />
+                        <p className="tracking-wider font-semibold hidden lg:block">Ayuda</p>
+                    </button>
+                )}
 
                 <div className="hidden md:flex items-center text-base gap-1">
                     <CaretLeftCircle

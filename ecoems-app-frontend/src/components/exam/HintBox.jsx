@@ -4,7 +4,14 @@ import Image from "next/image";
 import { IoAlertCircle } from "react-icons/io5";
 import { FaLightbulb, FaBookOpen } from "react-icons/fa6";
 
-const HintBox = ({ onShowHint, onShowExplanation, onClose }) => {
+const HintBox = ({
+    onShowHint,
+    onShowExplanation,
+    onClose,
+    isShowingHint = false,
+    isShowingExplanation = false,
+    error = null
+}) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
@@ -38,19 +45,28 @@ const HintBox = ({ onShowHint, onShowExplanation, onClose }) => {
                 <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
                     <button
                         onClick={onShowHint}
-                        className="flex items-center justify-center gap-3 bg-base-hard text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform shadow-md"
+                        disabled={isShowingHint || isShowingExplanation}
+                        className={`flex items-center justify-center gap-3 bg-base-hard text-white px-6 py-3 rounded-full font-bold transition-transform shadow-md ${
+                            isShowingHint || isShowingExplanation ? 'opacity-70 cursor-not-allowed' : 'hover:scale-105'
+                        }`}
                     >
                         <FaLightbulb size={20} />
-                        Mostrar Pista
+                        {isShowingHint ? 'Cargando...' : 'Mostrar Pista'}
                     </button>
                     <button
                         onClick={onShowExplanation}
-                        className="flex items-center justify-center gap-3 bg-base-dark text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform shadow-md"
+                        disabled={isShowingHint || isShowingExplanation}
+                        className={`flex items-center justify-center gap-3 bg-base-dark text-white px-6 py-3 rounded-full font-bold transition-transform shadow-md ${
+                            isShowingHint || isShowingExplanation ? 'opacity-70 cursor-not-allowed' : 'hover:scale-105'
+                        }`}
                     >
                         <FaBookOpen size={20} />
-                        Ver Explicación
+                        {isShowingExplanation ? 'Cargando...' : 'Ver Explicación'}
                     </button>
                 </div>
+                <p className={`h-5 overflow-hidden text-sm font-medium text-red-600 transition-opacity ${error ? 'opacity-100' : 'opacity-0 select-none'}`}>
+                    {error ?? ' '}
+                </p>
                 <div className="flex items-center text-gray-400">
                     <span><IoAlertCircle /></span>
                     <p className="text-sm  italic text-center  ">

@@ -9,7 +9,7 @@ import { LuCreditCard, LuUser, LuMapPin, LuSchool, LuClipboardList, LuLock } fro
 import { AiTwotoneIdcard } from "react-icons/ai";
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import AppLink from "@/components/AppLink";
 import { useEstadosMunicipios } from "@/hooks/useEstadosMunicipios";
 import { useProfile } from "@/hooks/useProfile";
 import { useUpdateAvatar } from "@/hooks/useUpdateAvatar";
@@ -246,9 +246,9 @@ function ProfilePage() {
                                 {profileData?.active_plan?.plan_type === 'Ecogo Pro' ? (
                                     <span className="text-[13px] font-medium text-base-dark/50 px-3.5 py-1.5">Activo</span>
                                 ) : (
-                                    <Link href="/plans">
+                                    <AppLink href="/plans">
                                         <CardEditBtn>Mejorar plan</CardEditBtn>
-                                    </Link>
+                                    </AppLink>
                                 )}
                             </div>
 
