@@ -19,13 +19,614 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'requisitos-tecnicos-examen-ecoems-2026',
+    title: 'Requisitos técnicos para el examen ECOEMS 2026: prepara tu computadora antes del gran día',
+    excerpt: 'Conoce los requisitos técnicos indispensables para presentar el examen ECOEMS 2026 y evita problemas con tu equipo el día de la evaluación.',
+    date: 'Junio 07, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: true,
+    coverImage: '/blog/Blog25.jpg',
+    content: [
+      {
+        type: 'paragraph',
+        text: '¿Ya estudiaste Matemáticas, Español, Historia y Ciencias? Perfecto. Pero existe un aspecto que muchos aspirantes olvidan y que puede poner en riesgo todo su esfuerzo: la preparación de su equipo de cómputo.'
+      },
+      {
+        type: 'paragraph',
+        text: 'El examen ECOEMS 2026 para ingresar a la UNAM o al IPN será completamente en línea, por lo que tu computadora será una herramienta tan importante como tus conocimientos.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Utiliza siempre la misma computadora'
+      },
+      {
+        type: 'paragraph',
+        text: 'Uno de los errores más frecuentes es instalar el software en una computadora y presentar el examen en otra.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Instala el Navegador Seguro en la computadora que utilizarás para el simulador oficial',
+          'Utiliza exactamente ese mismo equipo para presentar el examen',
+          'Evita cambiar de dispositivo después de realizar las pruebas'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Esto te permitirá detectar cualquier problema técnico con anticipación.'
+      },
+
+      {
+        type: 'heading',
+        text: 'El Navegador Seguro será obligatorio'
+      },
+      {
+        type: 'paragraph',
+        text: 'Para presentar el examen deberás instalar el Navegador Seguro o LockDown Browser.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Este software crea un entorno protegido para que todos los aspirantes presenten la evaluación bajo las mismas condiciones.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Bloquea programas externos',
+          'Impide abrir otras páginas web',
+          'Restringe funciones que podrían interferir con la evaluación'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Sin este navegador no podrás acceder al examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Verifica tu cámara y micrófono'
+      },
+      {
+        type: 'paragraph',
+        text: 'El sistema requiere validar la identidad del aspirante durante el proceso.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Cámara funcional',
+          'Micrófono funcional',
+          'Permisos correctamente configurados'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Realiza las pruebas correspondientes antes del examen para asegurarte de que todo funciona correctamente.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Programas que debes cerrar'
+      },
+      {
+        type: 'paragraph',
+        text: 'Algunas aplicaciones pueden interferir con el funcionamiento del Navegador Seguro.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Programas de grabación de pantalla',
+          'Software de videograbación',
+          'Aplicaciones ejecutándose en segundo plano',
+          'Herramientas que consuman recursos innecesarios'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Si el sistema detecta software incompatible, podría impedir el acceso al examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'La importancia de una conexión estable'
+      },
+      {
+        type: 'paragraph',
+        text: 'Responderás 128 preguntas durante una sesión extensa, por lo que una conexión confiable es fundamental.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Utiliza una red estable',
+          'Evita redes públicas',
+          'Reduce el uso de internet por otros dispositivos durante el examen',
+          'Realiza pruebas previas de conexión'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Fechas importantes'
+      },
+      {
+        type: 'list',
+        items: [
+          'Del 8 al 12 de junio: descarga e instalación del Navegador Seguro',
+          '16 de junio: simulador oficial',
+          'A partir del 20 de junio: examen oficial según la fecha asignada'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo puede ayudarte ECOGO'
+      },
+      {
+        type: 'paragraph',
+        text: 'Además de estudiar los contenidos, es importante acostumbrarte a trabajar durante varias horas frente a una pantalla.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Resolver exámenes en formato digital',
+          'Practicar con simulacros realistas',
+          'Mejorar la administración del tiempo',
+          'Identificar materias que requieren refuerzo'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Realizar simulacros en tu propia computadora también te ayuda a verificar que tu equipo funciona correctamente antes de las fechas oficiales.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Checklist técnico ECOEMS 2026'
+      },
+      {
+        type: 'list',
+        items: [
+          'Computadora funcionando correctamente',
+          'Navegador Seguro instalado',
+          'Cámara operativa',
+          'Micrófono operativo',
+          'Internet estable',
+          'Programas innecesarios cerrados',
+          'Simulador oficial realizado',
+          'Práctica previa en formato digital completada'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Conclusión'
+      },
+      {
+        type: 'paragraph',
+        text: 'Llegar preparado técnicamente puede marcar la diferencia entre una experiencia tranquila y un día lleno de estrés.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Tus conocimientos te ayudarán a obtener los aciertos. Tu computadora te permitirá demostrarlo. Prepárate con tiempo, practica en formato digital y llega listo para conquistar tu lugar en la UNAM o el IPN.'
+      }
+    ],
+  },
+  {
+    slug: 'navegador-seguro-lockdown-browser-ecoems-2026',
+    title: 'Navegador Seguro ECOEMS 2026: instálalo a tiempo y evita problemas el día del examen',
+    excerpt: 'Conoce qué es el Navegador Seguro ECOEMS 2026, cómo instalarlo correctamente y qué debes hacer para evitar problemas técnicos el día del examen.',
+    date: 'Junio 07, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog24.jpg',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si vas por un lugar en la UNAM o el IPN, junio será uno de los meses más importantes de tu proceso. Además de prepararte académicamente, tendrás que asegurarte de que tu computadora esté lista para presentar el examen en línea mediante el Navegador Seguro.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Preparar tu equipo con anticipación puede ayudarte a evitar problemas técnicos y llegar con mayor tranquilidad al día del examen.'
+      },
+
+      {
+        type: 'heading',
+        text: '¿Qué es el Navegador Seguro?'
+      },
+      {
+        type: 'paragraph',
+        text: 'El Navegador Seguro es una aplicación que crea un entorno controlado para realizar el examen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Cuando está activo, restringe ciertas funciones de la computadora para garantizar condiciones similares para todos los aspirantes.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Impide abrir programas externos durante el examen',
+          'Bloquea la navegación en otros sitios web',
+          'Evita capturas o grabaciones de pantalla',
+          'Restringe herramientas no autorizadas'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Por este motivo es indispensable instalarlo y probarlo antes de la fecha de aplicación.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Fechas importantes'
+      },
+      {
+        type: 'list',
+        items: [
+          'Del 8 al 12 de junio: instalación y configuración del Navegador Seguro',
+          '16 de junio: simulador oficial y validación técnica',
+          'A partir del 20 de junio: aplicación del examen oficial según tu cita'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo instalar el Navegador Seguro'
+      },
+      {
+        type: 'heading',
+        text: '1. Consulta tus accesos'
+      },
+      {
+        type: 'paragraph',
+        text: 'Obtén el usuario y contraseña asignados para ingresar a la plataforma oficial del examen.'
+      },
+
+      {
+        type: 'heading',
+        text: '2. Descarga el navegador'
+      },
+      {
+        type: 'paragraph',
+        text: 'Utiliza únicamente los enlaces oficiales proporcionados durante el proceso. Evita descargar programas desde sitios externos.'
+      },
+
+      {
+        type: 'heading',
+        text: '3. Instálalo en la computadora correcta'
+      },
+      {
+        type: 'paragraph',
+        text: 'Realiza la instalación en el mismo equipo que utilizarás para el simulador y para el examen oficial.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Cambiar de dispositivo después de realizar las pruebas puede generar inconvenientes.'
+      },
+
+      {
+        type: 'heading',
+        text: '4. Cierra programas innecesarios'
+      },
+      {
+        type: 'paragraph',
+        text: 'Antes de las pruebas técnicas, cierra cualquier aplicación que pueda interferir con el funcionamiento del navegador.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Programas de grabación de pantalla',
+          'Software de captura de video',
+          'Aplicaciones que consuman recursos excesivos'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: '5. Verifica cámara y micrófono'
+      },
+      {
+        type: 'paragraph',
+        text: 'El sistema solicitará acceso a estos dispositivos para validar que funcionan correctamente.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Realiza las pruebas con tiempo suficiente para corregir cualquier problema.'
+      },
+
+      {
+        type: 'heading',
+        text: '6. Participa en la prueba técnica'
+      },
+      {
+        type: 'paragraph',
+        text: 'El simulador oficial te permitirá confirmar que todo funciona correctamente antes del examen.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Conexión estable a internet',
+          'Funcionamiento correcto del navegador',
+          'Compatibilidad del equipo',
+          'Cámara y micrófono operativos'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Errores que debes evitar'
+      },
+      {
+        type: 'list',
+        items: [
+          'Esperar al último día para instalar el navegador',
+          'Utilizar una computadora diferente a la que probaste',
+          'Ignorar las pruebas de cámara y micrófono',
+          'Prepararte únicamente en papel sin practicar en computadora'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo puede ayudarte ECOGO'
+      },
+      {
+        type: 'paragraph',
+        text: 'El reto no es únicamente responder correctamente las preguntas. También necesitas sentirte cómodo en un entorno digital durante varias horas.'
+      },
+      {
+        type: 'list',
+        items: [
+          'Práctica completamente en línea',
+          'Simulacros de larga duración',
+          'Seguimiento de progreso',
+          'Identificación de áreas de mejora',
+          'Preparación para el formato digital del examen'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Mientras otros estudiantes descubren el formato el día de la prueba, tú puedes llegar con experiencia previa.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Checklist antes del examen'
+      },
+      {
+        type: 'list',
+        items: [
+          'Navegador Seguro instalado',
+          'Computadora definitiva seleccionada',
+          'Cámara funcionando',
+          'Micrófono funcionando',
+          'Internet estable',
+          'Simulador oficial completado',
+          'Accesos verificados',
+          'Documento B disponible'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Conclusión'
+      },
+      {
+        type: 'paragraph',
+        text: 'Instalar el Navegador Seguro es una parte fundamental del proceso ECOEMS 2026. Preparar tu equipo con tiempo te permitirá enfocarte en lo realmente importante: obtener el mejor resultado posible en el examen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Practica en formato digital, realiza las pruebas técnicas y llega listo para competir por tu lugar en la UNAM o el IPN.'
+      }
+    ],
+  },
+  {
+    slug: 'navegador-seguro-examen-ecoems-2026',
+    title: 'Prepárate para junio: guía completa del Navegador Seguro y el examen ECOEMS 2026',
+    excerpt: 'Conoce las fechas clave de junio, cómo instalar el Navegador Seguro y qué hacer para llegar listo al examen ECOEMS 2026.',
+    date: 'Junio 07, 2026',
+    author: 'ECOGO',
+    category: 'ECOEMS',
+    featured: false,
+    coverImage: '/blog/Blog23.jpg',
+    content: [
+      {
+        type: 'paragraph',
+        text: 'Si vas por una Prepa o CCH de la UNAM, o por un CECyT del IPN, junio será uno de los meses más importantes de todo tu proceso ECOEMS 2026.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Durante estas semanas no solo tendrás que seguir estudiando para el examen. También deberás preparar tu computadora, instalar el Navegador Seguro y realizar las pruebas técnicas necesarias para presentar tu evaluación sin contratiempos.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Fechas importantes de junio'
+      },
+      {
+        type: 'list',
+        items: [
+          'Del 8 al 12 de junio: consulta de accesos e instalación del Navegador Seguro',
+          '16 de junio: simulador oficial y pruebas técnicas',
+          '20 de junio: aplicación del examen oficial en línea'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Estas fechas son fundamentales para todos los aspirantes que presentarán examen para ingresar a la UNAM o al IPN.'
+      },
+
+      {
+        type: 'heading',
+        text: '¿Qué es el Navegador Seguro?'
+      },
+      {
+        type: 'paragraph',
+        text: 'Es un software especializado que permite presentar el examen en un entorno controlado.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Durante la evaluación restringe ciertas funciones de la computadora para garantizar condiciones similares para todos los aspirantes.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Por eso es indispensable instalarlo y probarlo antes del examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Paso a paso para instalar el Navegador Seguro'
+      },
+      {
+        type: 'list',
+        items: [
+          'Consulta tus accesos oficiales',
+          'Ingresa a la plataforma de examen',
+          'Utiliza la computadora definitiva',
+          'Descarga e instala el navegador',
+          'Cierra programas innecesarios',
+          'Verifica cámara y micrófono',
+          'Realiza la validación final'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Consulta tus accesos'
+      },
+      {
+        type: 'paragraph',
+        text: 'Ingresa a los portales oficiales indicados en tu documentación para obtener tu usuario y contraseña de acceso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Usa la misma computadora'
+      },
+      {
+        type: 'paragraph',
+        text: 'Realiza todo el proceso desde la misma computadora que utilizarás para el simulador y para el examen oficial.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Cambiar de equipo a última hora puede generar problemas técnicos innecesarios.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cierra programas innecesarios'
+      },
+      {
+        type: 'list',
+        items: [
+          'Programas de grabación de pantalla',
+          'Herramientas de captura de video',
+          'Aplicaciones que consuman recursos innecesarios'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Esto ayudará a que el navegador funcione correctamente durante las pruebas y el examen.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Verifica cámara y micrófono'
+      },
+      {
+        type: 'paragraph',
+        text: 'El sistema solicitará permisos para validar ambos dispositivos.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Realiza estas pruebas con anticipación para solucionar cualquier problema técnico.'
+      },
+
+      {
+        type: 'heading',
+        text: '¿Qué hacer si tienes problemas técnicos?'
+      },
+      {
+        type: 'paragraph',
+        text: 'Si encuentras dificultades durante la instalación o validación, utiliza los canales oficiales de soporte técnico.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Por eso es importante no esperar al último día para realizar el proceso.'
+      },
+
+      {
+        type: 'heading',
+        text: 'El examen no solo mide conocimientos'
+      },
+      {
+        type: 'paragraph',
+        text: 'Muchos estudiantes dominan los temas, pero nunca han realizado una prueba extensa completamente digital.'
+      },
+      {
+        type: 'paragraph',
+        text: 'La práctica en computadora es una parte importante de la preparación.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Cómo puede ayudarte ECOGO'
+      },
+      {
+        type: 'list',
+        items: [
+          'Simulacros de 128 preguntas',
+          'Entrenamiento para administrar mejor el tiempo',
+          'Seguimiento de progreso',
+          'Proyección de ingreso según tu escuela objetivo'
+        ]
+      },
+      {
+        type: 'paragraph',
+        text: 'Mientras llega la fecha oficial, puedes acostumbrarte al formato digital y mejorar tu velocidad de respuesta.'
+      },
+
+      {
+        type: 'heading',
+        text: 'Checklist de junio'
+      },
+      {
+        type: 'list',
+        items: [
+          'Consultar accesos del 8 al 12 de junio',
+          'Instalar el Navegador Seguro',
+          'Verificar cámara y micrófono',
+          'Realizar la prueba técnica completa',
+          'Presentar el simulador oficial el 16 de junio',
+          'Preparar Documento B',
+          'Verificar conexión a internet',
+          'Presentar el examen oficial el 20 de junio'
+        ]
+      },
+
+      {
+        type: 'heading',
+        text: 'Conclusión'
+      },
+      {
+        type: 'paragraph',
+        text: 'El Navegador Seguro es una parte esencial del proceso. Instalarlo correctamente y familiarizarte con el formato digital puede ayudarte a llegar más tranquilo y preparado al examen.'
+      },
+      {
+        type: 'paragraph',
+        text: 'Junio no es solo el mes del examen. Es el mes donde se define gran parte de tu preparación final para ingresar a la escuela que deseas.'
+      }
+    ],
+  },
+  {
     slug: 'errores-pago-ecoems-2026',
     title: 'No pierdas tu lugar por un error de pago: guía ECOGO para completar tu registro sin contratiempos',
     excerpt: 'Evita los errores más comunes al pagar el examen ECOEMS 2026 y asegura tu registro correctamente desde el inicio.',
     date: 'May 24, 2026',
     author: 'ECOGO',
     category: 'ECOEMS',
-    featured: true,
+    featured: false,
     coverImage: '/blog/Blog22.png',
     content: [
       {
