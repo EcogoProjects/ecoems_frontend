@@ -12,6 +12,7 @@ const navItems = [
   { href: '/como-funciona', label: '¿Cómo Funciona?' },
   { href: '/mapa-escuelas', label: 'Mapa escuelas' },
   { href: '/blog', label: 'Blog' },
+  { href: '/planes', label: 'Planes' },
 ]
 
 const Navbar = () => {
@@ -100,8 +101,8 @@ const Navbar = () => {
                     key={item.href}
                     href={item.href}
                     className={`rounded-2xl border px-4 py-3 transition-colors ${active
-                        ? 'border-[#472E18]/20 bg-[#472E18]/8 text-[#472E18]'
-                        : 'border-transparent hover:bg-foreground/5'
+                      ? 'border-[#472E18]/20 bg-[#472E18]/8 text-[#472E18]'
+                      : 'border-transparent hover:bg-foreground/5'
                       }`}
                   >
                     {item.label}
