@@ -39,6 +39,8 @@ src/
 │       └── coming-soon/page.jsx  # → /coming-soon
 ├── components/
 │   ├── AppProvider.tsx        # Puebla el store de Zustand en page refresh / navegación directa con sesión existente
+│   ├── AppLink.jsx            # Wrapper de next/link: enciende el overlay de navegación via onNavigate (solo SPA); usar en lugar de Link para navegación interna
+│   ├── NavigationOverlay.jsx  # Overlay global (montado en root layout): círculo de carga sobre la página actual mientras carga la destino; se apaga al cambiar pathname (timeout de seguridad 8s)
 │   ├── NavBarDesktop.jsx      # Navbar fijo superior (oculto en mobile) — altura fija h-14; izquierda: logo + links de nav (Home, Dashboard) con indicador activo border-b en --base-hard-color via usePathname; derecha: botón avatar+nombre abre dropdown (w-64) con link a /profile y signOut
 │   ├── NavBarMovile.jsx       # Navbar fijo inferior (oculto en desktop) — dropdown con signOut al hacer clic en avatar
 │   ├── Announcement_box.jsx
@@ -66,11 +68,12 @@ src/
 │   │   └── ExamDescription.jsx  # Modal de configuración de examen: selects en cascada (materia→tema→subtema) con datos de useSyllabus, indicador de vidas (FaHeart), props onStart({subtopic_id}) e isStarting para conectar con startExamSession
 │   ├── homepage/
 │   │   ├── ExamSelector.jsx     # Botones de tipo de examen; al click en Rápido verifica canQuickExam (via useExam) y abre ExamDescription o modal de límite diario; Seguimiento y Libre abren modal "Recurso disponible próximamente"; bloquea scroll del body mientras hay modal abierto
-│   │   └── DailyLivesBar.jsx    # Barra prominente entre navbar y ExamSelector; muestra quick_exams_remaining (corazones rojos) y quick_exams_count (corazones apagados) consumiendo useExam; skeleton de puntos animados durante carga
+│   │   └── ExamLivesBar.jsx     # Dos tarjetas (rápidos y simulacro) entre navbar y ExamSelector; patas PiPawPrintFill restantes/usadas + conteo X/N consumiendo useExam; infinito (PiInfinityBold) si remaining === 999; skeleton de puntos durante carga
 │   └── profilepage/
 │       └── AvatarSelector.jsx
 ├── store/
-│   └── userStore.ts           # Store Zustand global: name, avatar_url, onboarding_completed, plan_type, isLoaded
+│   ├── userStore.ts           # Store Zustand global: name, avatar_url, onboarding_completed, plan_type, isLoaded
+│   └── navigationStore.ts     # Store Zustand: isNavigating + startNavigation()/stopNavigation() para el overlay de navegación
 ├── hooks/
 │   ├── useEstadosMunicipios.ts
 │   ├── useProfile.ts              # Carga y cachea el perfil completo del usuario (GET /users/me). Exporta updateProfileCache(), clearProfileCache() y el hook useProfile() → { data, isLoading }.
@@ -86,7 +89,7 @@ src/
 │   │   ├── auth.js            # signInWithEmail, signInWithGoogle, signUp, signOut, getUser, getSession, onAuthStateChange
 │   │   ├── client.js          # Fetcher base (solo cliente — NO usar en Route Handlers de servidor)
 │   │   ├── profile.js         # getUserMe, getUserBasicInfo, patchUserMe, getProfile, updateProfile, updateAvatar
-│   │   ├── exam.js            # startExam, getCurrentSession → GET /exams/active, getDailyUsage, submitAnswer({ session_id, question_id, selected_answer }) → POST /exams/{session_id}/answer; submitExam(session_id) → POST /exams/{session_id}/submit; closeExam() → POST /exams/close; getHint/getExplication
+│   │   ├── exam.js            # startExam, getCurrentSession → GET /exams/active, getDailyUsage, getSimulacroUsege → GET /users/me/usage/simulacro, submitAnswer({ session_id, question_id, selected_answer }) → POST /exams/{session_id}/answer; submitExam(session_id) → POST /exams/{session_id}/submit; closeExam() → POST /exams/close; getHint/getExplication
 │   │   ├── analytics.js       # getUserStats, getSubjectStats, getTopSubjects, getWeakSubjects, getProgressHistory
 │   │   ├── subscription.js    # getSubscription, isPremium
 │   │   └── syllabus.js        # getSyllabus() → GET /syllabus
@@ -100,7 +103,7 @@ src/
     ├── ecoems_program.js      # Estructura del programa ECOEMS (materias > temas > subtemas)
     ├── questions_examples.js  # Preguntas de ejemplo (datos mock)
     └── exam/
-        └── examLogic.ts       # DailyUsage (interface) + canTakeQuickExam(usage) → boolean (regla: quick_exams_remaining > 0)
+        └── examLogic.ts       # DailyUsage + SimulacroUsage (interfaces) + canTakeQuickExam(usage) → boolean (regla: quick_exams_remaining > 0)
 ```
 
 ## Tema visual y estilos
@@ -128,6 +131,7 @@ Definidas como `@keyframes` en `globals.css` y registradas como tokens en `@them
 |---|---|
 | `animate-floaty` | Float vertical suave (6s, usado en hero de email-confirmation) |
 | `animate-pulse-dot` | Pulso radial expandiéndose (1.8s, usado en badges de estado) |
+| `animate-spinner-appear` | Fade-in con delay de 0.2s y fill `both` — anti-parpadeo del overlay de navegación: en navegaciones rápidas el spinner nunca llega a verse |
 
 ## Capa API (`src/lib/api/`)
 
@@ -177,6 +181,7 @@ const { data, error } = await api.post('/api/v1/exam-results', payload)
 | | GET | `/users/me/basic-info` |
 | | PATCH | `/users/me` |
 | | GET | `/users/me/usage/daily` |
+| | GET | `/users/me/usage/simulacro` |
 | **schools** | GET | `/schools` |
 | **profile** | GET | `/api/v1/profile` |
 | | PUT | `/api/v1/profile` |
@@ -301,6 +306,7 @@ Las tres limpiezas ocurren en el componente (NavBarDesktop / NavBarMovile), no e
 - Todos los componentes son **funcionales** con hooks (`useState`, `useEffect`)
 - Estado global con **Zustand** (`src/store/userStore.ts`) — solo para datos del usuario autenticado (`name`, `avatar_url`, `plan_type`, `onboarding_completed`, `isLoaded`)
 - Navegación client-side con `useRouter` y `usePathname` de `'next/navigation'`
+- Para links internos entre páginas usar **`<AppLink>`** (`src/components/AppLink.jsx`) en lugar de `<Link>` de `next/link` — enciende el overlay global de carga durante la navegación
 - Alias de importación `@/` apunta a `src/` (configurado en `jsconfig.json`)
 - Páginas interactivas usan `'use client'` al inicio del archivo
 - Todo el texto de UI está en **español**
@@ -358,6 +364,7 @@ npm run lint     # Linting con ESLint
   - `isLoading` — true mientras startExamSession o continueCurrentSession están en curso
   - `session: ExamSession | null` — sesión activa con `session_id`, `expires_at`, `exam_area?`, `exam_type?`, `questions[]` y opcionalmente `answers_saved[]`
   - `dailyUsage: DailyUsage | null` — `{ usage_date, quick_exams_count, hints_used_count, quick_exams_remaining, hints_remaining }`
+  - `simulacroUsage: SimulacroUsage | null` — `{ simulacro_count, simulacro_remaining }` via `getSimulacroUsege()` (`GET /users/me/usage/simulacro`), con caché de módulo `simulacroUsageCache`
   - `isUsageLoading` — true hasta que llegue la respuesta de `GET /users/me/usage/daily`
   - `canQuickExam: boolean` — derivado de `canTakeQuickExam(dailyUsage)` en `examLogic.ts`
   - `timeRemaining: number` — segundos restantes calculados como `floor((expires_at - Date.now()) / 1000)`, actualizado cada segundo via `setInterval`. Se inicializa desde `sessionCache` para evitar salto en primer render.
@@ -369,7 +376,8 @@ npm run lint     # Linting con ESLint
 - **`exam-result/page.jsx`**: ruta protegida por sesión en `proxy.ts`, pero además requiere venir del flujo de `Finalizar`: lee `getExamResult()` y si es `null` hace `router.replace('/home')`. Mapea el response real de `submitExam` al shape que consumen `ResultQuestionsSummary` y `QuestionsBreakdown`: score sobre 10, correctas/incorrectas, `skipped_count` como parciales, tiempo total/promedio, y `breakdown[]` con respuesta seleccionada/correcta convertida de letra (`a`-`d`) a texto usando `options`. El botón `Continuar` de `ResultQuestionsHeader` llama `clearExamResult()` y `router.replace('/home')`, por lo que volver con historial a `/exam-result` redirige a home.
 - **`ExamSelector` sesión activa**: si `startExamSession()` recibe `status === 409` (`You already have an active quick session.`), cierra `ExamDescription` y abre un modal de sesión activa con botones `Empezar nuevo` y `Continuar examen`. `Empezar nuevo` llama `closeExam()` (`POST /exams/close`, sin body); si responde `204`, cierra el modal y vuelve a abrir `ExamDescription`; si responde `404` u otro error, cierra el modal y muestra `No se pudo cerrar la sesión activa. Intenta de nuevo.`. `Continuar examen` llama `continueCurrentSession()` (`GET /exams/active`), guarda la sesión en `sessionCache` y navega a `/exam`; mientras carga muestra `Cargando...`.
 - **`ExamSelector` examen próximamente**: los botones `Examen de seguimiento` y `Examen Libre` (en sus instancias móvil y desktop) usan `onClick={handleComingSoon}`, que activa el estado `showComingSoon` y abre un modal `Recurso disponible próximamente` (icono `MdOutlineAccessTime`, mismo patrón visual que el modal de límite diario; botón `Entendido` y cierre al click en backdrop). `showComingSoon` está incluido en `modalOpen` (bloquea scroll del body) y se resetea en `closeAll()`. `Examen Rápido` mantiene su flujo intacto.
-- **`ExamDescription`**: `src/components/exam/ExamDescription.jsx` — modal de configuración previa al examen. Selects en cascada (materia → tema → subtema) con datos de `useSyllabus`. Nombres largos se truncan a 70 chars con `clip()` + atributo `title` para tooltip. Sección de vidas: `examsRemaining` corazones rojos + `examsUsed` corazones apagados. Props: `onStart({ subtopic_id })` (llamado al click de Comenzar) e `isStarting` (muestra "Iniciando..." y deshabilita el botón mientras el fetch está en curso). Botón Comenzar deshabilitado (`bg-base-hard/60`) hasta que los 3 selects tienen valor o mientras `isStarting`.
-- **`DailyLivesBar`**: `src/components/homepage/DailyLivesBar.jsx` — barra prominente en `/home` entre la AnnouncementBox y el ExamSelector. Muestra `quick_exams_remaining` (corazones rojos FaHeart) y `quick_exams_count` (corazones apagados) con el conteo `X/N`. Durante carga: 3 círculos con `animate-pulse`. Consume `useExam()`; la caché del hook evita doble fetch con ExamSelector.
+- **`ExamDescription`**: `src/components/exam/ExamDescription.jsx` — modal de configuración previa al examen. Selects en cascada (materia → tema → subtema) con datos de `useAvailableSyllabus`; la prop `show_subtopic` (default `true`) oculta el select de subtema cuando es `false`. Nombres largos se truncan a 70 chars con `clip()` + atributo `title` para tooltip. Sección "Tus intentos de hoy": `examsRemaining` patas (PiPawPrintFill) + `examsUsed` patas apagadas + conteo `X/N`; si `examsRemaining === 999` se muestra solo un icono de infinito (PiInfinityBold) sin patas ni conteo. Props: `onStart({ subtopic_id })` (llamado al click de Comenzar) e `isStarting` (muestra "Iniciando..." y deshabilita el botón mientras el fetch está en curso). Botón Comenzar deshabilitado (`bg-base-hard/60`) hasta que los selects requeridos tienen valor o mientras `isStarting`.
+- **`ExamLivesBar`**: `src/components/homepage/ExamLivesBar.jsx` — dos tarjetas `LivesCard` en `/home` (grid 1/2 columnas): "Exámenes rápidos" (`quick_exams_remaining`/`quick_exams_count` de `dailyUsage`) y "Exámenes simulacro" (`simulacro_remaining`/`simulacro_count` de `simulacroUsage`). Cada tarjeta muestra patas PiPawPrintFill encendidas/apagadas + conteo `X/N`. Si `remaining === 999` (sentinela de ilimitado) se muestra PiInfinityBold en lugar de las patas; la prop `hideCountWhenUnlimited` (solo la tarjeta de rápidos la pasa) oculta además el conteo `X/N` en ese caso. Durante carga: 3 círculos con `animate-pulse`. Consume `useExam()`; la caché del hook evita doble fetch con ExamSelector.
+- **Overlay de navegación (círculo de carga entre páginas)**: tres piezas — `store/navigationStore.ts` (Zustand: `isNavigating`), `components/AppLink.jsx` y `components/NavigationOverlay.jsx` (montado en el root layout, después de `AppProvider`). `AppLink` envuelve `next/link` y en su `onNavigate` (solo dispara en navegación SPA, no en ctrl+click ni `target="_blank"`) llama `startNavigation()` — salvo que el `href` apunte al `pathname` actual. El overlay (`fixed inset-0 z-[100] bg-base-dark/30` + spinner) se renderiza **encima de la página actual** mientras carga la destino, se apaga en el `useEffect` que observa `usePathname()` y tiene timeout de seguridad de 8s. Anti-parpadeo: todo el overlay usa `animate-spinner-appear` (delay 0.2s), así que en navegaciones rápidas nunca se ve. **No usar `loading.jsx`** para esto: esa convención reemplaza la página por la UI de carga (se ve como "otra página") en lugar de superponerla. Los navbars y los links de login/signup/profile/email-confirmation ya usan `AppLink`; `FinishedExamDashboard` (legacy) conserva `Link`. Los `router.push` programáticos con su propio indicador ("Iniciando...", "Cargando...") no encienden el overlay.
 - **Animación acordeón (grid trick)**: para animar apertura/cierre de contenido sin JavaScript de medición, usar el patrón `grid-rows-[0fr]/[1fr]` con `transition-all`. El contenido **siempre está en el DOM**; el div exterior alterna entre las dos clases y el div interior lleva `overflow-hidden`. Usado en `TopicAccordion`.
 - **Caché `.next` y cambios de rutas**: Next.js 16 usa Turbopack por defecto en dev y mantiene un caché persistente en `.next/dev/cache/turbopack/`. Si se reorganiza la estructura de rutas (ej. renombrar carpetas), ese caché queda corrupto y puede causar crash del sistema por agotamiento de RAM al arrancar `npm run dev`. Solución: borrar `.next/` antes de levantar el servidor. Quien tenga el proyecto localmente con la estructura anterior necesita hacer `rm -rf .next` una vez. Clones frescos no tienen este problema.

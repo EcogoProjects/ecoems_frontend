@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Link from 'next/link'
+import AppLink from '@/components/AppLink'
 
 export default function EmailConfirmation() {
   return (
@@ -112,12 +112,12 @@ export default function EmailConfirmation() {
           </span>
         </div>
 
-        <Link
+        <AppLink
           href="/login"
           className="mt-8 text-sm underline opacity-55 hover:opacity-100 transition-opacity"
         >
           Ir al inicio de sesión
-        </Link>
+        </AppLink>
       </main>
 
       {/* Footer */}

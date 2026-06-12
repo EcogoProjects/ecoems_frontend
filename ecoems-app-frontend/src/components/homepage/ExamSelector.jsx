@@ -13,17 +13,20 @@ import { closeExam } from "@/lib/api";
 
 function ExamSelector() {
     const router = useRouter();
-    const { canQuickExam, isUsageLoading, dailyUsage, startExamSession, continueCurrentSession, isLoading } = useExam();
+    const { canQuickExam, canSimulacro, isUsageLoading, dailyUsage, simulacroUsage, startExamSession, continueCurrentSession, isLoading } = useExam();
     const [showDescription, setShowDescription] = useState(false);
     const [showLimit, setShowLimit] = useState(false);
+    const [showSimulacroLimit, setShowSimulacroLimit] = useState(false);
     const [showActiveSession, setShowActiveSession] = useState(false);
     const [showComingSoon, setShowComingSoon] = useState(false);
     const [showSimulacro, setShowSimulacro] = useState(false);
     const [isClosingActiveSession, setIsClosingActiveSession] = useState(false);
     const [isContinuingActiveSession, setIsContinuingActiveSession] = useState(false);
     const [activeSessionError, setActiveSessionError] = useState(null);
+    // Qué flujo disparó el modal de sesión activa, para reabrir el selector correcto en "Empezar nuevo"
+    const [activeSessionSource, setActiveSessionSource] = useState('quick');
 
-    const modalOpen = showDescription || showLimit || showActiveSession || showComingSoon || showSimulacro;
+    const modalOpen = showDescription || showLimit || showSimulacroLimit || showActiveSession || showComingSoon || showSimulacro;
 
     useEffect(() => {
         document.body.style.overflow = modalOpen ? 'hidden' : '';
@@ -42,17 +45,30 @@ function ExamSelector() {
     };
 
     const handleSimulacro = () => {
-        setShowSimulacro(true);
+        if (!simulacroUsage) return;
+        setActiveSessionError(null);
+        if (canSimulacro) setShowSimulacro(true);
+        else setShowSimulacroLimit(true);
     };
 
-    const handleSelectSimulacro = (examId) => {
-        // Solo UI por ahora — pendiente conectar con el backend de simulacros
-        console.log('Simulacro seleccionado:', examId);
+    const handleSelectSimulacro = async (examId) => {
+        if (isLoading) return;
+        setActiveSessionSource('simulacro');
+        const { data, status } = await startExamSession({
+            exam_type: 'simulacro',
+            simulacro_exam: examId,
+        });
+        if (data) router.push('/exam');
+        if (status === 409) {
+            setShowSimulacro(false);
+            setShowActiveSession(true);
+        }
     };
 
     const closeAll = () => {
         setShowDescription(false);
         setShowLimit(false);
+        setShowSimulacroLimit(false);
         setShowActiveSession(false);
         setShowComingSoon(false);
         setShowSimulacro(false);
@@ -67,7 +83,8 @@ function ExamSelector() {
 
         setShowActiveSession(false);
         if (status === 204) {
-            setShowDescription(true);
+            if (activeSessionSource === 'simulacro') setShowSimulacro(true);
+            else setShowDescription(true);
             return;
         }
 
@@ -92,6 +109,7 @@ function ExamSelector() {
     };
 
     const handleStart = async ({ subtopic_id }) => {
+        setActiveSessionSource('quick');
         const { data, status } = await startExamSession({
             exam_type: 'quick',
             subtopic_id,
@@ -192,6 +210,8 @@ function ExamSelector() {
                         <ExamDescriptionSimulacro
                             onClose={closeAll}
                             onSelect={handleSelectSimulacro}
+                            isStarting={isLoading}
+                            unlockedCount={(simulacroUsage?.simulacro_count ?? 0) + (simulacroUsage?.simulacro_remaining ?? 0)}
                         />
                     </div>
                 </div>
@@ -211,6 +231,31 @@ function ExamSelector() {
                         <h2 className="text-xl font-extrabold text-center tracking-tight">Límite diario alcanzado</h2>
                         <p className="text-sm text-center leading-relaxed text-base-soft/80">
                             Has utilizado todos tus exámenes rápidos de hoy. Vuelve mañana para seguir practicando.
+                        </p>
+                        <button
+                            onClick={closeAll}
+                            className="mt-2 w-full py-3 rounded-xl font-bold bg-base-hard text-base-dark hover:opacity-80 transition-opacity cursor-pointer"
+                        >
+                            Entendido
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal: límite de simulacros alcanzado */}
+            {showSimulacroLimit && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    onClick={closeAll}
+                >
+                    <div
+                        className="bg-base-dark text-base-soft rounded-[28px] p-8 flex flex-col items-center gap-5 w-full max-w-[360px] shadow-2xl"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <MdOutlineDoNotDisturb size={48} className="text-base-hard" />
+                        <h2 className="text-xl font-extrabold text-center tracking-tight">Límite de simulacros alcanzado</h2>
+                        <p className="text-sm text-center leading-relaxed text-base-soft/80">
+                            Has utilizado todos tus exámenes simulacro disponibles.
                         </p>
                         <button
                             onClick={closeAll}

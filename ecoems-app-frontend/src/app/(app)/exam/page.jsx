@@ -18,6 +18,7 @@ function ExamPage() {
 
     const {
         session,
+        isSimulacro,
         questions, currentIndex, setCurrentIndex, currentQ,
         answers, selectedOption,
         showOverlay, setShowOverlay,
@@ -94,13 +95,14 @@ function ExamPage() {
                 </div>
 
                 <ExamHeader
-                    examType="Examen Rápido"
+                    examType={isSimulacro ? "Examen Simulacro" : "Examen Rápido"}
                     questions={questions}
                     currentIndex={currentIndex}
                     answers={answers}
                     setCurrentIndex={setCurrentIndex}
                     setShowOverlay={setShowOverlay}
                     isHelpDisabled={!!answers[currentQ.id]}
+                    showHelp={!isSimulacro}
                     handlePrev={handlePrev}
                     handleNext={handleNext}
                 />

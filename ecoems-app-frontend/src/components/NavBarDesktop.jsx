@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image";
-import Link from "next/link";
+import AppLink from "@/components/AppLink";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { FaSignOutAlt } from "react-icons/fa";
@@ -43,7 +43,7 @@ function NavBarDesktop() {
             <div className="hidden md:flex bg-base-dark fixed top-0 w-full h-14 items-stretch px-3 text-base-extra-light z-50">
                 {/* Izquierda: logo + navegación */}
                 <div className="flex-1 flex items-center gap-1">
-                    <Link href="/home" className="flex items-center gap-2 px-3 h-full">
+                    <AppLink href="/home" className="flex items-center gap-2 px-3 h-full">
                         <div className="flex bg-base-extra-light rounded-full p-1">
                             <Image
                                 src="/assets/logo.png"
@@ -53,21 +53,21 @@ function NavBarDesktop() {
                             />
                         </div>
                         <p className="text-3xl font">Ecogo</p>
-                    </Link>
+                    </AppLink>
 
                     <ul className="flex h-full items-center">
-                        <Link href="/home" className="relative flex items-center h-full px-4">
+                        <AppLink href="/home" className="relative flex items-center h-full px-4">
                             <li className="list-none">Home</li>
                             <span className={`absolute bottom-0 left-0 right-0 h-1 rounded-t transition-colors ${pathname === '/home' ? 'bg-[var(--base-hard-color)]' : 'bg-transparent'}`} />
-                        </Link>
-                        <Link href="/program" className="relative flex items-center h-full px-4">
+                        </AppLink>
+                        <AppLink href="/program" className="relative flex items-center h-full px-4">
                             <li className="list-none">Temario</li>
                             <span className={`absolute bottom-0 left-0 right-0 h-1 rounded-t transition-colors ${pathname === '/program' ? 'bg-[var(--base-hard-color)]' : 'bg-transparent'}`} />
-                        </Link>
-                        <Link href="/analytics" className="relative flex items-center h-full px-4">
+                        </AppLink>
+                        {/* <AppLink href="/analytics" className="relative flex items-center h-full px-4">
                             <li className="list-none">Dashboard</li>
                             <span className={`absolute bottom-0 left-0 right-0 h-1 rounded-t transition-colors ${pathname === '/analytics' ? 'bg-[var(--base-hard-color)]' : 'bg-transparent'}`} />
-                        </Link>
+                        </AppLink> */}
                     </ul>
                 </div>
 
@@ -94,14 +94,14 @@ function NavBarDesktop() {
                                 <p className="text-xs text-white/40 uppercase tracking-wider font-medium">Cuenta</p>
                                 <p className="text-sm font-semibold text-base-extra-light mt-0.5 truncate">{name}</p>
                             </div>
-                            <Link
+                            <AppLink
                                 href="/profile"
                                 onClick={() => setMenuOpen(false)}
                                 className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-white/5 transition-colors"
                             >
                                 <LuHouse size={15} />
                                 <span>Mi perfil</span>
-                            </Link>
+                            </AppLink>
                             <div className="border-t border-white/10 mx-3" />
                             <button
                                 onClick={handleSignOut}

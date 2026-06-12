@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { IoMdBookmarks, IoMdClose } from 'react-icons/io';
 import { MdOutlineCollectionsBookmark, MdTimer } from "react-icons/md";
 import { FaChevronLeft, FaPlay, FaHeart } from "react-icons/fa";
-import { PiPawPrintFill } from 'react-icons/pi';
+import { PiPawPrintFill, PiInfinityBold } from 'react-icons/pi';
 import { useAvailableSyllabus } from '@/hooks/useSyllabus';
 
 export default function ExamDescription({ examTitle, description, time, n_questions, range, show_subtopic = true, onClose, onStart, isStarting = false, examsRemaining, examsUsed }) {
@@ -85,15 +85,21 @@ export default function ExamDescription({ examTitle, description, time, n_questi
                             <span className="text-[13px] font-semibold text-base-dark">Tus intentos de hoy</span>
                         </div>
                         <div className="flex items-center gap-1">
-                            {Array.from({ length: examsRemaining }).map((_, i) => (
-                                <PiPawPrintFill key={`r-${i}`} size={13} className="text-base-dark" />
-                            ))}
-                            {Array.from({ length: examsUsed }).map((_, i) => (
-                                <PiPawPrintFill key={`u-${i}`} size={13} className="text-base-dark/40" />
-                            ))}
-                            <span className="text-base-dark font-bold text-sm ml-1.5">
-                                {examsRemaining}/{examsRemaining + examsUsed}
-                            </span>
+                            {examsRemaining === 999 ? (
+                                <PiInfinityBold size={16} className="text-base-dark" />
+                            ) : (
+                                <>
+                                    {Array.from({ length: examsRemaining }).map((_, i) => (
+                                        <PiPawPrintFill key={`r-${i}`} size={13} className="text-base-dark" />
+                                    ))}
+                                    {Array.from({ length: examsUsed }).map((_, i) => (
+                                        <PiPawPrintFill key={`u-${i}`} size={13} className="text-base-dark/40" />
+                                    ))}
+                                    <span className="text-base-dark font-bold text-sm ml-1.5">
+                                        {examsRemaining}/{examsRemaining + examsUsed}
+                                    </span>
+                                </>
+                            )}
                         </div>
                     </div>
                 )}

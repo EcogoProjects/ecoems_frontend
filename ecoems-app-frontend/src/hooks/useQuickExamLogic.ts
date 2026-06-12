@@ -62,6 +62,8 @@ export function useQuickExamLogic() {
     const router = useRouter();
     const { session, timeRemaining } = useExam();
 
+    const isSimulacro = session?.exam_type === 'simulacro';
+
     const questions: MappedQuestion[] = (session?.questions ?? [])
         .slice()
         .sort((a, b) => a.position - b.position)
@@ -184,6 +186,16 @@ export function useQuickExamLogic() {
             setSubmitError('No se pudo registrar tu respuesta. Intenta de nuevo.');
             return;
         }
+        // En simulacro el backend solo responde { saved: true }: se confirma el guardado
+        // sin poblar answerResults, así nunca se revela la explicación.
+        if (isSimulacro) {
+            if (!data?.saved) {
+                setSubmitError('No se pudo registrar tu respuesta. Intenta de nuevo.');
+                return;
+            }
+            saveAnswer(selectedOption);
+            return;
+        }
         setAnswerResults(prev => ({
             ...prev,
             [currentQ.id]: {
@@ -286,6 +298,7 @@ export function useQuickExamLogic() {
 
     return {
         session,
+        isSimulacro,
         questions,
         currentIndex,
         setCurrentIndex,

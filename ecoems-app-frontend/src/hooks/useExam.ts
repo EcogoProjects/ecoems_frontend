@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { startExam, getCurrentSession, getDailyUsage } from '@/lib/api';
-import { DailyUsage, canTakeQuickExam } from '@/utils/exam/examLogic';
+import { startExam, getSimulacroUsege , getCurrentSession, getDailyUsage } from '@/lib/api';
+import { DailyUsage, SimulacroUsage, canTakeQuickExam, canTakeSimulacro } from '@/utils/exam/examLogic';
 
 export type ExamType = 'quick' | 'seguimiento' | 'simulacro' | 'diagnostic';
 
 interface StartExamParams {
     exam_type: ExamType;
     subtopic_id?: number | null;
+    simulacro_exam?: number | null;
 }
 
 interface ExamOption {
@@ -46,6 +47,7 @@ interface StartExamResult {
 }
 
 let dailyUsageCache: DailyUsage | null = null;
+let simulacroUsageCache: SimulacroUsage | null = null; 
 let sessionCache: ExamSession | null = null;
 
 const calcRemaining = (expiresAt: string) =>
@@ -56,7 +58,9 @@ export function useExam(): {
     isUsageLoading: boolean;
     session: ExamSession | null;
     dailyUsage: DailyUsage | null;
+    simulacroUsage: SimulacroUsage | null;
     canQuickExam: boolean;
+    canSimulacro: boolean;
     timeRemaining: number;
     startExamSession: (params: StartExamParams) => Promise<StartExamResult>;
     continueCurrentSession: () => Promise<StartExamResult>;
@@ -64,6 +68,7 @@ export function useExam(): {
     const [isLoading, setIsLoading] = useState(false);
     const [session, setSession] = useState<ExamSession | null>(sessionCache);
     const [dailyUsage, setDailyUsage] = useState<DailyUsage | null>(dailyUsageCache);
+    const [simulacroUsage, setSimulacroUsage] = useState <SimulacroUsage | null> (simulacroUsageCache);
     const [isUsageLoading, setIsUsageLoading] = useState(dailyUsageCache === null);
     const [timeRemaining, setTimeRemaining] = useState<number>(() =>
         sessionCache?.expires_at ? calcRemaining(sessionCache.expires_at) : 0
@@ -88,6 +93,18 @@ export function useExam(): {
         });
     }, []);
 
+    useEffect (() => {
+        if (simulacroUsageCache !== null) return;
+
+        getSimulacroUsege().then(({ data }) => {
+            const usage = data ?? null; 
+            simulacroUsageCache = usage; 
+            setSimulacroUsage (usage); 
+        }).finally(() => {
+            setIsUsageLoading(false); 
+        }); 
+    }, []); 
+
     const startExamSession = async (params: StartExamParams): Promise<StartExamResult> => {
         setIsLoading(true);
         const { data, error, status } = await startExam(params);
@@ -95,9 +112,11 @@ export function useExam(): {
 
         if (error || !data) return { data: null, error: error ?? 'Error al iniciar el examen', status };
 
-        sessionCache = data;
-        setSession(data);
-        return { data, error: null, status };
+        // El response de POST /exams/start puede no incluir exam_type; se conserva el solicitado
+        const sessionData = { exam_type: params.exam_type, ...data };
+        sessionCache = sessionData;
+        setSession(sessionData);
+        return { data: sessionData, error: null, status };
     };
 
     const continueCurrentSession = async (): Promise<StartExamResult> => {
@@ -117,7 +136,9 @@ export function useExam(): {
         isUsageLoading,
         session,
         dailyUsage,
+        simulacroUsage,
         canQuickExam: canTakeQuickExam(dailyUsage),
+        canSimulacro: canTakeSimulacro(simulacroUsage),
         timeRemaining,
         startExamSession,
         continueCurrentSession,

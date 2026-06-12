@@ -1,7 +1,10 @@
 import { api } from './client'
 
-export async function startExam({ exam_type, subtopic_id = null }) {
-    return api.post('/exams/start', { exam_type, subtopic_id })
+export async function startExam({ exam_type, subtopic_id = null, simulacro_exam = null }) {
+    const body = { exam_type }
+    if (subtopic_id != null) body.subtopic_id = subtopic_id
+    if (simulacro_exam != null) body.simulacro_exam = simulacro_exam
+    return api.post('/exams/start', body)
 }
 
 export async function getCurrentSession() {
@@ -10,6 +13,10 @@ export async function getCurrentSession() {
 
 export async function getDailyUsage() {
     return api.get('/users/me/usage/daily')
+}
+
+export async function getSimulacroUsege() {
+    return api.get ('/users/me/usage/simulacro')
 }
 
 export async function submitAnswer({ session_id, question_id, selected_answer }) {

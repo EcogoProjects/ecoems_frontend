@@ -1,6 +1,6 @@
 'use client'
 
-import Link from "next/link";
+import AppLink from "@/components/AppLink";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useState, Suspense } from "react";
@@ -127,9 +127,9 @@ function SignInForm() {
                 <div className="flex gap-0.5">
                    <p className="text-text-bottom-soft lg:text-base-dark">
                         ¿Aún no te has registrado? 
-                    <Link href="/signup" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
+                    <AppLink href="/signup" className="pl-1.5 hover:cursor-pointer underline hover:text-gray-500">
                         Regístrate
-                    </Link>
+                    </AppLink>
                 </p> 
                 </div>
             </form>

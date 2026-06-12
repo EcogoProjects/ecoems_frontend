@@ -1,14 +1,13 @@
 "use client"
 
-import { useRouter } from "next/navigation";
 import { clearExamResult } from "@/hooks/useExamResult";
 
 export default function ResultQuestionsHeader() {
-    const router = useRouter();
-
     const handleContinue = () => {
         clearExamResult();
-        router.replace("/home");
+        // Navegación real (no SPA): reinicia los cachés de módulo (dailyUsageCache,
+        // simulacroUsageCache) para que /home recargue las vidas actualizadas
+        window.location.replace("/home");
     };
 
     return (

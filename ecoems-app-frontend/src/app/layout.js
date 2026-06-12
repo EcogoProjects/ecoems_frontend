@@ -2,6 +2,7 @@ import { Outfit } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import AppProvider from "@/components/AppProvider";
+import NavigationOverlay from "@/components/NavigationOverlay";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
     <html lang="es" className={`${outfit.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <AppProvider>{children}</AppProvider>
+        <NavigationOverlay />
         <Analytics />
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

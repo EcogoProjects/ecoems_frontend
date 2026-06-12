@@ -6,7 +6,17 @@ export interface DailyUsage {
     hints_remaining: number;
 }
 
+export interface SimulacroUsage {
+    simulacro_count: number; 
+    simulacro_remaining:number; 
+}
+
 export function canTakeQuickExam(usage: DailyUsage | null): boolean {
     if (!usage) return false;
     return usage.quick_exams_remaining > 0;
+}
+
+export function canTakeSimulacro(usage: SimulacroUsage | null): boolean {
+    if (!usage) return false;
+    return usage.simulacro_remaining > 0;
 }

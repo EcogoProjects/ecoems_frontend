@@ -72,6 +72,16 @@
   }
 }
 
+@keyframes spinner-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes progress-shimmer {
 
   0%,
@@ -96,6 +106,8 @@
   --animate-floaty: floaty 6s ease-in-out infinite;
   --animate-pulse-dot: pulse-dot 1.8s ease-out infinite;
   --animate-fade-in: fade-in 0.3s ease-out;
+  /* Delay de 0.2s con fill "both": el spinner queda invisible en navegaciones rápidas */
+  --animate-spinner-appear: spinner-appear 0.25s ease-out 0.2s both;
 
   /* Base Colors */
   --color-base: var(--base-color);
