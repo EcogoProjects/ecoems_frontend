@@ -194,6 +194,9 @@ export function useQuickExamLogic() {
                 return;
             }
             saveAnswer(selectedOption);
+            setTimeout(() => {
+                handleNext();
+            }, 350);
             return;
         }
         setAnswerResults(prev => ({

@@ -1,9 +1,12 @@
 "use client"
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { FaCheck, FaChevronDown, FaTimes } from "react-icons/fa";
 import { MdErrorOutline } from "react-icons/md";
 import NavExamResult from "@/components/exam/NavExamResult";
+import { useLatexScanner } from "@/utils/exam/useLatexScanner";
+import LatexParagraph from "./LaTexRender";
 
 const baseTheme = {
     blockBg: "bg-base-soft",
@@ -71,6 +74,8 @@ export default function QuestionsBreakdown({ questions }) {
         acc[question.id] = question.userAnswer;
         return acc;
     }, {});
+
+    useLatexScanner(containerRef, questions.length);
 
     const handleNavigate = (index) => {
         setCurrentIndex(index);
@@ -171,9 +176,9 @@ export default function QuestionsBreakdown({ questions }) {
                                         <span className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sm font-extrabold bg-base-dark/80 text-base-soft`}>
                                             {question.originalIndex + 1}
                                         </span>
-                                        <p className={`flex-1 text-[15px] font-medium leading-6 ${styles.theme.promptText}`}>
-                                            {question.prompt}
-                                        </p>
+                                        <div className={`flex-1 text-[15px] font-medium leading-6 ${styles.theme.promptText}`}>
+                                            <LatexParagraph content={question.prompt} />
+                                        </div>
                                         <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${styles.theme.pill}`}>
                                             {styles.points}
                                         </span>
@@ -183,8 +188,14 @@ export default function QuestionsBreakdown({ questions }) {
                                         <div className="overflow-hidden">
                                             <div className="pt-0.5 pb-0.5">
                                                 {question.imageLabel && (
-                                                    <div className={`mb-4 flex h-32 items-center justify-center rounded-xl font-mono text-xs tracking-wide ${styles.theme.readingBg} ${styles.theme.readingTitleText}`}>
-                                                        {question.imageLabel}
+                                                    <div className="mb-4 relative w-full aspect-video max-h-64 rounded-xl overflow-hidden bg-white/60">
+                                                        <Image
+                                                            src={question.imageLabel}
+                                                            alt="Recurso de la pregunta"
+                                                            fill
+                                                            className="object-contain p-2"
+                                                            sizes="(max-width: 768px) 100vw, 600px"
+                                                        />
                                                     </div>
                                                 )}
 
@@ -193,7 +204,9 @@ export default function QuestionsBreakdown({ questions }) {
                                                         <p className={`mb-1.5 text-[10.5px] font-bold uppercase tracking-[0.08em] ${styles.theme.readingTitleText}`}>
                                                             Lectura de apoyo
                                                         </p>
-                                                        <p className={`text-[13.5px] leading-6 ${styles.theme.readingBodyText}`}>{question.reading}</p>
+                                                        <div className={`text-[13.5px] leading-6 ${styles.theme.readingBodyText}`}>
+                                                            <LatexParagraph content={question.reading} />
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>
@@ -247,7 +260,9 @@ export default function QuestionsBreakdown({ questions }) {
                                                 <p className={`mb-2 text-[10.5px] font-bold uppercase tracking-[0.08em] ${styles.theme.explanationTitleText}`}>
                                                     Explicación
                                                 </p>
-                                                <p className={`text-sm leading-6 ${styles.theme.explanationBodyText}`}>{question.explanation}</p>
+                                                <div className={`text-sm leading-6 ${styles.theme.explanationBodyText}`}>
+                                                    <LatexParagraph content={question.explanation} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -262,17 +277,33 @@ export default function QuestionsBreakdown({ questions }) {
 }
 
 function AnswerRow({ label, value, statusClassName, labelClassName, icon }) {
+    const isImage = typeof value === 'string' && value.trim().startsWith('https://');
+
     return (
         <div className="flex flex-col items-start gap-2">
             <span className={`min-w-28 shrink-0 text-[11px] font-semibold uppercase tracking-[0.05em] md:min-w-32  text-base-dark`}>
                 {label}
             </span>
-            <span className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium ${statusClassName}`}>
-                {icon === "check" && <FaCheck className="text-[11px]" />}
-                {icon === "times" && <FaTimes className="text-[11px]" />}
-                {icon === "partial" && <MdErrorOutline className="text-sm" />}
-                {value}
-            </span>
+            <div className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium ${statusClassName}`}>
+                {icon === "check" && <FaCheck className="text-[11px] shrink-0" />}
+                {icon === "times" && <FaTimes className="text-[11px] shrink-0" />}
+                {icon === "partial" && <MdErrorOutline className="text-sm shrink-0" />}
+                <div className="break-words">
+                    {isImage ? (
+                        <div className="relative w-24 h-24 rounded-md overflow-hidden bg-white/80">
+                            <Image 
+                                src={value.trim()} 
+                                alt={`Opción ${label}`} 
+                                fill 
+                                className="object-contain p-1"
+                                sizes="96px"
+                            />
+                        </div>
+                    ) : (
+                        <LatexParagraph content={value} />
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
