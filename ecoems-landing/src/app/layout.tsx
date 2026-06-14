@@ -4,6 +4,7 @@ import './globals.css'
 import Providers from './providers'
 import FaviconSwitcher from '@/components/shared/FaviconSwitcher'
 import GoogleAnalytics from '@/components/shared/GoogleAnalytics'
+import MetaPixel from '@/components/shared/MetaPixel'
 import { Outfit } from "next/font/google";
 import 'katex/dist/katex.min.css';
 
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <FaviconSwitcher />
         <Providers>{children}</Providers>
         <Analytics/>
+        <MetaPixel />
       </body>
     </html>
   )
