@@ -78,7 +78,7 @@ function ExamSelector() {
         if (isClosingActiveSession || isContinuingActiveSession) return;
         setIsClosingActiveSession(true);
         setActiveSessionError(null);
-        const { status } = await closeExam();
+        const { status } = await closeExam(activeSessionSource);
         setIsClosingActiveSession(false);
 
         setShowActiveSession(false);
@@ -95,7 +95,7 @@ function ExamSelector() {
         if (isClosingActiveSession || isContinuingActiveSession) return;
         setIsContinuingActiveSession(true);
         setActiveSessionError(null);
-        const { data } = await continueCurrentSession();
+        const { data } = await continueCurrentSession(activeSessionSource);
         setIsContinuingActiveSession(false);
 
         if (data) {
