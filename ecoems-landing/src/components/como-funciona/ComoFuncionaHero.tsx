@@ -1,14 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import raccoonStudy from "@/assets/RacconStudy-removebg-preview.png";
 import raccoonBackpack from "@/assets/RacconBackpack-removebg-preview.png";
-import WaitlistModal from "@/components/shared/WaitlistModal";
+import { APP_SIGNUP_URL } from "@/lib/constants";
 
 const ComoFuncionaHero = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <section
       className="w-full relative overflow-hidden"
@@ -80,17 +77,17 @@ const ComoFuncionaHero = () => {
           className="opacity-0 animate-fade-up"
           style={{ animationDelay: "0.5s" }}
         >
-          <button
-            onClick={() => setModalOpen(true)}
+          <a
+            href={APP_SIGNUP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-8 py-3 rounded-full font-bold text-sm transition-all duration-200 hover:scale-105 hover:shadow-xl active:scale-95 shadow-lg"
             style={{ backgroundColor: "#CDAD75", color: "#472E18" }}
           >
-            Cupos limitados para acceso anticipado{" "}
-          </button>
+            Empieza ahora, es gratis
+          </a>
         </div>
       </div>
-
-      {modalOpen && <WaitlistModal onClose={() => setModalOpen(false)} />}
     </section>
   );
 };

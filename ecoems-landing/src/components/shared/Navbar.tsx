@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import ecogoLogo from '@/assets/ecogo_logo.png'
-import WaitlistModal from './WaitlistModal'
+import { APP_LOGIN_URL, APP_SIGNUP_URL } from '@/lib/constants'
 
 const navItems = [
   { href: '/', label: 'Inicio' },
@@ -16,7 +16,6 @@ const navItems = [
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [modalOpen, setModalOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -63,13 +62,24 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setModalOpen(true)}
+            <a
+              href={APP_LOGIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="[@media(min-width:379px)]:flex hidden px-4 py-2 rounded-full text-sm font-semibold text-[#472E18] hover:bg-[#472E18]/5 transition-colors"
+            >
+              Iniciar sesión
+            </a>
+
+            <a
+              href={APP_SIGNUP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="[@media(min-width:379px)]:flex hidden px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity"
               style={{ backgroundColor: '#472E18', color: '#EAD9C3' }}
             >
               Regístrate
-            </button>
+            </a>
 
             <button
               className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5"
@@ -108,23 +118,29 @@ const Navbar = () => {
                   </Link>
                 )
               })}
-              <button
-                onClick={() => {
-                  setMenuOpen(false)
-                  setModalOpen(true)
-                }}
+              <a
+                href={APP_LOGIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="[@media(min-width:379px)]:hidden w-full px-5 py-2 rounded-full text-sm font-semibold text-center border border-[#472E18]/30 text-[#472E18] hover:bg-[#472E18]/5 transition-colors"
+              >
+                Iniciar sesión
+              </a>
+              <a
+                href={APP_SIGNUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="[@media(min-width:379px)]:hidden w-full px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity text-center"
                 style={{ backgroundColor: '#472E18', color: '#EAD9C3' }}
               >
-                Próximamente
-              </button>
+                Regístrate
+              </a>
             </div>
           </div>
         )}
       </nav>
 
       <div className="h-[81px]" />
-      {modalOpen && <WaitlistModal onClose={() => setModalOpen(false)} />}
     </>
   )
 }

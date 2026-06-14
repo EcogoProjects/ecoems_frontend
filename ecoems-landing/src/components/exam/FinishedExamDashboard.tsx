@@ -1,5 +1,6 @@
 import CircleAvgIndicator from "./CircleAvgIndicator";
 import Link from "next/link"; // Importamos el componente de navegación de Next.js
+import { APP_SIGNUP_URL } from "@/lib/constants";
 
 function FinishedExamDashboard({ closeActionMessage, score }) {
     return (
@@ -32,7 +33,9 @@ function FinishedExamDashboard({ closeActionMessage, score }) {
             {/* BOTÓN DE ACCIÓN PARA CERRAR O CONTINUAR */}
             <div className="flex flex-col">
                 <a
-                    href="https://app.ecogo.mx/signup"
+                    href={APP_SIGNUP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="mt-4 bg-base-hard-alt text-base-dark font-bold py-2.5 px-8 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md inline-block"
                 >
                     Regístrate

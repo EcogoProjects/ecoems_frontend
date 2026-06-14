@@ -1,14 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
-import WaitlistModal from "@/components/shared/WaitlistModal";
 import triosRaccoon from "@/assets/TriosRaccoon-removebg-preview.png";
+import { APP_SIGNUP_URL } from "@/lib/constants";
 
 const WhatIsEcogo = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <section className="max-w-6xl mx-auto px-6 pt-12 pb-10">
       <AnimateOnScroll animation="fade-up">
@@ -28,19 +25,20 @@ const WhatIsEcogo = () => {
               style={{ color: "#472E18", opacity: 0.8 }}
             >
               ECOGO es una app de estudio diseñada para estudiantes que quieren
-              entrar al nivel medio superior a través del ECOEMS 2026. Estamos
-              construyendo la herramienta que reúne todo lo que necesitas en un
-              solo lugar: práctica, seguimiento y estrategia, para que llegues
-              preparado el día del examen. Próximamente disponible — regístrate
-              y sé de los primeros en acceder.
+              entrar al nivel medio superior a través del ECOEMS 2026. Reúne
+              todo lo que necesitas en un solo lugar: práctica, seguimiento y
+              estrategia, para que llegues preparado el día del examen. Ya está
+              disponible — regístrate y empieza a estudiar hoy mismo.
             </p>
-            <button
-              onClick={() => setModalOpen(true)}
+            <a
+              href={APP_SIGNUP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-block px-8 py-3 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-95 shadow-md"
               style={{ backgroundColor: "#472E18", color: "#FFF9E4" }}
             >
-              Estamos por lanzar, regístrate y asegura tu lugar.
-            </button>
+              Regístrate gratis y empieza hoy
+            </a>
           </div>
 
           <div className="flex-shrink-0 flex items-center justify-center animate-float w-full md:w-auto">
@@ -54,8 +52,6 @@ const WhatIsEcogo = () => {
           </div>
         </div>
       </AnimateOnScroll>
-
-      {modalOpen && <WaitlistModal onClose={() => setModalOpen(false)} />}
     </section>
   );
 };
