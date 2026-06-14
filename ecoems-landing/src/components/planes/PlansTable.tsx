@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
-import WaitlistModal from "../shared/WaitlistModal";
 import TransferModal from "../shared/TransferModal";
 
 interface Feature {
@@ -35,7 +34,6 @@ const ecogoProPrice = 299;
 
 
 function PlansTable() {
-    const [modalOpen, setModalOpen] = useState(false);
     const [transferModalOpen, setTransferModalOpen] = useState(false);
 
     return (
@@ -50,12 +48,12 @@ function PlansTable() {
                     <p className="text-3xl ">$0</p>
                     <p className="text-sm">mx / periodo</p>
                 </div>
-                <button
-                    onClick={() => setModalOpen(true)}
+                <a
+                    href="https://app.ecogo.mx/login"
                     className="bg-[#3D281F] text-white rounded-full py-3 px-8 cursor-pointer font-semibold shadow-md hover:-translate-y-1 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-[#3D281F]/30 transition-all duration-300"
                 >
                     ¡Comienza ya!
-                </button>
+                </a>
                 <ul className="text-[#3D281F] w-fit space-y-3 mt-2">
                     {PLAN_FEATURES.smart.map((feature, index) => (
                         <li key={index} className="flex items-center justify-start gap-2 text-left">
@@ -99,7 +97,6 @@ function PlansTable() {
                     ))}
                 </ul>
             </div>
-            {modalOpen && <WaitlistModal onClose={() => setModalOpen(false)} />}
             {transferModalOpen && <TransferModal onClose={() => setTransferModalOpen(false)} />}
         </div>
     );

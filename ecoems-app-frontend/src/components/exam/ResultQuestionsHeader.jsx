@@ -21,7 +21,7 @@ export default function ResultQuestionsHeader() {
             <button
                 type="button"
                 onClick={handleContinue}
-                className="inline-flex w-fit items-center justify-center rounded-full bg-base-dark px-5 py-2.5 text-sm font-medium text-base-soft transition-colors hover:bg-[#5a3a1f]"
+                className="inline-flex w-fit items-center justify-center rounded-full bg-base-dark px-5 py-2.5 text-sm font-medium text-base-soft transition-colors hover:bg-[#5a3a1f] cursor-pointer"
             >
                 Continuar
             </button>

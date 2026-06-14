@@ -1,7 +1,8 @@
 "use client"
-
+import { useState } from "react";
 import ExamOption from "@/components/exam/ExamOption";
 import LatexParagraph from "./LaTexRender";
+import ReportModal from "./ReportModal";
 
 export default function QuestionPanel({
     currentQ,
@@ -12,8 +13,12 @@ export default function QuestionPanel({
     handleContestar,
     submitError,
     isSubmitting,
+    sessionId,
     // isLastQuestion
 }) {
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+    const [reportedQuestions, setReportedQuestions] = useState({});
+
     const hasReading = currentQ.reading !== null && currentQ.reading.trim() !== "";
 
     const options = [
@@ -26,6 +31,8 @@ export default function QuestionPanel({
     const areAllImages = options.every(
         opt => typeof opt.text === 'string' && opt.text.trim().startsWith('https://')
     );
+
+    const hasReportedCurrent = !!reportedQuestions[currentQ.id];
 
     return (
         <div className="bg-base w-full p-4 md:p-6 rounded-[18px] md:col-span-2 md:h-full shadow-lg">
@@ -99,7 +106,7 @@ export default function QuestionPanel({
                 })}
             </div>
 
-            <div className="flex flex-col items-end gap-1 mt-5 md:mt-4">
+            <div className="flex flex-col items-end gap-1 mt-5 md:mt-4 w-full">
                 <p className={`text-sm text-red-600 font-medium h-5 overflow-hidden transition-opacity ${submitError ? 'opacity-100' : 'opacity-0 select-none'}`}>
                     {submitError ?? ' '}
                 </p>
@@ -114,6 +121,33 @@ export default function QuestionPanel({
                     {answers[currentQ.id] ? 'Contestado' : isSubmitting ? 'Enviando...' : 'Contestar'}
                 </button>
             </div>
+
+            <div className="w-full flex justify-center mt-6">
+                <button
+                    type="button"
+                    onClick={() => setIsReportModalOpen(true)}
+                    disabled={hasReportedCurrent}
+                    className={`text-xs font-semibold transition-colors
+                        ${hasReportedCurrent
+                            ? 'text-base-dark/50 cursor-not-allowed opacity-80'
+                            : 'text-base-dark/50 hover:text-red-500 cursor-pointer'
+                        }
+                    `}
+                >
+                    {hasReportedCurrent ? 'Reporte enviado' : 'Reportar pregunta'}
+                </button>
+            </div>
+
+            {isReportModalOpen && (
+                <ReportModal
+                    questionId={currentQ.id}
+                    sessionId={sessionId}
+                    onClose={() => setIsReportModalOpen(false)}
+                    onReportSuccess={() => {
+                        setReportedQuestions(prev => ({ ...prev, [currentQ.id]: true }));
+                    }}
+                />
+            )}
         </div>
     );
 }

@@ -1,10 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
-import WaitlistModal from "@/components/shared/WaitlistModal";
 import raccoonButton from "@/assets/RacconButton.png";
+import { APP_SIGNUP_URL } from "@/lib/constants";
 
 const steps = [
   "Te registras en la app.",
@@ -15,8 +14,6 @@ const steps = [
 ];
 
 const HowItWorks = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <section className="max-w-6xl mx-auto px-6 pb-10">
       <AnimateOnScroll animation="fade-up">
@@ -70,18 +67,18 @@ const HowItWorks = () => {
                   "brightness(0) saturate(100%) invert(91%) sepia(18%) saturate(400%) hue-rotate(350deg) brightness(97%) contrast(85%)",
               }}
             />
-            <button
-              onClick={() => setModalOpen(true)}
+            <a
+              href={APP_SIGNUP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-8 py-3 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-95 shadow-md"
               style={{ backgroundColor: "#CDAD75", color: "#472E18" }}
             >
-              Ya casi listo — ¡no te lo pierdas!
-            </button>
+              Crea tu cuenta gratis
+            </a>
           </div>
         </div>
       </AnimateOnScroll>
-
-      {modalOpen && <WaitlistModal onClose={() => setModalOpen(false)} />}
     </section>
   );
 };

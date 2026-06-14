@@ -38,3 +38,7 @@ export async function getExplication({ session_id, question_id }) {
 export async function getHint({ session_id, question_id }) {
     return api.post(`/exams/${session_id}/hint`, { question_id })
 }
+
+export async function reportQuestion({ question_id, reason, comment, session_id }) {
+    return api.post(`/questions/${question_id}/report`, { reason, comment, session_id })
+}

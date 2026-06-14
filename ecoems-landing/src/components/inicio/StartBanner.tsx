@@ -1,4 +1,5 @@
 import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
+import { APP_SIGNUP_URL } from "@/lib/constants";
 
 const StartBanner = () => {
   return (
@@ -17,13 +18,13 @@ const StartBanner = () => {
             </p>
           </div>
           <a
-            href="https://whatsapp.com/channel/0029VbCEr7M84OmAfxx9ar46"
+            href={APP_SIGNUP_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-shrink-0 px-7 py-3 rounded-full font-semibold text-sm hover:scale-105 hover:opacity-90 active:scale-95 transition-all duration-200 shadow-md"
             style={{ backgroundColor: "#CDAD75", color: "#472E18" }}
           >
-            Contáctanos
+            Comienza gratis
           </a>
         </div>
       </AnimateOnScroll>

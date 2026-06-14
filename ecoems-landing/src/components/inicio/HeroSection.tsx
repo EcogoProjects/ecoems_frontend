@@ -1,13 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import ecogoLogo from "@/assets/ecogo_logo.png";
-import WaitlistModal from "@/components/shared/WaitlistModal";
+import { APP_SIGNUP_URL } from "@/lib/constants";
 
 const HeroSection = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <section className="max-w-6xl md:w-full mx-auto px-6 pt-4">
       <div
@@ -45,6 +42,18 @@ const HeroSection = () => {
               </div>
             </div>
 
+            <div
+              className="opacity-0 animate-fade-up"
+              style={{ animationDelay: "0.05s" }}
+            >
+              <span
+                className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold"
+                style={{ backgroundColor: "#CDAD75", color: "#472E18" }}
+              >
+                🎉 ¡ECOGO ya está disponible!
+              </span>
+            </div>
+
             <h1
               className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.24] text-secondary-foreground opacity-0 animate-fade-up"
               style={{ animationDelay: "0.1s" }}
@@ -66,13 +75,15 @@ const HeroSection = () => {
               className="opacity-0 animate-fade-up flex justify-center [@media(min-width:922px)]:justify-start"
               style={{ animationDelay: "0.5s" }}
             >
-              <button
-                onClick={() => setModalOpen(true)}
+              <a
+                href={APP_SIGNUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-5 py-3 rounded-full font-semibold text-xs sm:text-sm transition-all duration-200 shadow-lg hover:scale-105 hover:shadow-xl active:scale-95 text-center"
                 style={{ backgroundColor: "#CDAD75", color: "#472E18" }}
               >
-                Regístrate
-              </button>
+                Regístrate gratis
+              </a>
             </div>
           </div>
 
@@ -92,8 +103,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-
-      {modalOpen && <WaitlistModal onClose={() => setModalOpen(false)} />}
     </section>
   );
 };

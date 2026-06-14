@@ -1,6 +1,7 @@
 "use client";
 
 import AnimateOnScroll from "@/components/shared/AnimateOnScroll";
+import { APP_SIGNUP_URL } from "@/lib/constants";
 
 const CTABanner = () => {
   return (
@@ -29,13 +30,13 @@ const CTABanner = () => {
             </p>
           </div>
           <a
-            href="https://whatsapp.com/channel/0029VbCEr7M84OmAfxx9ar46"
+            href={APP_SIGNUP_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-shrink-0 px-7 py-3 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-95 shadow-md"
             style={{ backgroundColor: "#472E18", color: "#FFF9E4" }}
           >
-            Ponte en contacto
+            Crea tu cuenta gratis
           </a>
         </div>
       </AnimateOnScroll>
