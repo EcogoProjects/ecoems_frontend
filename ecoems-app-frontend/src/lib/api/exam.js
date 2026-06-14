@@ -7,8 +7,9 @@ export async function startExam({ exam_type, subtopic_id = null, simulacro_exam 
     return api.post('/exams/start', body)
 }
 
-export async function getCurrentSession() {
-    return api.get('/exams/active')
+export async function getCurrentSession(exam_type) {
+    const query = exam_type ? `?exam_type=${encodeURIComponent(exam_type)}` : ''
+    return api.get(`/exams/active${query}`)
 }
 
 export async function getDailyUsage() {
@@ -27,8 +28,8 @@ export async function submitExam(session_id) {
     return api.post(`/exams/${session_id}/submit`)
 }
 
-export async function closeExam() {
-    return api.post('/exams/close', null)
+export async function closeExam(exam_type) {
+    return api.post('/exams/close', { exam_type })
 }
 
 export async function getExplication({ session_id, question_id }) {

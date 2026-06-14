@@ -63,7 +63,7 @@ export function useExam(): {
     canSimulacro: boolean;
     timeRemaining: number;
     startExamSession: (params: StartExamParams) => Promise<StartExamResult>;
-    continueCurrentSession: () => Promise<StartExamResult>;
+    continueCurrentSession: (exam_type?: ExamType) => Promise<StartExamResult>;
 } {
     const [isLoading, setIsLoading] = useState(false);
     const [session, setSession] = useState<ExamSession | null>(sessionCache);
@@ -119,16 +119,20 @@ export function useExam(): {
         return { data: sessionData, error: null, status };
     };
 
-    const continueCurrentSession = async (): Promise<StartExamResult> => {
+    const continueCurrentSession = async (exam_type?: ExamType): Promise<StartExamResult> => {
         setIsLoading(true);
-        const { data, error, status } = await getCurrentSession();
+        const { data, error, status } = await getCurrentSession(exam_type);
         setIsLoading(false);
 
         if (error || !data) return { data: null, error: error ?? 'Error al continuar el examen', status };
 
-        sessionCache = data;
-        setSession(data);
-        return { data, error: null, status };
+        // GET /exams/active puede no devolver exam_type; se conserva el tipo solicitado
+        // para que isSimulacro (y la UI dependiente: botón Ayuda, etc.) sea consistente
+        // con el flujo de inicio desde cero.
+        const sessionData = exam_type ? { ...data, exam_type } : data;
+        sessionCache = sessionData;
+        setSession(sessionData);
+        return { data: sessionData, error: null, status };
     };
 
     return {
