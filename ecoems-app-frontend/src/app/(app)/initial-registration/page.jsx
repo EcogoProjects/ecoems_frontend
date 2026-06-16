@@ -484,8 +484,23 @@ function StepDone({ avatar, name }) {
 const AVATARS = avatarsData.avatars;
 
 export default function InitialRegistration() {
+  const router = useRouter();
   const name = useUserStore((s) => s.name);
+  const onboardingCompleted = useUserStore((s) => s.onboarding_completed);
+  const isLoaded = useUserStore((s) => s.isLoaded);
   const [step, setStep] = useState(1);
+
+  // Auto-rescate: el proxy manda aquí cuando falta la cookie `onboarding`, pero la
+  // cookie es solo un caché del estado real (backend `onboarding_completed`). Si el
+  // backend ya dice que el onboarding está completo (cookie caducada/limpiada/otro
+  // dispositivo), re-establecemos la cookie y salimos a /home en vez de forzar a
+  // repetir el registro. Solo actuamos cuando el store ya cargó datos reales.
+  useEffect(() => {
+    if (isLoaded && onboardingCompleted) {
+      setOnboardingCookie();
+      router.replace('/home');
+    }
+  }, [isLoaded, onboardingCompleted, router]);
   const [avatar, setAvatar] = useState(null);
   const [form, setForm] = useState({
     estado: "",
