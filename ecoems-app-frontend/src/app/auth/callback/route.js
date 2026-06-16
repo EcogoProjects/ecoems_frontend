@@ -77,6 +77,10 @@ async function redirectAfterProfile(accessToken, origin) {
         const response = NextResponse.redirect(`${origin}/home`)
         response.cookies.set('onboarding', 'done', {
           path: '/',
+          // 1 año: persistir entre cierres del navegador. Sin maxAge sería cookie de
+          // sesión y caducaría al cerrar el navegador → la compuerta del proxy mandaría
+          // al usuario ya registrado de vuelta a /initial-registration.
+          maxAge: 60 * 60 * 24 * 365,
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'lax',
         })
