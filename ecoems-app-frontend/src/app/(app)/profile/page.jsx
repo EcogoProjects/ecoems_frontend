@@ -139,12 +139,12 @@ function ProfilePage() {
 
     const [isEditingMain, setIsEditingMain] = useState(false);
     const [form, setForm] = useState({
-        name:      profileData?.name      ?? '',
+        name: profileData?.name ?? '',
         last_name: profileData?.last_name ?? '',
-        phone:     profileData?.phone     ?? '',
-        gender:    profileData?.gender    ?? '',
-        state:     profileData?.state     ?? '',
-        town:      profileData?.town      ?? '',
+        phone: profileData?.phone ?? '',
+        gender: profileData?.gender ?? '',
+        state: profileData?.state ?? '',
+        town: profileData?.town ?? '',
     });
     const [saveError, setSaveError] = useState(null);
 
@@ -153,12 +153,12 @@ function ProfilePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const validateForm = () => {
-        if (!form.name.trim())      return 'El nombre es obligatorio.';
+        if (!form.name.trim()) return 'El nombre es obligatorio.';
         if (!form.last_name.trim()) return 'Los apellidos son obligatorios.';
-        if (!form.phone.trim())     return 'El teléfono es obligatorio.';
-        if (!form.gender)           return 'El género es obligatorio.';
-        if (!form.state)            return 'El estado es obligatorio.';
-        if (!form.town)             return 'La delegación / municipio es obligatoria.';
+        if (!form.phone.trim()) return 'El teléfono es obligatorio.';
+        if (!form.gender) return 'El género es obligatorio.';
+        if (!form.state) return 'El estado es obligatorio.';
+        if (!form.town) return 'La delegación / municipio es obligatoria.';
         return null;
     };
 
@@ -174,12 +174,12 @@ function ProfilePage() {
 
     const handleCancelMainEdits = () => {
         setForm({
-            name:      profileData?.name      ?? '',
+            name: profileData?.name ?? '',
             last_name: profileData?.last_name ?? '',
-            phone:     profileData?.phone     ?? '',
-            gender:    profileData?.gender    ?? '',
-            state:     profileData?.state     ?? '',
-            town:      profileData?.town      ?? '',
+            phone: profileData?.phone ?? '',
+            gender: profileData?.gender ?? '',
+            state: profileData?.state ?? '',
+            town: profileData?.town ?? '',
         });
         setSaveError(null);
         setIsEditingMain(false);
@@ -283,7 +283,7 @@ function ProfilePage() {
                             {!isEditingMain && (
                                 <CardEditBtn onClick={() => { setForm({ name: profileData?.name ?? '', last_name: profileData?.last_name ?? '', phone: profileData?.phone ?? '', gender: profileData?.gender ?? '', state: profileData?.state ?? '', town: profileData?.town ?? '' }); setIsEditingMain(true); }}>
                                     <MdModeEdit size={13} />
-                                    Editar
+                                    <p className="hidden md:block">Editar</p>
                                 </CardEditBtn>
                             )}
                         </div>

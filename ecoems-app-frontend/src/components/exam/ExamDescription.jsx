@@ -43,7 +43,7 @@ export default function ExamDescription({ examTitle, description, time, n_questi
     );
 
     return (
-        <div className="bg-base-dark text-base-soft p-4 md:p-6 rounded-[28px] flex flex-col items-center w-full shadow-2xl relative group">
+        <div className="bg-base-dark text-base-soft p-4 md:p-6 rounded-[28px] flex flex-col items-center w-full max-h-[85vh] overflow-y-auto shadow-2xl relative group">
             {onClose && (
                 <button
                     onClick={onClose}
