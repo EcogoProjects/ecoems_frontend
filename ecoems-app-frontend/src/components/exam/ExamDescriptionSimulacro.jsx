@@ -11,7 +11,7 @@ const SIMULACRO_EXAMS = [
 
 export default function ExamDescriptionSimulacro({ onClose, onSelect, isStarting = false, unlockedCount = SIMULACRO_EXAMS.length }) {
     return (
-        <div className="bg-base-dark text-base-soft p-4 md:p-6 rounded-[28px] flex flex-col items-center w-full shadow-2xl relative">
+        <div className="bg-base-dark text-base-soft p-4 md:p-6 rounded-[28px] flex flex-col items-center w-full max-h-[85vh] overflow-y-auto shadow-2xl relative">
             {onClose && (
                 <button
                     onClick={onClose}

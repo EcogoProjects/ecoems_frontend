@@ -58,7 +58,7 @@ function NavBarMovile() {
                     <div className="relative">
                         {menuOpen && (
                             <div className="absolute bottom-full right-0 mb-3 w-52 bg-base-dark/95 backdrop-blur-md border border-white/10 rounded-2xl shadow-[0_-12px_32px_rgba(0,0,0,0.35)] overflow-hidden">
-                                <div className="flex items-center gap-2.5 px-4 py-3.5">
+                                <AppLink href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 px-4 py-3.5 hover:bg-white/5 transition-colors active:bg-white/10 cursor-pointer">
                                     <div className="rounded-full overflow-hidden ring-1 ring-white/20 flex-shrink-0">
                                         <Image
                                             src={image_url}
@@ -69,7 +69,7 @@ function NavBarMovile() {
                                         />
                                     </div>
                                     <p className="text-sm font-semibold text-white truncate">{name}</p>
-                                </div>
+                                </AppLink>
                                 <div className="border-t border-white/10 mx-3" />
                                 <AppLink href="/program" className="flex items-center gap-2.5 px-5 py-3.5">
                                     <FaThList size={14} />

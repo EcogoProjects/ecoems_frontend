@@ -179,7 +179,7 @@ function ExamSelector() {
             {/* Modal: selector de examen */}
             {showDescription && (
                 <div
-                    className="fixed inset-0 z-50 flex items-start md:items-center justify-center bg-black/60 backdrop-blur-sm px-4 py-6 md:py-0 overflow-y-auto animate-in fade-in duration-300"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
                     onClick={closeAll}
                 >
                     <div className="w-full max-w-[420px] md:max-w-[600px] mx-auto" onClick={e => e.stopPropagation()}>
@@ -203,7 +203,7 @@ function ExamSelector() {
             {/* Modal: selector de examen simulacro */}
             {showSimulacro && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
                     onClick={closeAll}
                 >
                     <div className="w-full max-w-[460px] mx-auto" onClick={e => e.stopPropagation()}>
@@ -220,7 +220,7 @@ function ExamSelector() {
             {/* Modal: límite diario alcanzado */}
             {showLimit && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
                     onClick={closeAll}
                 >
                     <div
@@ -245,7 +245,7 @@ function ExamSelector() {
             {/* Modal: límite de simulacros alcanzado */}
             {showSimulacroLimit && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
                     onClick={closeAll}
                 >
                     <div
@@ -270,7 +270,7 @@ function ExamSelector() {
             {/* Modal: recurso próximamente */}
             {showComingSoon && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
                     onClick={closeAll}
                 >
                     <div
@@ -295,7 +295,7 @@ function ExamSelector() {
             {/* Modal: sesión rápida activa */}
             {showActiveSession && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 animate-in fade-in duration-300"
                     onClick={isClosingActiveSession || isContinuingActiveSession ? undefined : closeAll}
                 >
                     <div
