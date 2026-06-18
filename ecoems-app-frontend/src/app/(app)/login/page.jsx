@@ -49,7 +49,8 @@ function SignInForm() {
 
     const handleGoogleSignIn = async () => {
         setError(null);
-        const { error } = await signInWithGoogle(`${window.location.origin}/home`);
+        // Redirige a /auth/callback para que el callback cree el perfil en el backend
+        const { error } = await signInWithGoogle(`${window.location.origin}/auth/callback`);
         if (error) setError(error);
     };
 
@@ -98,28 +99,25 @@ function SignInForm() {
                             </button>
                          </div> 
                     </div>
-                    {/* TODO: Habilitar login con Google cuando esté listo */}
-                    {false && (
-                        <>
-                            {/*Línea de separacion*/}
-                            <div className="flex items-center w-full">
-                                <hr className="border-t border-base-dark  border-2 my-6 w-2/4" />
-                                <span className="mx-4 text-base-dark">ó</span>
-                                <hr className="border-t border-base-dark  border-2 my-6 w-2/4" />
-                            </div>
+                    {/* Separador y botón de Google */}
+                    <>
+                        <div className="flex items-center w-full">
+                            <hr className="border-t border-base-dark border-2 my-6 w-2/4" />
+                            <span className="mx-4 text-base-dark">ó</span>
+                            <hr className="border-t border-base-dark border-2 my-6 w-2/4" />
+                        </div>
 
-                            <div className="flex flex-col gap-3">
-                                {/* Agregamos el evento onClick aquí */}
-                                <div 
-                                    onClick={handleGoogleSignIn}
-                                    className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70 transition-opacity"
-                                >
-                                    <FaGoogle size={20}/>
-                                    <p>Continuar con Google</p>
-                                </div>
+                        <div className="flex flex-col gap-3">
+                            <div
+                                id="btn_google_signin"
+                                onClick={handleGoogleSignIn}
+                                className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70 transition-opacity"
+                            >
+                                <FaGoogle size={20}/>
+                                <p>Continuar con Google</p>
                             </div>
-                        </>
-                    )}
+                        </div>
+                    </>
                     
                 </div> 
                 <button 

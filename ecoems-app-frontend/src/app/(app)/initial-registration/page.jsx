@@ -4,7 +4,8 @@ import { useState, useEffect, useRef, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import avatarsData from '@/lib/data/avatars.json';
 import { useEstadosMunicipios } from '@/hooks/useEstadosMunicipios';
-import { api, patchUserMe, getUserBasicInfo } from '@/lib/api';
+import { api, patchUserMe, createUserProfile, getUserBasicInfo } from '@/lib/api';
+import { createClient } from '@/utils/supabase/client';
 import { useUserStore } from '@/store/userStore';
 import { setOnboardingCookie } from '@/utils/onboardingCookie';
 
@@ -485,10 +486,30 @@ const AVATARS = avatarsData.avatars;
 
 export default function InitialRegistration() {
   const router = useRouter();
-  const name = useUserStore((s) => s.name);
+  const storeName = useUserStore((s) => s.name);
+  const setUser = useUserStore((s) => s.setUser);
   const onboardingCompleted = useUserStore((s) => s.onboarding_completed);
   const isLoaded = useUserStore((s) => s.isLoaded);
   const [step, setStep] = useState(1);
+  const [displayName, setDisplayName] = useState('');
+
+  // Obtiene el nombre a mostrar: primero del store (backend), luego de Supabase
+  // (para usuarios Google OAuth que aún no tienen perfil en el backend)
+  useEffect(() => {
+    if (storeName) {
+      setDisplayName(storeName);
+      return;
+    }
+    // Fallback: leer nombre de los metadatos de Supabase (Google OAuth)
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return;
+      const meta = user.user_metadata ?? {};
+      const name = meta.name || meta.full_name || '';
+      // Tomar solo el primer nombre si es nombre completo
+      setDisplayName(name.trim().split(/\s+/)[0] || '');
+    });
+  }, [storeName]);
 
   // Auto-rescate: el proxy manda aquí cuando falta la cookie `onboarding`, pero la
   // cookie es solo un caché del estado real (backend `onboarding_completed`). Si el
@@ -528,7 +549,7 @@ export default function InitialRegistration() {
     const school = schools.find((s) => s.name === form.escuela);
     const phone = form.telefono.replace(/\D/g, '') || undefined;
 
-    const { error } = await patchUserMe({
+    const patchData = {
       avatar_url: av?.avatar_url ?? null,
       state: form.estado,
       town: form.municipio,
@@ -536,12 +557,44 @@ export default function InitialRegistration() {
       gender: form.genero,
       ...(phone && { phone }),
       onboarding_completed: true,
-    });
+    };
+
+    let { error, status } = await patchUserMe(patchData);
+
+    // Recuperación: el perfil no existe en el backend (usuarios Google OAuth cuyo
+    // callback falló al crear el perfil). Lo creamos ahora y reintentamos el PATCH.
+    if (status === 404) {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      const meta = user?.user_metadata ?? {};
+
+      // Google OAuth usa 'full_name'; email/password usa 'name' + 'last_name'
+      let name = meta.name || '';
+      let last_name = meta.last_name || null;
+      if (!name && meta.full_name) {
+        const parts = meta.full_name.trim().split(/\s+/);
+        name = parts[0] || '';
+        last_name = parts.slice(1).join(' ') || null;
+      }
+
+      const { error: postError } = await createUserProfile({ name, last_name });
+
+      if (!postError) {
+        // Perfil creado — reintentar el PATCH
+        ({ error, status } = await patchUserMe(patchData));
+      } else {
+        error = postError;
+      }
+    }
 
     if (error) {
       setSubmitError('No se pudo guardar tu información. Inténtalo de nuevo.');
       setSubmitLoading(false);
     } else {
+      // Refrescar el store con los datos reales del backend (nombre, avatar, plan)
+      // para que el NavBar y el resto de la app muestren el nombre correcto.
+      const { data: freshData } = await getUserBasicInfo();
+      if (freshData) setUser({ ...freshData, isLoaded: true });
       setOnboardingCookie();
       setStep(4);
     }
@@ -569,7 +622,7 @@ export default function InitialRegistration() {
       <main className="flex-1 flex items-start justify-center relative z-[2] py-2 pb-8">
         <div className="w-full max-w-[720px] bg-base-soft rounded-3xl p-9 px-11 border border-base-dark/10 shadow-[0_24px_50px_-20px_rgba(71,46,24,0.25)] max-sm:p-6 max-sm:px-5">
           {step <= 3 && <Stepper step={step} />}
-          {step === 1 && <StepWelcome name={name} onNext={() => setStep(2)} />}
+          {step === 1 && <StepWelcome name={displayName} onNext={() => setStep(2)} />}
           {step === 2 && (
             <StepAvatar
               avatar={avatar}
@@ -590,7 +643,7 @@ export default function InitialRegistration() {
               onSubmit={handleSubmit}
             />
           )}
-          {step === 4 && <StepDone avatar={avatar} name={name} />}
+          {step === 4 && <StepDone avatar={avatar} name={displayName} />}
         </div>
       </main>
     </div>

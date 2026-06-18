@@ -1,9 +1,10 @@
 'use client'
 
 import AppLink from "@/components/AppLink";
+import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-import { signUp } from "@/lib/api";
+import { signUp, signInWithGoogle } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 function SignUp() {
@@ -16,6 +17,12 @@ function SignUp() {
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const [passwordValue, setPasswordValue] = useState("");
     const [showPasswordAlert, setShowPasswordAlert] = useState(false);
+
+    const handleGoogleSignIn = async () => {
+        setError(null);
+        const { error } = await signInWithGoogle(`${window.location.origin}/auth/callback`);
+        if (error) setError(error);
+    };
 
     const isValidPassword = (password) => {
         return password.length >= 8 && /[A-Z]/.test(password) && /\d/.test(password);
@@ -160,7 +167,25 @@ function SignUp() {
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    {/* Separador y botón de Google */}
+                    <>
+                        <div className="flex items-center w-full">
+                            <hr className="border-t border-base-dark border-2 my-6 w-2/4" />
+                            <span className="mx-4 text-base-dark">ó</span>
+                            <hr className="border-t border-base-dark border-2 my-6 w-2/4" />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <div
+                                id="btn_google_signup"
+                                onClick={handleGoogleSignIn}
+                                className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70 transition-opacity"
+                            >
+                                <FaGoogle size={20}/>
+                                <p>Continuar con Google</p>
+                            </div>
+                        </div>
+                    </>
 
                 <button
                     className="bg-base-dark text-white text-lg font-semibold rounded-[23px] p-1.5 pl-4.5 pr-4.5 hover:cursor-pointer disabled:opacity-50"

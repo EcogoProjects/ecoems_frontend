@@ -43,7 +43,18 @@ export async function GET(request) {
 }
 
 async function createBackendProfile(session, origin) {
-  const { name = '', last_name = '' } = session.user.user_metadata ?? {}
+  const metadata = session.user.user_metadata ?? {}
+
+  // Registro con email → guarda 'name' y 'last_name' por separado
+  // Login con Google  → guarda 'full_name' (nombre completo en un solo campo)
+  let name      = metadata.name      ?? ''
+  let last_name = metadata.last_name ?? ''
+
+  if (!name && metadata.full_name) {
+    const parts = metadata.full_name.trim().split(/\s+/)
+    name      = parts[0]              ?? ''
+    last_name = parts.slice(1).join(' ') ?? ''
+  }
 
   try {
     const res = await fetch(`${BASE_URL}/users/me`, {
