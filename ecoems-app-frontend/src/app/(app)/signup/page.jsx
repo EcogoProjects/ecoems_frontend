@@ -186,6 +186,7 @@ function SignUp() {
                             </div>
                         </div>
                     </>
+                </div>
 
                 <button
                     className="bg-base-dark text-white text-lg font-semibold rounded-[23px] p-1.5 pl-4.5 pr-4.5 hover:cursor-pointer disabled:opacity-50"
