@@ -226,7 +226,8 @@ El archivo `proxy.ts` (equivalente al `middleware.ts` de Next.js ≤15 — renom
 |---|---|---|
 | `/home`, `/exam`, `/analytics`, `/profile`, `/program`, `/coming-soon`, `/initial-registration` (`PROTECTED_ROUTES`) | → `/login?redirect=<ruta>` | pasa (sujeto a la compuerta de onboarding) |
 | `/login`, `/signup` (`AUTH_ROUTES`) | pasa | → `/home` |
-| Todo lo demás (`/`, `/plans`, `/auth/callback`, estáticos) | pasa | pasa (sujeto a la compuerta de onboarding) |
+| `/` (raíz) | → `/login` | → `/home` (sujeto a la compuerta de onboarding en la siguiente petición) |
+| Todo lo demás (`/plans`, `/auth/callback`, estáticos) | pasa | pasa (sujeto a la compuerta de onboarding) |
 
 **Compuerta de onboarding** (solo aplica si hay sesión): se basa en la cookie `onboarding` (`'done'` = onboarding completado).
 - **Regla A** — sin cookie `onboarding` y la ruta NO es `/initial-registration` → redirige a `/initial-registration`. Fuerza a todo usuario nuevo a completar el registro inicial antes de usar la app.

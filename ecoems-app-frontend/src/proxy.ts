@@ -45,6 +45,13 @@ export async function proxy(request: NextRequest) {
     return response
   }
 
+  // Raíz: redirige según sesión (home si hay sesión, login si no); el resto de compuertas
+  // (onboarding, etc.) se vuelve a evaluar en la siguiente petición sobre el destino
+  if (pathname === '/') {
+    const destination = user ? '/home' : '/login'
+    return withCookies(NextResponse.redirect(new URL(destination, request.url)))
+  }
+
   // Ruta protegida sin sesión → login
   if (isProtected && !user) {
     const loginUrl = new URL('/login', request.url)
