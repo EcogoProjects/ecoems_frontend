@@ -73,7 +73,7 @@ export default function ResourcePanel({
                     {isSimulacro && randomPhrase ? (
                         <div className={`flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out ${isFading ? 'opacity-0' : 'opacity-100'}`}>
                             <p className="text-sm mb-3 font-semibold text-base-dark leading-relaxed italic px-2">
-                                "{randomPhrase.texto}"
+                                &quot;{randomPhrase.texto}&quot;
                             </p>
                             <span className="text-xs text-base-dark font-bold uppercase tracking-widest opacity-60">
                                 {randomPhrase.tipo}

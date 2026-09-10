@@ -6,6 +6,7 @@ import avatarsData from '@/lib/data/avatars.json';
 import { useEstadosMunicipios } from '@/hooks/useEstadosMunicipios';
 import { api, patchUserMe, createUserProfile, getUserBasicInfo } from '@/lib/api';
 import { createClient } from '@/utils/supabase/client';
+import { getProfileNames } from '@/utils/profileNames';
 import { useUserStore } from '@/store/userStore';
 import { setOnboardingCookie } from '@/utils/onboardingCookie';
 
@@ -226,12 +227,6 @@ function Select({ label, value, onChange, options, placeholder, disabled, search
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
-  useEffect(() => {
-    if (!open) {
-      setSearchQuery("");
-    }
-  }, [open]);
-
   const normalizeText = (text) =>
     text
       ? text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
@@ -254,7 +249,11 @@ function Select({ label, value, onChange, options, placeholder, disabled, search
           ? 'border-base-dark bg-base-soft'
           : `border-transparent bg-base-extra-light ${!disabled ? 'hover:bg-base' : ''}`
           } ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-        onClick={Trigger === 'button' ? (() => !disabled && setOpen((v) => !v)) : undefined}
+        onClick={Trigger === 'button' ? (() => {
+          if (disabled) return;
+          setSearchQuery("");
+          setOpen((v) => !v);
+        }) : undefined}
         disabled={Trigger === 'button' ? disabled : undefined}
       >
         {open && searchable ? (
@@ -491,24 +490,24 @@ export default function InitialRegistration() {
   const onboardingCompleted = useUserStore((s) => s.onboarding_completed);
   const isLoaded = useUserStore((s) => s.isLoaded);
   const [step, setStep] = useState(1);
-  const [displayName, setDisplayName] = useState('');
+  const [oauthName, setOauthName] = useState('');
+  const displayName = storeName || oauthName;
 
   // Obtiene el nombre a mostrar: primero del store (backend), luego de Supabase
   // (para usuarios Google OAuth que aún no tienen perfil en el backend)
   useEffect(() => {
-    if (storeName) {
-      setDisplayName(storeName);
-      return;
-    }
+    if (storeName) return;
+    let cancelled = false;
     // Fallback: leer nombre de los metadatos de Supabase (Google OAuth)
     const supabase = createClient();
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) return;
+      if (!user || cancelled) return;
       const meta = user.user_metadata ?? {};
       const name = meta.name || meta.full_name || '';
       // Tomar solo el primer nombre si es nombre completo
-      setDisplayName(name.trim().split(/\s+/)[0] || '');
+      setOauthName(name.trim().split(/\s+/)[0] || '');
     });
+    return () => { cancelled = true; };
   }, [storeName]);
 
   // Auto-rescate: el proxy manda aquí cuando falta la cookie `onboarding`, pero la
@@ -517,11 +516,11 @@ export default function InitialRegistration() {
   // dispositivo), re-establecemos la cookie y salimos a /home en vez de forzar a
   // repetir el registro. Solo actuamos cuando el store ya cargó datos reales.
   useEffect(() => {
-    if (isLoaded && onboardingCompleted) {
+    if (isLoaded && onboardingCompleted && step !== 4) {
       setOnboardingCookie();
       router.replace('/home');
     }
-  }, [isLoaded, onboardingCompleted, router]);
+  }, [isLoaded, onboardingCompleted, router, step]);
   const [avatar, setAvatar] = useState(null);
   const [form, setForm] = useState({
     estado: "",
@@ -568,18 +567,11 @@ export default function InitialRegistration() {
       const { data: { user } } = await supabase.auth.getUser();
       const meta = user?.user_metadata ?? {};
 
-      // Google OAuth usa 'full_name'; email/password usa 'name' + 'last_name'
-      let name = meta.name || '';
-      let last_name = meta.last_name || null;
-      if (!name && meta.full_name) {
-        const parts = meta.full_name.trim().split(/\s+/);
-        name = parts[0] || '';
-        last_name = parts.slice(1).join(' ') || null;
-      }
+      const { name, last_name } = getProfileNames(meta);
 
-      const { error: postError } = await createUserProfile({ name, last_name });
+      const { error: postError, status: postStatus } = await createUserProfile({ name, last_name });
 
-      if (!postError) {
+      if (!postError || postStatus === 409) {
         // Perfil creado — reintentar el PATCH
         ({ error, status } = await patchUserMe(patchData));
       } else {

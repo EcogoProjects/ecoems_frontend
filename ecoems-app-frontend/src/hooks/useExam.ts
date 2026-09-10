@@ -76,7 +76,6 @@ export function useExam(): {
 
     useEffect(() => {
         if (!session?.expires_at) return;
-        setTimeRemaining(calcRemaining(session.expires_at));
         const interval = setInterval(() => setTimeRemaining(calcRemaining(session.expires_at)), 1000);
         return () => clearInterval(interval);
     }, [session?.expires_at]);
@@ -115,6 +114,7 @@ export function useExam(): {
         // El response de POST /exams/start puede no incluir exam_type; se conserva el solicitado
         const sessionData = { exam_type: params.exam_type, ...data };
         sessionCache = sessionData;
+        setTimeRemaining(calcRemaining(sessionData.expires_at));
         setSession(sessionData);
         return { data: sessionData, error: null, status };
     };
@@ -131,6 +131,7 @@ export function useExam(): {
         // con el flujo de inicio desde cero.
         const sessionData = exam_type ? { ...data, exam_type } : data;
         sessionCache = sessionData;
+        setTimeRemaining(calcRemaining(sessionData.expires_at));
         setSession(sessionData);
         return { data: sessionData, error: null, status };
     };

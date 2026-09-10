@@ -27,5 +27,5 @@ export const useLatexScanner = (ref, dependency) => {
 
             return () => observer.disconnect();
         }
-    }, [dependency]);
+    }, [dependency, ref]);
 };

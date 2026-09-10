@@ -19,9 +19,13 @@ function SignUp() {
     const [showPasswordAlert, setShowPasswordAlert] = useState(false);
 
     const handleGoogleSignIn = async () => {
+        setLoading(true);
         setError(null);
         const { error } = await signInWithGoogle(`${window.location.origin}/auth/callback`);
-        if (error) setError(error);
+        if (error) {
+            setError(error);
+            setLoading(false);
+        }
     };
 
     const isValidPassword = (password) => {
@@ -176,14 +180,16 @@ function SignUp() {
                             <hr className="border-t border-base-dark border-2 my-6 w-2/4" />
                         </div>
                         <div className="flex flex-col gap-3">
-                            <div
+                            <button
                                 id="btn_google_signup"
+                                type="button"
+                                disabled={loading}
                                 onClick={handleGoogleSignIn}
                                 className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70 transition-opacity"
                             >
                                 <FaGoogle size={20}/>
-                                <p>Continuar con Google</p>
-                            </div>
+                                <span>Continuar con Google</span>
+                            </button>
                         </div>
                     </>
                 </div>

@@ -6,6 +6,11 @@ const PROTECTED_ROUTES = ['/home', '/exam', '/exam-result', '/analytics', '/prof
 const AUTH_ROUTES = ['/login', '/signup']
 
 export async function proxy(request: NextRequest) {
+  // El callback debe intercambiar el código antes de aplicar las compuertas de sesión.
+  if (request.nextUrl.pathname === '/auth/callback') {
+    return NextResponse.next({ request })
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
