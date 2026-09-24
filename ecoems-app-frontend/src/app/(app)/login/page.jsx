@@ -1,7 +1,7 @@
 'use client'
 
 import AppLink from "@/components/AppLink";
-import { FaGoogle, FaFacebook } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useState, Suspense } from "react";
 import { signInWithEmail, signInWithGoogle, getUserBasicInfo } from "@/lib/api";
@@ -18,7 +18,8 @@ function SignInForm() {
     const [error, setError] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
 
-    const safeRedirect = redirectTo?.startsWith('/') ? redirectTo : '/home';
+    const safeRedirect = redirectTo?.startsWith('/') && !redirectTo.startsWith('//') && !redirectTo.includes('\\')
+        ? redirectTo : '/home';
 
     const handleEmailSignIn = async (e) => {
         e.preventDefault();
@@ -48,9 +49,14 @@ function SignInForm() {
     };
 
     const handleGoogleSignIn = async () => {
+        setLoading(true);
         setError(null);
-        const { error } = await signInWithGoogle(`${window.location.origin}/home`);
-        if (error) setError(error);
+        // Redirige a /auth/callback para que el callback cree el perfil en el backend
+        const { error } = await signInWithGoogle(`${window.location.origin}/auth/callback`);
+        if (error) {
+            setError(error);
+            setLoading(false);
+        }
     };
 
     return ( 
@@ -98,28 +104,27 @@ function SignInForm() {
                             </button>
                          </div> 
                     </div>
-                    {/* TODO: Habilitar login con Google cuando esté listo */}
-                    {false && (
-                        <>
-                            {/*Línea de separacion*/}
-                            <div className="flex items-center w-full">
-                                <hr className="border-t border-base-dark  border-2 my-6 w-2/4" />
-                                <span className="mx-4 text-base-dark">ó</span>
-                                <hr className="border-t border-base-dark  border-2 my-6 w-2/4" />
-                            </div>
+                    {/* Separador y botón de Google */}
+                    <>
+                        <div className="flex items-center w-full">
+                            <hr className="border-t border-base-dark border-2 my-6 w-2/4" />
+                            <span className="mx-4 text-base-dark">ó</span>
+                            <hr className="border-t border-base-dark border-2 my-6 w-2/4" />
+                        </div>
 
-                            <div className="flex flex-col gap-3">
-                                {/* Agregamos el evento onClick aquí */}
-                                <div 
-                                    onClick={handleGoogleSignIn}
-                                    className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70 transition-opacity"
-                                >
-                                    <FaGoogle size={20}/>
-                                    <p>Continuar con Google</p>
-                                </div>
-                            </div>
-                        </>
-                    )}
+                        <div className="flex flex-col gap-3">
+                            <button
+                                id="btn_google_signin"
+                                type="button"
+                                disabled={loading}
+                                onClick={handleGoogleSignIn}
+                                className="bg-base-soft rounded-2xl p-2.5 flex items-center justify-center gap-3 hover:cursor-pointer hover:opacity-70 transition-opacity"
+                            >
+                                <FaGoogle size={20}/>
+                                <span>Continuar con Google</span>
+                            </button>
+                        </div>
+                    </>
                     
                 </div> 
                 <button 

@@ -283,7 +283,7 @@ function ProfilePage() {
                             {!isEditingMain && (
                                 <CardEditBtn onClick={() => { setForm({ name: profileData?.name ?? '', last_name: profileData?.last_name ?? '', phone: profileData?.phone ?? '', gender: profileData?.gender ?? '', state: profileData?.state ?? '', town: profileData?.town ?? '' }); setIsEditingMain(true); }}>
                                     <MdModeEdit size={13} />
-                                    Editar
+                                    <span className="sr-only md:not-sr-only">Editar</span>
                                 </CardEditBtn>
                             )}
                         </div>

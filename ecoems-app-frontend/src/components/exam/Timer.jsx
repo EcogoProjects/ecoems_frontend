@@ -7,23 +7,19 @@ export default function Timer({ initialMinutes = 0, initialSeconds = 0, onTimeUp
 
     useEffect(() => {
         const storageKey = 'exam_end_time';
-        const savedEndTime = localStorage.getItem(storageKey);
+        const savedEndTime = Number.parseInt(localStorage.getItem(storageKey), 10);
+        const endTime = Number.isFinite(savedEndTime)
+            ? savedEndTime : Date.now() + (initialMinutes * 60 + initialSeconds) * 1000;
+        localStorage.setItem(storageKey, String(endTime));
 
-        if (!savedEndTime) {
-            const totalMs = (initialMinutes * 60 + initialSeconds) * 1000;
-            const newEndTime = new Date().getTime() + totalMs;
-
-            localStorage.setItem(storageKey, newEndTime.toString());
-            setTimeLeft(Math.floor(totalMs / 1000));
-        } else {
-            const remainingMs = parseInt(savedEndTime) - new Date().getTime();
-
-            if (remainingMs > 0) {
-                setTimeLeft(Math.floor(remainingMs / 1000));
-            } else {
-                setTimeLeft(0);
-            }
-        }
+        // Sincronizar con el reloj real, incluso al volver de una pestaña suspendida.
+        const update = () => setTimeLeft(Math.max(0, Math.floor((endTime - Date.now()) / 1000)));
+        const frame = requestAnimationFrame(update);
+        const interval = setInterval(update, 1000);
+        return () => {
+            cancelAnimationFrame(frame);
+            clearInterval(interval);
+        };
     }, [initialMinutes, initialSeconds]);
 
     useEffect(() => {
@@ -34,11 +30,6 @@ export default function Timer({ initialMinutes = 0, initialSeconds = 0, onTimeUp
             return;
         }
 
-        const intervalId = setInterval(() => {
-            setTimeLeft((prev) => (prev !== null && prev > 0 ? prev - 1 : 0));
-        }, 1000);
-
-        return () => clearInterval(intervalId);
     }, [timeLeft, onTimeUp]);
 
     if (timeLeft === null) {

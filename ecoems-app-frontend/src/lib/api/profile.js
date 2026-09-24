@@ -40,6 +40,18 @@ export async function patchUserMe(data) {
 }
 
 /**
+ * Crea el perfil del usuario en el backend (llamada inicial post-registro).
+ * Usado como recuperación cuando el perfil no fue creado en el /auth/callback
+ * (ej: usuarios OAuth cuyo callback falló silenciosamente).
+ * POST /users/me
+ * @param {{ name: string, last_name?: string|null }} data
+ * @returns {{ data: object|null, error: string|null }}
+ */
+export async function createUserProfile(data) {
+  return api.post('/users/me', data)
+}
+
+/**
  * Actualiza campos del perfil. Solo se envían los campos que cambian.
  * PUT /api/v1/profile
  * @param {{ username?: string, phone?: string, school?: string, city?: string, address?: string }} updates

@@ -142,6 +142,19 @@
 */
 @layer utilities {
 
+  .app-content-width {
+    width: calc(100% - 2rem);
+    max-width: 1440px;
+  }
+
+  @media (min-width: 768px) {
+    .app-content-width { width: calc(100% - 4rem); }
+  }
+
+  @media (min-width: 1280px) {
+    .app-content-width { width: 80%; }
+  }
+
   /* Oculta la barra en Chrome, Safari y Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;

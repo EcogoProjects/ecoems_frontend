@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useEffect, useRef, Fragment } from 'react';
+import { useState, useEffect, useRef, useId, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import avatarsData from '@/lib/data/avatars.json';
 import { useEstadosMunicipios } from '@/hooks/useEstadosMunicipios';
-import { api, patchUserMe, getUserBasicInfo } from '@/lib/api';
+import { api, patchUserMe, createUserProfile, getUserBasicInfo } from '@/lib/api';
+import { createClient } from '@/utils/supabase/client';
+import { getProfileNames } from '@/utils/profileNames';
 import { useUserStore } from '@/store/userStore';
 import { setOnboardingCookie } from '@/utils/onboardingCookie';
 
@@ -216,20 +218,27 @@ function Select({ label, value, onChange, options, placeholder, disabled, search
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const ref = useRef(null);
+  const triggerRef = useRef(null);
+  const listboxId = useId();
+  const labelId = useId();
 
   useEffect(() => {
-    function onDoc(e) {
+    function onPointerDown(e) {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     }
-    document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
-  }, []);
-
-  useEffect(() => {
-    if (!open) {
-      setSearchQuery("");
+    function onKeyDown(e) {
+      if (e.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
     }
-  }, [open]);
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
 
   const normalizeText = (text) =>
     text
@@ -242,51 +251,75 @@ function Select({ label, value, onChange, options, placeholder, disabled, search
     )
     : options;
 
-  const Trigger = open && searchable ? 'div' : 'button';
+  function toggle() {
+    if (disabled) return;
+    setSearchQuery("");
+    setOpen((current) => !current);
+  }
+
+  function choose(option) {
+    onChange(option);
+    setSearchQuery("");
+    setOpen(false);
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  }
 
   return (
-    <div className={`flex flex-col gap-1.5 relative ${disabled ? 'opacity-55' : ''}`} ref={ref}>
-      <label className="text-[13px] font-medium text-base-dark tracking-[0.01em]">{label}</label>
-      <Trigger
-        type={Trigger === 'button' ? 'button' : undefined}
-        className={`flex items-center justify-between gap-2 w-full border-[1.5px] rounded-[12px] px-3.5 py-3 text-[14.5px] text-base-dark text-left transition-all duration-150 ${open
+    <div className={`flex flex-col self-start gap-1.5 relative ${open ? 'z-50' : 'z-0'} ${disabled ? 'opacity-55' : ''}`} ref={ref}>
+      <span id={labelId} className="text-[13px] font-medium text-base-dark tracking-[0.01em]">{label}</span>
+      <button
+        ref={triggerRef}
+        type="button"
+        className={`flex min-h-[48px] items-center justify-between gap-3 w-full border-[1.5px] rounded-[11px] px-3.5 py-2.5 text-[14.5px] text-base-dark text-left transition-colors duration-150 ${open
           ? 'border-base-dark bg-base-soft'
-          : `border-transparent bg-base-extra-light ${!disabled ? 'hover:bg-base' : ''}`
+          : `border-transparent bg-base-extra-light ${!disabled ? 'hover:bg-base hover:border-base-dark/15' : ''}`
           } ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-        onClick={Trigger === 'button' ? (() => !disabled && setOpen((v) => !v)) : undefined}
-        disabled={Trigger === 'button' ? disabled : undefined}
+        onClick={toggle}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (!open) toggle();
+          }
+        }}
+        disabled={disabled}
+        aria-labelledby={labelId}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={open ? listboxId : undefined}
       >
-        {open && searchable ? (
-          <input
-            type="text"
-            className="flex-1 bg-transparent border-none text-[14.5px] text-base-dark outline-none min-w-0 p-0 m-0 placeholder:text-base-dark/40"
-            placeholder={value || placeholder}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            autoFocus
-          />
-        ) : (
-          <span className={`flex-1 whitespace-nowrap overflow-hidden text-ellipsis ${!value ? 'opacity-50' : ''}`}>
-            {value || placeholder}
-          </span>
-        )}
+        <span className={`flex-1 whitespace-nowrap overflow-hidden text-ellipsis ${!value ? 'opacity-50' : ''}`}>
+          {value || placeholder}
+        </span>
         <svg
           className={`flex-shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
           width="14" height="14" viewBox="0 0 24 24" fill="none"
-          onClick={Trigger === 'div' ? (e) => { e.stopPropagation(); setOpen(false); } : undefined}
+          aria-hidden="true"
         >
           <path d="M6 9 L12 15 L18 9" stroke="#472E18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </Trigger>
+      </button>
       {open && (
         <div
-          className="absolute top-[calc(100%+6px)] left-0 right-0 bg-base-soft border border-base-dark/15 rounded-[12px] p-1.5 max-h-60 overflow-y-auto z-50 shadow-[0_12px_32px_-8px_rgba(71,46,24,0.25)]"
+          className="absolute top-[calc(100%+6px)] left-0 right-0 bg-base-soft border border-base-dark/15 rounded-[11px] p-1.5 max-h-56 overflow-y-auto z-50 shadow-[0_12px_28px_-10px_rgba(71,46,24,0.22)]"
+          id={listboxId}
           role="listbox"
+          aria-labelledby={labelId}
         >
+          {searchable && (
+            <div className="sticky top-0 z-10 bg-base-soft pb-1.5">
+              <input
+                type="search"
+                className="w-full rounded-lg border border-base-dark/15 bg-base-extra-light px-3 py-2 text-[14px] text-base-dark outline-none placeholder:text-base-dark/45 focus:border-base-dark"
+                placeholder={`Buscar ${label.toLowerCase()}`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+              />
+            </div>
+          )}
           {filteredOptions.length === 0 ? (
             <div className="p-3 text-[14px] text-base-dark opacity-60 text-center">
-              {searchQuery ? "No se encontraron similiudes" : "Sin opciones disponibles"}
+              {searchQuery ? "No se encontraron coincidencias" : "Sin opciones disponibles"}
             </div>
           ) : (
             filteredOptions.map((opt) => (
@@ -295,7 +328,7 @@ function Select({ label, value, onChange, options, placeholder, disabled, search
                 type="button"
                 className={`flex items-center justify-between w-full border-none px-3 py-2.5 rounded-lg text-[14px] text-base-dark cursor-pointer text-left transition-colors ${opt === value ? 'bg-base font-medium' : 'bg-transparent hover:bg-base'
                   }`}
-                onClick={() => { onChange(opt); setOpen(false); }}
+                onClick={() => choose(opt)}
                 role="option"
                 aria-selected={opt === value}
               >
@@ -378,12 +411,12 @@ function StepForm({ form, setForm, schools, schoolsLoading, submitLoading, submi
           placeholder="Selecciona tu género"
         />
 
-        <div className="flex flex-col gap-1.5 relative">
+        <div className="flex flex-col self-start gap-1.5 relative">
           <label className="text-[13px] font-medium text-base-dark tracking-[0.01em]">
             Teléfono{" "}
             <span className="font-normal opacity-55 text-[12.5px]">(opcional)</span>
           </label>
-          <div className={`flex items-stretch bg-base-extra-light border-[1.5px] rounded-[12px] overflow-hidden transition-colors duration-150 focus-within:border-base-dark focus-within:bg-base-soft ${phoneError ? 'border-[#B25533]' : 'border-transparent'}`}>
+          <div className={`flex min-h-[48px] items-stretch bg-base-extra-light border-[1.5px] rounded-[11px] overflow-hidden transition-colors duration-150 focus-within:border-base-dark focus-within:bg-base-soft ${phoneError ? 'border-[#B25533]' : 'border-transparent'}`}>
             <span className="flex items-center gap-2 px-3.5 py-3 bg-base text-[14px] font-medium text-base-dark border-r border-base-dark/10 flex-shrink-0">
               <span aria-hidden="true">🇲🇽</span>
               +52
@@ -398,7 +431,7 @@ function StepForm({ form, setForm, schools, schoolsLoading, submitLoading, submi
               className="flex-1 border-none bg-transparent px-3.5 py-3 text-[14.5px] text-base-dark outline-none min-w-0 placeholder:text-base-dark/40"
             />
           </div>
-          <p className={`h-11 overflow-hidden text-[12px] text-[#B25533] mt-0.5 transition-opacity ${phoneError ? 'opacity-100' : 'opacity-0 select-none'}`}>
+          <p className={`h-4 overflow-hidden text-[12px] text-[#B25533] mt-0.5 transition-opacity ${phoneError ? 'opacity-100' : 'opacity-0 select-none'}`}>
             Ingresa los 10 dígitos completos.
           </p>
         </div>
@@ -485,10 +518,30 @@ const AVATARS = avatarsData.avatars;
 
 export default function InitialRegistration() {
   const router = useRouter();
-  const name = useUserStore((s) => s.name);
+  const storeName = useUserStore((s) => s.name);
+  const setUser = useUserStore((s) => s.setUser);
   const onboardingCompleted = useUserStore((s) => s.onboarding_completed);
   const isLoaded = useUserStore((s) => s.isLoaded);
   const [step, setStep] = useState(1);
+  const [oauthName, setOauthName] = useState('');
+  const displayName = storeName || oauthName;
+
+  // Obtiene el nombre a mostrar: primero del store (backend), luego de Supabase
+  // (para usuarios Google OAuth que aún no tienen perfil en el backend)
+  useEffect(() => {
+    if (storeName) return;
+    let cancelled = false;
+    // Fallback: leer nombre de los metadatos de Supabase (Google OAuth)
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user || cancelled) return;
+      const meta = user.user_metadata ?? {};
+      const name = meta.name || meta.full_name || '';
+      // Tomar solo el primer nombre si es nombre completo
+      setOauthName(name.trim().split(/\s+/)[0] || '');
+    });
+    return () => { cancelled = true; };
+  }, [storeName]);
 
   // Auto-rescate: el proxy manda aquí cuando falta la cookie `onboarding`, pero la
   // cookie es solo un caché del estado real (backend `onboarding_completed`). Si el
@@ -496,11 +549,11 @@ export default function InitialRegistration() {
   // dispositivo), re-establecemos la cookie y salimos a /home en vez de forzar a
   // repetir el registro. Solo actuamos cuando el store ya cargó datos reales.
   useEffect(() => {
-    if (isLoaded && onboardingCompleted) {
+    if (isLoaded && onboardingCompleted && step !== 4) {
       setOnboardingCookie();
       router.replace('/home');
     }
-  }, [isLoaded, onboardingCompleted, router]);
+  }, [isLoaded, onboardingCompleted, router, step]);
   const [avatar, setAvatar] = useState(null);
   const [form, setForm] = useState({
     estado: "",
@@ -528,7 +581,7 @@ export default function InitialRegistration() {
     const school = schools.find((s) => s.name === form.escuela);
     const phone = form.telefono.replace(/\D/g, '') || undefined;
 
-    const { error } = await patchUserMe({
+    const patchData = {
       avatar_url: av?.avatar_url ?? null,
       state: form.estado,
       town: form.municipio,
@@ -536,12 +589,37 @@ export default function InitialRegistration() {
       gender: form.genero,
       ...(phone && { phone }),
       onboarding_completed: true,
-    });
+    };
+
+    let { error, status } = await patchUserMe(patchData);
+
+    // Recuperación: el perfil no existe en el backend (usuarios Google OAuth cuyo
+    // callback falló al crear el perfil). Lo creamos ahora y reintentamos el PATCH.
+    if (status === 404) {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      const meta = user?.user_metadata ?? {};
+
+      const { name, last_name } = getProfileNames(meta);
+
+      const { error: postError, status: postStatus } = await createUserProfile({ name, last_name });
+
+      if (!postError || postStatus === 409) {
+        // Perfil creado — reintentar el PATCH
+        ({ error, status } = await patchUserMe(patchData));
+      } else {
+        error = postError;
+      }
+    }
 
     if (error) {
       setSubmitError('No se pudo guardar tu información. Inténtalo de nuevo.');
       setSubmitLoading(false);
     } else {
+      // Refrescar el store con los datos reales del backend (nombre, avatar, plan)
+      // para que el NavBar y el resto de la app muestren el nombre correcto.
+      const { data: freshData } = await getUserBasicInfo();
+      if (freshData) setUser({ ...freshData, isLoaded: true });
       setOnboardingCookie();
       setStep(4);
     }
@@ -569,7 +647,7 @@ export default function InitialRegistration() {
       <main className="flex-1 flex items-start justify-center relative z-[2] py-2 pb-8">
         <div className="w-full max-w-[720px] bg-base-soft rounded-3xl p-9 px-11 border border-base-dark/10 shadow-[0_24px_50px_-20px_rgba(71,46,24,0.25)] max-sm:p-6 max-sm:px-5">
           {step <= 3 && <Stepper step={step} />}
-          {step === 1 && <StepWelcome name={name} onNext={() => setStep(2)} />}
+          {step === 1 && <StepWelcome name={displayName} onNext={() => setStep(2)} />}
           {step === 2 && (
             <StepAvatar
               avatar={avatar}
@@ -590,7 +668,7 @@ export default function InitialRegistration() {
               onSubmit={handleSubmit}
             />
           )}
-          {step === 4 && <StepDone avatar={avatar} name={name} />}
+          {step === 4 && <StepDone avatar={avatar} name={displayName} />}
         </div>
       </main>
     </div>

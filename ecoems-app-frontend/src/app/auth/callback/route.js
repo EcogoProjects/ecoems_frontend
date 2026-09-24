@@ -1,10 +1,11 @@
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
+import { getProfileNames } from '@/utils/profileNames'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 /**
- * Supabase redirige aquí tras confirmar el email, en dos flujos posibles:
+ * Supabase redirige aquí tras Google OAuth o la confirmación de email:
  *
  * 1. PKCE (por defecto con @supabase/ssr):  /auth/callback?code=<code>
  * 2. OTP  (flujo alternativo sin PKCE):     /auth/callback?token_hash=<hash>&type=signup|email
@@ -12,13 +13,18 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL
  * En ambos casos:
  *   - Se intercambia el código/token por una sesión
  *   - Se llama al backend para crear el perfil (name y last_name vienen de user_metadata)
- *   - 201 o 409 → home   |   otro error → /signup?error=profile_creation_failed
+ *   - Perfil completo → home; pendiente o fallo de creación → registro inicial
  */
 export async function GET(request) {
   const { searchParams, origin } = new URL(request.url)
   const code       = searchParams.get('code')
   const token_hash = searchParams.get('token_hash')
   const type       = searchParams.get('type')
+  const providerError = searchParams.get('error_description') || searchParams.get('error')
+
+  if (providerError) {
+    return NextResponse.redirect(`${origin}/login?error=oauth_cancelled`)
+  }
 
   const supabase = await createClient()
 
@@ -43,7 +49,7 @@ export async function GET(request) {
 }
 
 async function createBackendProfile(session, origin) {
-  const { name = '', last_name = '' } = session.user.user_metadata ?? {}
+  const { name, last_name } = getProfileNames(session.user.user_metadata)
 
   try {
     const res = await fetch(`${BASE_URL}/users/me`, {
@@ -55,14 +61,15 @@ async function createBackendProfile(session, origin) {
       body: JSON.stringify({ name, last_name }),
     })
 
-    // 201 = perfil creado | 409 = perfil ya existía (confirmación repetida o dispositivo distinto)
-    if (res.status === 201 || res.status === 409) {
+    // Cualquier 2xx confirma creación/actualización; 409 significa que ya existía.
+    if ((res.status >= 200 && res.status < 300) || res.status === 409) {
       return await redirectAfterProfile(session.access_token, origin)
     }
 
-    return NextResponse.redirect(`${origin}/signup?error=profile_creation_failed`)
+    return redirectToRegistration(origin)
   } catch {
-    return NextResponse.redirect(`${origin}/login?error=servidor_no_disponible`)
+    // La sesión ya existe: el registro inicial permite reintentar crear el perfil.
+    return redirectToRegistration(origin)
   }
 }
 
@@ -90,5 +97,12 @@ async function redirectAfterProfile(accessToken, origin) {
   } catch {
     // Si falla la consulta, mandamos a onboarding de todas formas
   }
-  return NextResponse.redirect(`${origin}/initial-registration`)
+  return redirectToRegistration(origin)
+}
+
+function redirectToRegistration(origin) {
+  const response = NextResponse.redirect(`${origin}/initial-registration`)
+  // Evitar que una cookie de otro usuario salte el registro del usuario actual.
+  response.cookies.delete('onboarding')
+  return response
 }
