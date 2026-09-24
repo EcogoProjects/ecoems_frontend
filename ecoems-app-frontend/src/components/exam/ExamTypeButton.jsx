@@ -23,21 +23,20 @@ function ExamTypeButton({ type, title, icon, isDisabled = false, description, on
             <div onClick={onClick} className={`flex items-center justify-between gap-3 min-h-[60px]  bg-base-hard-alt/10 p-2 rounded-[15px] md:hidden cursor-pointer
             transition-all duration-200  hover:bg-base-hard-alt hover:text-base-dark hover:ring-3 hover:ring-base-hard-alt`}>
                 <h3 className="font-semibold">{title}</h3>
-                <div className="p-1.5 bg-base-hard-alt w-fit h-fit rounded-[10px] text-base-dark">
+                <div className="shrink-0 p-1.5 bg-base-hard-alt w-fit h-fit rounded-[10px] text-base-dark">
                     {getIcon()}
                 </div>
             </div>
-            <div onClick={onClick} className="flex hidden md:flex lg:flex-row md:flex-col gap-4 w-full lg:w-1/4 rounded-[15px] md:justify-start lg:justify-start items-start md:items-start lg:items-center p-2 pl-4
-            border-base-hard-alt cursor-pointer hover:opacity-70 bg-base-hard-alt/10 hover:ring-3 hover:ring-base-hard-alt">
-                <h3 className="font-semibold md:w-full lg:hidden text-base">{title}</h3>
-                <div className="flex gap-4 w-full lg:w-auto">
-                    <div className="p-1.5 bg-base-hard-alt w-fit h-fit rounded-[10px] text-base-dark">
+            <div onClick={onClick} className="hidden min-w-0 md:flex xl:flex-row md:flex-col gap-3 w-full rounded-[15px] justify-start items-start xl:items-center p-3 border-base-hard-alt cursor-pointer hover:opacity-70 bg-base-hard-alt/10 hover:ring-3 hover:ring-base-hard-alt">
+                <h3 className="font-semibold md:w-full xl:hidden text-base">{title}</h3>
+                <div className="flex min-w-0 gap-3 w-full">
+                    <div className="shrink-0 p-1.5 bg-base-hard-alt w-fit h-fit rounded-[10px] text-base-dark">
                         {getIcon()}
                     </div>
-                    <div className="flex flex-col text-base lg:hidden">
+                    <div className="flex min-w-0 flex-col text-sm xl:hidden">
                         <p className="opacity-60">{description}</p>
                     </div>
-                    <div className="hidden lg:flex flex-col text-base">
+                    <div className="hidden min-w-0 xl:flex flex-col text-base">
                         <h3 className="font-semibold">{title}</h3>
                         <p className="opacity-60">{description}</p>
                     </div>

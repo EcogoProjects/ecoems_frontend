@@ -1,10 +1,11 @@
 "use client"
+
 import Image from "next/image";
 import AppLink from "@/components/AppLink";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { FaSignOutAlt } from "react-icons/fa";
-import { LuHouse, LuChevronDown } from "react-icons/lu";
+import { LuBookOpen, LuChevronDown, LuHouse, LuNewspaper, LuUserRound } from "react-icons/lu";
 import { signOut } from "@/lib/api";
 import { useUserStore } from "@/store/userStore";
 import { clearOnboardingCookie } from "@/utils/onboardingCookie";
@@ -27,98 +28,111 @@ function NavBarDesktop() {
         if (error) {
             setSignOutError('No se pudo cerrar sesión. Intenta de nuevo.');
             setSigningOut(false);
-        } else {
-            clearOnboardingCookie();
-            clearProfileCache();
-            useUserStore.getState().clear();
-            router.push('/login');
+            return;
         }
+
+        clearOnboardingCookie();
+        clearProfileCache();
+        useUserStore.getState().clear();
+        router.push('/login');
     };
+
+    const navItemClass = (active) => (
+        `flex min-h-11 items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
+            active
+                ? 'bg-base-hard-alt text-base-dark shadow-sm'
+                : 'text-base-extra-light/75 hover:bg-white/10 hover:text-base-extra-light'
+        }`
+    );
 
     return (
         <>
             {menuOpen && (
-                <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
+                <div className="fixed inset-0 z-40 hidden md:block" onClick={() => setMenuOpen(false)} />
             )}
-            <div className="hidden md:flex bg-base-dark fixed top-0 w-full h-14 items-stretch px-3 text-base-extra-light z-50">
-                {/* Izquierda: logo + navegación */}
-                <div className="flex-1 flex items-center gap-1">
-                    <AppLink href="/home" className="flex items-center gap-2 px-3 h-full">
-                        <div className="flex bg-base-extra-light rounded-full p-1">
-                            <Image
-                                src="/assets/logo.png"
-                                alt="Ecoems Logo"
-                                width={36}
-                                height={36}
-                            />
-                        </div>
-                        <p className="text-3xl font">Ecogo</p>
-                    </AppLink>
 
-                    <ul className="flex h-full items-center">
-                        <AppLink href="/home" className="relative flex items-center h-full px-4">
-                            <li className="list-none">Home</li>
-                            <span className={`absolute bottom-0 left-0 right-0 h-1 rounded-t transition-colors ${pathname === '/home' ? 'bg-[var(--base-hard-color)]' : 'bg-transparent'}`} />
-                        </AppLink>
-                        <AppLink href="/program" className="relative flex items-center h-full px-4">
-                            <li className="list-none">Temario</li>
-                            <span className={`absolute bottom-0 left-0 right-0 h-1 rounded-t transition-colors ${pathname === '/program' ? 'bg-[var(--base-hard-color)]' : 'bg-transparent'}`} />
-                        </AppLink>
-                        {/* <AppLink href="/analytics" className="relative flex items-center h-full px-4">
-                            <li className="list-none">Dashboard</li>
-                            <span className={`absolute bottom-0 left-0 right-0 h-1 rounded-t transition-colors ${pathname === '/analytics' ? 'bg-[var(--base-hard-color)]' : 'bg-transparent'}`} />
-                        </AppLink> */}
-                    </ul>
-                </div>
-
-                {/* Derecha: Mi perfil */}
-                <div className="relative flex items-center">
-                    <button
-                        onClick={() => setMenuOpen(prev => !prev)}
-                        className={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-full transition-colors hover:bg-white/10 active:scale-95 ${menuOpen ? 'bg-white/10' : ''}`}
-                    >
-                        <Image
-                            src={image_url || avatarDefault}
-                            alt="Profile Icon"
-                            width={30}
-                            height={30}
-                            className="rounded-full"
-                        />
-                        <span className="text-sm font-medium">{name}</span>
-                        <LuChevronDown size={14} className={`transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    {menuOpen && (
-                        <div className="absolute top-full right-0 mt-2.5 w-64 bg-base-dark border border-white/10 rounded-2xl shadow-[0_12px_32px_rgba(0,0,0,0.4)] overflow-hidden">
-                            <div className="px-4 py-3.5 border-b border-white/10">
-                                <p className="text-xs text-white/40 uppercase tracking-wider font-medium">Cuenta</p>
-                                <p className="text-sm font-semibold text-base-extra-light mt-0.5 truncate">{name}</p>
+            <header className="fixed top-3 right-4 left-4 z-50 hidden rounded-2xl border border-white/10 bg-base-dark shadow-[0_8px_24px_rgba(56,31,13,0.22)] md:block">
+                <div className="grid h-[68px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 px-4 text-base-extra-light xl:px-6">
+                    <div className="flex min-w-0 items-center">
+                        <AppLink href="/home" className="group flex items-center gap-2.5 rounded-2xl pr-2 transition-opacity hover:opacity-85">
+                            <div className="flex rounded-xl bg-base-extra-light p-1 shadow-sm transition-transform duration-200 group-hover:scale-105">
+                                <Image src="/assets/logo.png" alt="Ecogo" width={38} height={38} />
                             </div>
-                            <AppLink
-                                href="/profile"
-                                onClick={() => setMenuOpen(false)}
-                                className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-white/5 transition-colors"
-                            >
-                                <LuHouse size={15} />
-                                <span>Mi perfil</span>
-                            </AppLink>
-                            <div className="border-t border-white/10 mx-3" />
-                            <button
-                                onClick={handleSignOut}
-                                disabled={signingOut}
-                                className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                <FaSignOutAlt size={14} />
-                                <span>{signingOut ? 'Cerrando sesión...' : 'Cerrar sesión'}</span>
-                            </button>
-                            {signOutError && (
-                                <p className="px-4 pb-3 text-xs text-red-400/80">{signOutError}</p>
-                            )}
-                        </div>
-                    )}
-                </div>
-            </div>
+                            <div className="leading-none [&>p:last-child]:hidden xl:[&>p:last-child]:block">
+                                <p className="text-[25px] font-semibold tracking-tight">Ecogo</p>
+                                <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-base-hard-alt">Prepárate para ECOEMS</p>
+                            </div>
+                        </AppLink>
 
+                    </div>
+
+                    <nav aria-label="Navegación principal" className="flex items-center gap-1 rounded-2xl border border-white/10 bg-black/10 p-1.5">
+                            <AppLink href="/home" className={navItemClass(pathname === '/home')}>
+                                <LuHouse size={16} />
+                                <span>Inicio</span>
+                            </AppLink>
+                            <AppLink href="/program" className={navItemClass(pathname === '/program')}>
+                                <LuBookOpen size={16} />
+                                <span>Temario</span>
+                            </AppLink>
+                            <a href="https://ecogo.mx/blog" className={navItemClass(false)}>
+                                <LuNewspaper size={16} />
+                                <span>Blog</span>
+                            </a>
+                    </nav>
+
+                    <div className="relative flex min-w-0 items-center justify-self-end">
+                        <button
+                            type="button"
+                            aria-expanded={menuOpen}
+                            aria-haspopup="menu"
+                            onClick={() => setMenuOpen(prev => !prev)}
+                            className={`flex items-center gap-2.5 rounded-2xl border px-2.5 py-2 text-left transition-all active:scale-[0.98] ${
+                                menuOpen
+                                    ? 'border-base-hard-alt/60 bg-white/10'
+                                    : 'border-white/10 bg-black/10 hover:border-white/25 hover:bg-white/10'
+                            }`}
+                        >
+                            <div className="rounded-xl bg-base-hard-alt p-0.5 shadow-sm">
+                                <Image src={image_url || avatarDefault} alt="Foto de perfil" width={32} height={32} className="rounded-[10px] object-cover" />
+                            </div>
+                            <span className="hidden max-w-24 truncate text-sm font-semibold lg:block xl:max-w-32">{name || 'Mi cuenta'}</span>
+                            <LuChevronDown size={15} className={`text-base-hard-alt transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {menuOpen && (
+                            <div role="menu" className="absolute right-0 top-full mt-3 w-64 overflow-hidden rounded-2xl border border-white/10 bg-base-dark shadow-[0_18px_40px_rgba(0,0,0,0.38)]">
+                                <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3.5">
+                                    <div className="rounded-xl bg-base-hard-alt/20 p-2 text-base-hard-alt">
+                                        <LuUserRound size={18} />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-base-extra-light/45">Tu cuenta</p>
+                                        <p className="mt-0.5 truncate text-sm font-semibold text-base-extra-light">{name || 'Mi cuenta'}</p>
+                                    </div>
+                                </div>
+                                <AppLink href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-white/5">
+                                    <LuUserRound size={16} className="text-base-hard-alt" />
+                                    <span>Ver mi perfil</span>
+                                </AppLink>
+                                <div className="mx-4 border-t border-white/10" />
+                                <button
+                                    type="button"
+                                    onClick={handleSignOut}
+                                    disabled={signingOut}
+                                    className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-red-300 transition-colors hover:bg-red-400/10 disabled:cursor-not-allowed disabled:opacity-50"
+                                >
+                                    <FaSignOutAlt size={14} />
+                                    <span>{signingOut ? 'Cerrando sesión...' : 'Cerrar sesión'}</span>
+                                </button>
+                                {signOutError && (
+                                    <p role="alert" className="px-4 pb-3 text-xs text-red-300">{signOutError}</p>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </header>
         </>
     );
 }

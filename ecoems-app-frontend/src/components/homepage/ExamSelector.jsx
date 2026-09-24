@@ -13,7 +13,7 @@ import { closeExam } from "@/lib/api";
 
 function ExamSelector() {
     const router = useRouter();
-    const { canQuickExam, canSimulacro, isUsageLoading, dailyUsage, simulacroUsage, startExamSession, continueCurrentSession, isLoading } = useExam();
+    const { canQuickExam, canSimulacro, isDailyUsageLoading, isSimulacroUsageLoading, dailyUsage, simulacroUsage, startExamSession, continueCurrentSession, isLoading } = useExam();
     const [showDescription, setShowDescription] = useState(false);
     const [showLimit, setShowLimit] = useState(false);
     const [showSimulacroLimit, setShowSimulacroLimit] = useState(false);
@@ -34,7 +34,11 @@ function ExamSelector() {
     }, [modalOpen]);
 
     const handleQuickExam = () => {
-        if (isUsageLoading) return;
+        if (isDailyUsageLoading) return;
+        if (!dailyUsage) {
+            setActiveSessionError('No pudimos consultar tus intentos. Recarga la página para volver a intentar.');
+            return;
+        }
         setActiveSessionError(null);
         if (canQuickExam) setShowDescription(true);
         else setShowLimit(true);
@@ -45,7 +49,11 @@ function ExamSelector() {
     };
 
     const handleSimulacro = () => {
-        if (!simulacroUsage) return;
+        if (isSimulacroUsageLoading) return;
+        if (!simulacroUsage) {
+            setActiveSessionError('No pudimos consultar tus simulacros. Recarga la página para volver a intentar.');
+            return;
+        }
         setActiveSessionError(null);
         if (canSimulacro) setShowSimulacro(true);
         else setShowSimulacroLimit(true);
@@ -54,7 +62,7 @@ function ExamSelector() {
     const handleSelectSimulacro = async (examId) => {
         if (isLoading) return;
         setActiveSessionSource('simulacro');
-        const { data, status } = await startExamSession({
+        const { data, error, status } = await startExamSession({
             exam_type: 'simulacro',
             simulacro_exam: examId,
         });
@@ -62,6 +70,9 @@ function ExamSelector() {
         if (status === 409) {
             setShowSimulacro(false);
             setShowActiveSession(true);
+        } else if (!data) {
+            setShowSimulacro(false);
+            setActiveSessionError(typeof error === 'string' ? error : 'No se pudo iniciar el simulacro. Intenta de nuevo.');
         }
     };
 
@@ -110,7 +121,7 @@ function ExamSelector() {
 
     const handleStart = async ({ subtopic_id }) => {
         setActiveSessionSource('quick');
-        const { data, status } = await startExamSession({
+        const { data, error, status } = await startExamSession({
             exam_type: 'quick',
             subtopic_id,
         });
@@ -118,14 +129,16 @@ function ExamSelector() {
         if (status === 409) {
             setShowDescription(false);
             setShowActiveSession(true);
+        } else if (!data) {
+            setShowDescription(false);
+            setActiveSessionError(typeof error === 'string' ? error : 'No se pudo iniciar el examen. Intenta de nuevo.');
         }
     };
 
     return (
         <>
-            <div className="shadow-lg bg-base-dark rounded-box-standard shadow-lg w-4/5 text-base
-             flex justify-center md:hidden">
-                <div className=" flex flex-col  p-10 pl-3.5 pr-3.5 gap-5 max-w-[400px]">
+            <div className="app-content-width shadow-lg bg-base-dark rounded-box-standard text-base flex justify-center md:hidden">
+                <div className="flex w-full flex-col px-4 py-6 gap-4">
                     <h2 className="font-extrabold tracking-wide text-xl text-center">Realizar Examen</h2>
                     <p className="opacity-60 text-center  mb-1.5">Elige el tipo de evaluación para comenzar</p>
                     <div className="text-white flex flex-col gap-2 tracking-wide md:flex-row justify-center w-full">
@@ -133,8 +146,7 @@ function ExamSelector() {
                         <ExamTypeButton type="seguimiento" title="Examen de seguimiento" icon="calendar" onClick={handleComingSoon} />
                         <ExamTypeButton type="libre" title="Examen Libre" icon="unlock" description="Próximamente" onClick={handleComingSoon}/>
                     </div>
-                    <div onClick={handleSimulacro} className="bg-base-hard-alt p-1.5 rounded-[15px] text-base-dark flex flex-col items-center cursor-pointer
-                            transition-all duration-200 hover:opacity-70 ">
+                    <div onClick={handleSimulacro} className="bg-base-hard-alt p-1.5 rounded-[15px] text-base-dark flex flex-col items-center cursor-pointer transition-all duration-200 hover:opacity-70">
                         <h3 className="font-semibold text-xl">Examen Simulacro</h3>
                         <div className="flex items-center justify-center w-10 h-10">
                             <FaBookReader size={30}/>
@@ -143,8 +155,8 @@ function ExamSelector() {
                 </div>
             </div>
 
-            <div className="hidden md:flex bg-base-dark rounded-box-standard shadow-lg w-4/5 text-white flex-col p-4 gap-5">
-                <div className="flex justify-between text-base">
+            <div className="app-content-width hidden md:flex bg-base-dark rounded-box-standard shadow-lg text-white flex-col p-4 gap-5">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between text-base">
                     <div className="flex gap-2.5 items-center">
                         <div className="p-1.5 border-2 w-fit h-fit rounded-[10px] text-base-hard-alt">
                             <TfiAgenda size={20}/>
@@ -154,8 +166,7 @@ function ExamSelector() {
                             <p className="opacity-60">Elige el tipo de evaluación para comenzar</p>
                         </div>
                     </div>
-                    <div onClick={handleSimulacro} className="flex gap-4 rounded-[15px] justify-start items-center p-2 pl-4 w-[300px]
-                        border-base-hard-alt cursor-pointer hover:opacity-70 bg-base-hard-alt">
+                    <div onClick={handleSimulacro} className="flex gap-4 rounded-[15px] justify-start items-center p-2 pl-4 w-full lg:w-[300px] lg:shrink-0 border-base-hard-alt cursor-pointer hover:opacity-70 bg-base-hard-alt">
                         <div className="p-1.5 bg-base-hard-alt w-fit h-fit rounded-[10px] text-base-dark">
                             <FaBookReader size={30}/>
                         </div>
@@ -165,14 +176,14 @@ function ExamSelector() {
                         </div>
                     </div>
                 </div>
-                <div className="flex gap-2.5">
+                <div className="grid grid-cols-3 gap-2.5">
                     <ExamTypeButton type="rapido" title="Examen Rápido" icon="speed" description="Realiza un examen de un solo subtema." onClick={handleQuickExam} />
                     <ExamTypeButton type="seguimiento" title="Examen de seguimiento" icon="calendar" description="Próximamente" onClick={handleComingSoon}/>
                     <ExamTypeButton type="libre" title="Examen Libre" icon="unlock" description="Próximamente" onClick={handleComingSoon} />
                 </div>
             </div>
 
-            <p className={`w-4/5 h-5 overflow-hidden text-sm font-semibold text-red-600 transition-opacity ${activeSessionError ? 'opacity-100' : 'opacity-0 select-none'}`}>
+            <p role="alert" className={`app-content-width min-h-5 text-sm font-semibold text-red-600 transition-opacity ${activeSessionError ? 'opacity-100' : 'opacity-0 select-none'}`}>
                 {activeSessionError ?? ' '}
             </p>
 
@@ -224,7 +235,7 @@ function ExamSelector() {
                     onClick={closeAll}
                 >
                     <div
-                        className="bg-base-dark text-base-soft rounded-[28px] p-8 flex flex-col items-center gap-5 w-full max-w-[360px] shadow-2xl"
+                        className="bg-base-dark text-base-soft rounded-[28px] p-6 sm:p-8 flex flex-col items-center gap-5 w-full max-w-[360px] max-h-[calc(100dvh_-_2rem)] overflow-y-auto shadow-2xl"
                         onClick={e => e.stopPropagation()}
                     >
                         <MdOutlineDoNotDisturb size={48} className="text-base-hard" />
@@ -249,7 +260,7 @@ function ExamSelector() {
                     onClick={closeAll}
                 >
                     <div
-                        className="bg-base-dark text-base-soft rounded-[28px] p-8 flex flex-col items-center gap-5 w-full max-w-[360px] shadow-2xl"
+                        className="bg-base-dark text-base-soft rounded-[28px] p-6 sm:p-8 flex flex-col items-center gap-5 w-full max-w-[360px] max-h-[calc(100dvh_-_2rem)] overflow-y-auto shadow-2xl"
                         onClick={e => e.stopPropagation()}
                     >
                         <MdOutlineDoNotDisturb size={48} className="text-base-hard" />
@@ -274,7 +285,7 @@ function ExamSelector() {
                     onClick={closeAll}
                 >
                     <div
-                        className="bg-base-dark text-base-soft rounded-[28px] p-8 flex flex-col items-center gap-5 w-full max-w-[360px] shadow-2xl"
+                        className="bg-base-dark text-base-soft rounded-[28px] p-6 sm:p-8 flex flex-col items-center gap-5 w-full max-w-[360px] max-h-[calc(100dvh_-_2rem)] overflow-y-auto shadow-2xl"
                         onClick={e => e.stopPropagation()}
                     >
                         <MdOutlineAccessTime size={48} className="text-base-hard" />
@@ -299,7 +310,7 @@ function ExamSelector() {
                     onClick={isClosingActiveSession || isContinuingActiveSession ? undefined : closeAll}
                 >
                     <div
-                        className="bg-base-dark text-base-soft rounded-[28px] p-8 flex flex-col items-center gap-5 w-full max-w-[420px] shadow-2xl"
+                        className="bg-base-dark text-base-soft rounded-[28px] p-6 sm:p-8 flex flex-col items-center gap-5 w-full max-w-[420px] max-h-[calc(100dvh_-_2rem)] overflow-y-auto shadow-2xl"
                         onClick={e => e.stopPropagation()}
                     >
                         <MdOutlineDoNotDisturb size={48} className="text-base-hard" />

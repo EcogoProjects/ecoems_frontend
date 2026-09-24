@@ -265,14 +265,14 @@ function Select({ label, value, onChange, options, placeholder, disabled, search
   }
 
   return (
-    <div className={`flex flex-col gap-1.5 relative ${open ? 'z-50' : 'z-0'} ${disabled ? 'opacity-55' : ''}`} ref={ref}>
+    <div className={`flex flex-col self-start gap-1.5 relative ${open ? 'z-50' : 'z-0'} ${disabled ? 'opacity-55' : ''}`} ref={ref}>
       <span id={labelId} className="text-[13px] font-medium text-base-dark tracking-[0.01em]">{label}</span>
       <button
         ref={triggerRef}
         type="button"
-        className={`flex items-center justify-between gap-2 w-full border-[1.5px] rounded-[12px] px-3.5 py-3 text-[14.5px] text-base-dark text-left transition-all duration-150 ${open
+        className={`flex min-h-[48px] items-center justify-between gap-3 w-full border-[1.5px] rounded-[11px] px-3.5 py-2.5 text-[14.5px] text-base-dark text-left transition-colors duration-150 ${open
           ? 'border-base-dark bg-base-soft'
-          : `border-transparent bg-base-extra-light ${!disabled ? 'hover:bg-base' : ''}`
+          : `border-transparent bg-base-extra-light ${!disabled ? 'hover:bg-base hover:border-base-dark/15' : ''}`
           } ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         onClick={toggle}
         onKeyDown={(e) => {
@@ -300,7 +300,7 @@ function Select({ label, value, onChange, options, placeholder, disabled, search
       </button>
       {open && (
         <div
-          className="absolute top-[calc(100%+6px)] left-0 right-0 bg-base-soft border border-base-dark/15 rounded-[12px] p-1.5 max-h-60 overflow-y-auto z-50 shadow-[0_12px_32px_-8px_rgba(71,46,24,0.25)]"
+          className="absolute top-[calc(100%+6px)] left-0 right-0 bg-base-soft border border-base-dark/15 rounded-[11px] p-1.5 max-h-56 overflow-y-auto z-50 shadow-[0_12px_28px_-10px_rgba(71,46,24,0.22)]"
           id={listboxId}
           role="listbox"
           aria-labelledby={labelId}
@@ -394,7 +394,6 @@ function StepForm({ form, setForm, schools, schoolsLoading, submitLoading, submi
           onChange={setEstado}
           options={estados}
           placeholder="Selecciona tu estado"
-          searchable={true}
         />
         <Select
           label="Delegación o municipio"
@@ -403,7 +402,6 @@ function StepForm({ form, setForm, schools, schoolsLoading, submitLoading, submi
           options={municipios}
           placeholder={form.estado ? "Selecciona tu municipio" : "Primero elige un estado"}
           disabled={!form.estado}
-          searchable={true}
         />
         <Select
           label="Género"
@@ -413,12 +411,12 @@ function StepForm({ form, setForm, schools, schoolsLoading, submitLoading, submi
           placeholder="Selecciona tu género"
         />
 
-        <div className="flex flex-col gap-1.5 relative">
+        <div className="flex flex-col self-start gap-1.5 relative">
           <label className="text-[13px] font-medium text-base-dark tracking-[0.01em]">
             Teléfono{" "}
             <span className="font-normal opacity-55 text-[12.5px]">(opcional)</span>
           </label>
-          <div className={`flex items-stretch bg-base-extra-light border-[1.5px] rounded-[12px] overflow-hidden transition-colors duration-150 focus-within:border-base-dark focus-within:bg-base-soft ${phoneError ? 'border-[#B25533]' : 'border-transparent'}`}>
+          <div className={`flex min-h-[48px] items-stretch bg-base-extra-light border-[1.5px] rounded-[11px] overflow-hidden transition-colors duration-150 focus-within:border-base-dark focus-within:bg-base-soft ${phoneError ? 'border-[#B25533]' : 'border-transparent'}`}>
             <span className="flex items-center gap-2 px-3.5 py-3 bg-base text-[14px] font-medium text-base-dark border-r border-base-dark/10 flex-shrink-0">
               <span aria-hidden="true">🇲🇽</span>
               +52
@@ -433,7 +431,7 @@ function StepForm({ form, setForm, schools, schoolsLoading, submitLoading, submi
               className="flex-1 border-none bg-transparent px-3.5 py-3 text-[14.5px] text-base-dark outline-none min-w-0 placeholder:text-base-dark/40"
             />
           </div>
-          <p className={`h-11 overflow-hidden text-[12px] text-[#B25533] mt-0.5 transition-opacity ${phoneError ? 'opacity-100' : 'opacity-0 select-none'}`}>
+          <p className={`h-4 overflow-hidden text-[12px] text-[#B25533] mt-0.5 transition-opacity ${phoneError ? 'opacity-100' : 'opacity-0 select-none'}`}>
             Ingresa los 10 dígitos completos.
           </p>
         </div>
