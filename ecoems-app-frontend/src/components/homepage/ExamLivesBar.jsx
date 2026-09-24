@@ -3,25 +3,29 @@ import { PiPawPrintFill, PiInfinityBold } from 'react-icons/pi';
 import { FaHeart } from 'react-icons/fa';
 import { useExam } from '@/hooks/useExam';
 
-function LivesCard({ title, subtitle, remaining, used, isLoading, hideCountWhenUnlimited }) {
+function LivesCard({ title, subtitle, remaining, used, isLoading, unavailable, hideCountWhenUnlimited }) {
     const total = remaining + used;
     const isUnlimited = remaining === 999;
 
     return (
-        <div className="bg-base-dark rounded-box-standard shadow-lg px-5 py-4 flex items-center gap-4">
-            <div className="flex items-center gap-3 flex-1">
-                <div className="bg-base-hard-alt/20 rounded-xl p-2">
+        <div className="bg-base-dark rounded-box-standard shadow-lg px-3 py-3 sm:px-4 sm:py-4 flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="flex min-w-0 items-center gap-2 flex-1 sm:gap-3">
+                <div className="bg-base-hard-alt/20 shrink-0 rounded-xl p-2">
                     <FaHeart size={20} className="text-base-hard-alt" />
                 </div>
-                <div>
-                    <p className="text-base-soft font-extrabold text-sm tracking-wide">{title}</p>
+                <div className="min-w-0">
+                    <p className="text-base-soft font-extrabold text-xs sm:text-sm tracking-wide">{title}</p>
                     <p className="text-base-soft/50 text-xs">{subtitle}</p>
                 </div>
             </div>
 
-            {!isLoading ? (
-                <div className="flex items-center gap-2.5">
-                    <div className="flex items-center gap-1.5">
+            {!isLoading && unavailable ? (
+                <span role="status" className="max-w-28 text-base-soft/70 text-xs text-right">
+                    No se pudo consultar. Recarga la página.
+                </span>
+            ) : !isLoading ? (
+                <div className="flex shrink-0 flex-col-reverse items-end gap-1 sm:flex-row sm:items-center sm:gap-2.5">
+                    <div className="flex items-center gap-0.5 sm:gap-1.5">
                         {isUnlimited ? (
                             <PiInfinityBold size={20} className="text-base-hard-alt" />
                         ) : (
@@ -53,31 +57,30 @@ function LivesCard({ title, subtitle, remaining, used, isLoading, hideCountWhenU
 }
 
 export default function ExamLivesBar() {
-    const { dailyUsage, isUsageLoading, simulacroUsage } = useExam();
+    const { dailyUsage, isDailyUsageLoading, simulacroUsage, isSimulacroUsageLoading } = useExam();
 
     const dailyRemaining = dailyUsage?.quick_exams_remaining ?? 0;
     const dailyUsed = dailyUsage?.quick_exams_count ?? 0;
     const simulacroRemaining = simulacroUsage?.simulacro_remaining ?? 0; 
     const simulacroUsed = simulacroUsage?.simulacro_count ?? 0; 
-    const isLoading = isUsageLoading || !dailyUsage || !simulacroUsage;
-
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 w-4/5">
+        <div className="app-content-width grid grid-cols-1 md:grid-cols-2 gap-3.5">
             <LivesCard
                 title="Exámenes rápidos"
                 subtitle="Intentos disponibles hoy"
                 remaining={dailyRemaining}
                 used={dailyUsed}
-                isLoading={isLoading}
+                isLoading={isDailyUsageLoading}
+                unavailable={!dailyUsage}
                 hideCountWhenUnlimited
             />
-            {/* Réplica por ahora — pendiente conectar con el uso real de simulacros */}
             <LivesCard
                 title="Exámenes simulacro"
                 subtitle="Pruebas disponibles"
                 remaining={simulacroRemaining}
                 used={simulacroUsed}
-                isLoading={isLoading}
+                isLoading={isSimulacroUsageLoading}
+                unavailable={!simulacroUsage}
             />
         </div>
     );

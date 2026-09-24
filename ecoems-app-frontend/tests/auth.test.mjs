@@ -51,7 +51,7 @@ async function callback({ codeError = false, sessionMissing = false, createStatu
       calls.push({ url, ...options });
       if (offline) throw new Error('offline');
       return options.method === 'POST'
-        ? new Response('{}', { status: createStatus })
+        ? (createStatus === 204 ? new Response(null, { status: 204 }) : new Response('{}', { status: createStatus }))
         : Response.json({ onboarding_completed: completed });
     },
   });
@@ -86,12 +86,21 @@ for (const query of ['?code=ok', '?token_hash=ok&type=signup', '?token_hash=ok&t
   });
 }
 
-test('perfil existente con registro completo vuelve a home y persiste la cookie', async () => {
-  const { GET } = await callback({ createStatus: 409, completed: true });
+for (const createStatus of [200, 201, 204, 409]) {
+test(`perfil existente (${createStatus}) con registro completo vuelve a home y persiste la cookie`, async () => {
+  const { GET } = await callback({ createStatus, completed: true });
   const response = await GET(new Request('https://app.test/auth/callback?code=ok'));
   assert.equal(response.headers.get('location'), 'https://app.test/home');
   assert.equal(response.cookies.get('onboarding').value, 'done');
   assert.equal(response.cookies.get('onboarding').maxAge, 31536000);
+});
+}
+
+test('callback informa una cancelación del proveedor OAuth', async () => {
+  const { GET, calls } = await callback();
+  const response = await GET(new Request('https://app.test/auth/callback?error=access_denied&error_description=cancelado'));
+  assert.equal(response.headers.get('location'), 'https://app.test/login?error=oauth_cancelled');
+  assert.equal(calls.length, 0);
 });
 
 for (const options of [{ createStatus: 500 }, { offline: true }]) {

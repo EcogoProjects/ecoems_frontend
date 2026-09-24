@@ -1,6 +1,6 @@
 "use client"
-import { ChartBarBigColumns } from "@boxicons/react";
-import { FaHome, FaSignOutAlt } from "react-icons/fa";
+
+import { FaHome, FaRegNewspaper, FaSignOutAlt, FaThList } from "react-icons/fa";
 import AppLink from "@/components/AppLink";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -9,105 +9,104 @@ import { signOut } from "@/lib/api";
 import { useUserStore } from "@/store/userStore";
 import { clearOnboardingCookie } from "@/utils/onboardingCookie";
 import { clearProfileCache } from "@/hooks/useProfile";
-import { FaThList } from "react-icons/fa";
 
 function NavBarMovile() {
-    const image_url = "/assets/ecogo_avatar_04.png";
+    const imageUrl = useUserStore((s) => s.avatar_url);
     const name = useUserStore((s) => s.name);
     const pathname = usePathname();
     const router = useRouter();
     const [menuOpen, setMenuOpen] = useState(false);
     const [signingOut, setSigningOut] = useState(false);
     const [signOutError, setSignOutError] = useState(null);
+    const avatarDefault = "/assets/ecogo_avatar_01.png";
 
     const handleSignOut = async () => {
         setSigningOut(true);
         setSignOutError(null);
         const { error } = await signOut();
         if (error) {
-            setSignOutError('No se pudo cerrar sesión. Intenta de nuevo.');
+            setSignOutError("No se pudo cerrar sesión. Intenta de nuevo.");
             setSigningOut(false);
-        } else {
-            clearOnboardingCookie();
-            clearProfileCache();
-            useUserStore.getState().clear();
-            router.push('/login');
+            return;
         }
+
+        clearOnboardingCookie();
+        clearProfileCache();
+        useUserStore.getState().clear();
+        router.push("/login");
     };
+
+    const navItemClass = (active) => (
+        `flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-2xl px-2 py-2 text-[11px] font-bold transition-all ${
+            active ? "bg-base-hard-alt text-base-dark shadow-sm" : "text-base-extra-light/75 active:scale-95"
+        }`
+    );
 
     return (
         <>
-            {menuOpen && (
-                <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
-            )}
-            <div className="fixed bottom-1 left-1/2 -translate-x-1/2 w-[92%] max-w-[420px] z-50 md:hidden">
-                {/* Barra con efecto Glassmorphism y bordes muy redondeados */}
-                <div className="bg-base-dark/90 backdrop-blur-md border border-white/10 flex items-center justify-around py-3 px-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-white">
+            {menuOpen && <div className="fixed inset-0 z-40 md:hidden" onClick={() => setMenuOpen(false)} />}
 
-                    {/* Analytics */}
-                    {/* <AppLink href="/analytics" className={`p-2 transition-transform active:scale-90 hover:opacity-80 ${pathname === '/analytics' ? 'bg-white/10 rounded-2xl' : ''}`}>
-                        <ChartBarBigColumns height="28px" width="28px" pack="filled" />
-                    </AppLink> */}
-
-                    {/* Home - Icono central un poco más grande */}
-                    <AppLink href="/home" className={`p-3 rounded-2xl transition-all active:scale-90 shadow-inner ${pathname === '/home' ? 'bg-white/10' : ''}`}>
-                        <FaHome size={28} />
+            <nav aria-label="Navegación móvil" className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[calc(100%_-_1.5rem)] max-w-[430px] -translate-x-1/2 md:hidden">
+                <div className="grid grid-cols-4 items-center gap-1 rounded-[24px] border border-white/10 bg-base-dark/95 p-1.5 text-base-extra-light shadow-[0_16px_36px_rgba(0,0,0,0.28)] backdrop-blur-md">
+                    <AppLink href="/home" className={navItemClass(pathname === "/home")}>
+                        <FaHome size={17} />
+                        <span>Inicio</span>
                     </AppLink>
+                    <AppLink href="/program" className={navItemClass(pathname === "/program")}>
+                        <FaThList size={17} />
+                        <span>Temario</span>
+                    </AppLink>
+                    <a href="https://ecogo.mx/blog" className={navItemClass(false)}>
+                        <FaRegNewspaper size={17} />
+                        <span>Blog</span>
+                    </a>
 
-                    {/* Profile — abre el menú desplegable */}
-                    <div className="relative">
+                    <div className="relative flex min-w-0 flex-1">
                         {menuOpen && (
-                            <div className="absolute bottom-full right-0 mb-3 w-52 bg-base-dark/95 backdrop-blur-md border border-white/10 rounded-2xl shadow-[0_-12px_32px_rgba(0,0,0,0.35)] overflow-hidden">
-                                <AppLink href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 px-4 py-3.5 hover:bg-white/5 transition-colors active:bg-white/10 cursor-pointer">
-                                    <div className="rounded-full overflow-hidden ring-1 ring-white/20 flex-shrink-0">
-                                        <Image
-                                            src={image_url}
-                                            alt="Avatar"
-                                            width={28}
-                                            height={28}
-                                            className="rounded-full"
-                                        />
+                            <div className="absolute bottom-full right-0 mb-3 max-h-[calc(100dvh_-_7rem_-_env(safe-area-inset-bottom))] w-56 overflow-y-auto rounded-2xl border border-white/10 bg-base-dark shadow-[0_-12px_32px_rgba(0,0,0,0.35)]">
+                                <AppLink href="/profile" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-white/5">
+                                    <Image src={imageUrl || avatarDefault} alt="Perfil" width={30} height={30} className="rounded-xl" />
+                                    <div className="min-w-0">
+                                        <p className="text-[10px] font-bold uppercase tracking-wider text-base-extra-light/45">Mi cuenta</p>
+                                        <p className="truncate text-sm font-semibold">{name || "Mi perfil"}</p>
                                     </div>
-                                    <p className="text-sm font-semibold text-white truncate">{name}</p>
                                 </AppLink>
-                                <div className="border-t border-white/10 mx-3" />
-                                <AppLink href="/program" className="flex items-center gap-2.5 px-5 py-3.5">
-                                    <FaThList size={14} />
-                                    <p className="text-sm font-semibold text-white truncate">Temario</p>
+                                <div className="mx-4 border-t border-white/10" />
+                                <AppLink href="/program" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-white/5">
+                                    <FaThList size={15} className="text-base-hard-alt" />
+                                    <span>Temario</span>
                                 </AppLink>
-                                <div className="border-t border-white/10 mx-3" />
+                                <a href="https://ecogo.mx/blog" className="flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-white/5">
+                                    <FaRegNewspaper size={15} className="text-base-hard-alt" />
+                                    <span>Blog</span>
+                                </a>
+                                <div className="mx-4 border-t border-white/10" />
                                 <button
+                                    type="button"
                                     onClick={handleSignOut}
                                     disabled={signingOut}
-                                    className="flex items-center gap-2.5 w-full px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition-colors active:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex w-full items-center gap-2.5 px-4 py-3 text-sm font-medium text-red-300 transition-colors hover:bg-red-400/10 disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     <FaSignOutAlt size={14} />
-                                    <span>{signingOut ? 'Cerrando sesión...' : 'Cerrar sesión'}</span>
+                                    <span>{signingOut ? "Cerrando sesión..." : "Cerrar sesión"}</span>
                                 </button>
-                                {signOutError && (
-                                    <p className="px-4 pb-3 text-xs text-red-400/80">{signOutError}</p>
-                                )}
+                                {signOutError && <p role="alert" className="px-4 pb-3 text-xs text-red-300">{signOutError}</p>}
                             </div>
                         )}
 
                         <button
+                            type="button"
+                            aria-expanded={menuOpen}
+                            aria-haspopup="menu"
                             onClick={() => setMenuOpen(prev => !prev)}
-                            className={`transition-transform active:scale-90 p-2 rounded-2xl ${menuOpen ? 'bg-white/10' : ''}`}
+                            className={`${navItemClass(pathname === "/profile" || menuOpen)} w-full`}
                         >
-                            <div className="rounded-full ring-2 ring-base-hard-alt/60 p-0.5 overflow-hidden">
-                                <Image
-                                    src={image_url}
-                                    alt="Profile"
-                                    width={32}
-                                    height={32}
-                                    className="rounded-full"
-                                />
-                            </div>
+                            <Image src={imageUrl || avatarDefault} alt="Perfil" width={18} height={18} className="rounded-md" />
+                            <span>Perfil</span>
                         </button>
                     </div>
-
                 </div>
-            </div>
+            </nav>
         </>
     );
 }

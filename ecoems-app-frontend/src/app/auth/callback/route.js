@@ -20,6 +20,11 @@ export async function GET(request) {
   const code       = searchParams.get('code')
   const token_hash = searchParams.get('token_hash')
   const type       = searchParams.get('type')
+  const providerError = searchParams.get('error_description') || searchParams.get('error')
+
+  if (providerError) {
+    return NextResponse.redirect(`${origin}/login?error=oauth_cancelled`)
+  }
 
   const supabase = await createClient()
 
@@ -56,8 +61,8 @@ async function createBackendProfile(session, origin) {
       body: JSON.stringify({ name, last_name }),
     })
 
-    // 201 = perfil creado | 409 = perfil ya existía (confirmación repetida o dispositivo distinto)
-    if (res.status === 201 || res.status === 409) {
+    // Cualquier 2xx confirma creación/actualización; 409 significa que ya existía.
+    if ((res.status >= 200 && res.status < 300) || res.status === 409) {
       return await redirectAfterProfile(session.access_token, origin)
     }
 

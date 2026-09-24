@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { startExam, getSimulacroUsege , getCurrentSession, getDailyUsage } from '@/lib/api';
-import { DailyUsage, SimulacroUsage, canTakeQuickExam, canTakeSimulacro } from '@/utils/exam/examLogic';
+import { type DailyUsage, type SimulacroUsage, canTakeQuickExam, canTakeSimulacro } from '@/utils/exam/examLogic';
 
 export type ExamType = 'quick' | 'seguimiento' | 'simulacro' | 'diagnostic';
 
@@ -46,8 +46,6 @@ interface StartExamResult {
     status?: number | null;
 }
 
-let dailyUsageCache: DailyUsage | null = null;
-let simulacroUsageCache: SimulacroUsage | null = null; 
 let sessionCache: ExamSession | null = null;
 
 const calcRemaining = (expiresAt: string) =>
@@ -56,6 +54,8 @@ const calcRemaining = (expiresAt: string) =>
 export function useExam(): {
     isLoading: boolean;
     isUsageLoading: boolean;
+    isDailyUsageLoading: boolean;
+    isSimulacroUsageLoading: boolean;
     session: ExamSession | null;
     dailyUsage: DailyUsage | null;
     simulacroUsage: SimulacroUsage | null;
@@ -67,9 +67,11 @@ export function useExam(): {
 } {
     const [isLoading, setIsLoading] = useState(false);
     const [session, setSession] = useState<ExamSession | null>(sessionCache);
-    const [dailyUsage, setDailyUsage] = useState<DailyUsage | null>(dailyUsageCache);
-    const [simulacroUsage, setSimulacroUsage] = useState <SimulacroUsage | null> (simulacroUsageCache);
-    const [isUsageLoading, setIsUsageLoading] = useState(dailyUsageCache === null);
+    const [dailyUsage, setDailyUsage] = useState<DailyUsage | null>(null);
+    const [simulacroUsage, setSimulacroUsage] = useState<SimulacroUsage | null>(null);
+    const [isDailyUsageLoading, setIsDailyUsageLoading] = useState(true);
+    const [isSimulacroUsageLoading, setIsSimulacroUsageLoading] = useState(true);
+    const isUsageLoading = isDailyUsageLoading || isSimulacroUsageLoading;
     const [timeRemaining, setTimeRemaining] = useState<number>(() =>
         sessionCache?.expires_at ? calcRemaining(sessionCache.expires_at) : 0
     );
@@ -81,27 +83,27 @@ export function useExam(): {
     }, [session?.expires_at]);
 
     useEffect(() => {
-        if (dailyUsageCache !== null) return;
-
+        let active = true;
         getDailyUsage().then(({ data }) => {
-            const usage = data ?? null;
-            dailyUsageCache = usage;
-            setDailyUsage(usage);
+            if (active) setDailyUsage(data ?? null);
+        }).catch(() => {
+            if (active) setDailyUsage(null);
         }).finally(() => {
-            setIsUsageLoading(false);
+            if (active) setIsDailyUsageLoading(false);
         });
+        return () => { active = false; };
     }, []);
 
     useEffect (() => {
-        if (simulacroUsageCache !== null) return;
-
+        let active = true;
         getSimulacroUsege().then(({ data }) => {
-            const usage = data ?? null; 
-            simulacroUsageCache = usage; 
-            setSimulacroUsage (usage); 
+            if (active) setSimulacroUsage(data ?? null);
+        }).catch(() => {
+            if (active) setSimulacroUsage(null);
         }).finally(() => {
-            setIsUsageLoading(false); 
+            if (active) setIsSimulacroUsageLoading(false);
         }); 
+        return () => { active = false; };
     }, []); 
 
     const startExamSession = async (params: StartExamParams): Promise<StartExamResult> => {
@@ -139,6 +141,8 @@ export function useExam(): {
     return {
         isLoading,
         isUsageLoading,
+        isDailyUsageLoading,
+        isSimulacroUsageLoading,
         session,
         dailyUsage,
         simulacroUsage,
